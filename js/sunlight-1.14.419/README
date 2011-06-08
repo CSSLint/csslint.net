@@ -1,0 +1,69 @@
+Sunlight <http://sunlightjs.com/>
+Version 1.14 (see CHANGELOG for details)
+(c) 2011 Tommy Montgomery <http://tommymontgomery.com/>
+
+Licensed under WTFPL: http://sam.zoy.org/wtfpl/
+
+Installation
+------------
+- Reference sunlight-all-min.js OR sunlight-min.js and language files of your choice.
+- Reference a theme stylesheet (in themes/) or provide your own stylesheet.
+- Place code inside an element with the class "sunlight-highlight-{language}" where
+  language is the id of the language. e.g. "sunlight-highlight-csharp" for C#.
+
+To use Sunlight as a jQuery plugin, reference the desired sunlight files, and then
+reference jquery.sunlight.js.
+
+Refer to http://sunlightjs.com/docs.html for other options.
+
+Included language files
+-----------------------
+- C#
+- PHP
+- JavaScript
+- MySQL
+- XML
+- CSS
+- bash
+- T-SQL
+- Java
+- Ruby
+- Python
+- Brainfuck
+- nginx
+- C/C++
+- 6502 assembler
+- Perl
+- VB.NET
+- httpd
+- Lisp
+- Visual Studio solution files (*.sln)
+- DOS batch
+- Haskell
+- Erlang
+- Diff (unified and context)
+- Scala
+- ActionScript
+- PowerShell
+- Objective-C
+- Lua
+
+Included themes
+---------------
+- sunlight.default.css
+- sunlight.dark.css
+
+Included plugins
+----------------
+- sunlight-plugin.linenumbers.js (bundled)
+- sunlight-plugin.menu.js
+- sunlight-plugin.doclinks.js
+
+Authors
+-------
+Tommy Montgomery <http://tommymontgomery.com/>
+
+Contributors
+------------
+Bob Montgomery
+admin@hinata.in

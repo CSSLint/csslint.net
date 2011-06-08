@@ -1,0 +1,308 @@
+body{
+	color: #414141;
+}
+.logo {
+	color:#414141;
+	text-transform:uppercase;
+	font-size:78px;
+	font-family:"Futura";
+	padding-top:40px;
+}
+.logo strong {
+	color:#768c1c;
+}
+.intro {
+	font-size:30px;
+	font-family:Futura;
+	color:#414141;
+	padding:42px 0 42px 0;
+}
+.head {
+	border-bottom:12px solid #008080;
+}
+.body {
+	background-color: #a6ebf7;
+	background: #a7edf9; /* Old browsers */
+	background: -moz-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a7edf9), color-stop(100%, #acf3ff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7edf9', endColorstr='#acf3ff', GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* W3C */
+}
+.page {
+	width: 978px;
+}
+.body .page {
+	background:url(img/clouds.png) center bottom no-repeat;
+	padding:50px 0 145px 0;
+}
+.summary {
+	font-family:"Gill Sans";
+	font-size:20px;
+	padding: 0 25px 25px 0;
+	margin-bottom: 20px;
+	display:block;
+}
+.summary strong {
+	font-size: 30px;
+}
+
+.bigButton {
+	background-color:#34cfe5;
+	padding: 11px 84px;
+	border-radius: 20px;
+	text-transform:uppercase;
+	color: #fff;
+	margin:20px 0 0 10px;
+	font-family:Futura;
+	font-size: 48px;
+	display:inline-block;
+	border:none;
+}
+.bigButton:hover, .bigButton:focus, .bigButton:active {
+	background-color:#32c6db;
+	text-decoration:none;
+	color: #fff;
+}
+.bigButton:visited {
+	color:#fff;
+}
+
+textarea{
+	box-shadow: inset 0 1px 0 #c3c3c3;
+	border:1px solid gray;
+	border-color: #7c7c7c #c3c3c3 #ddd #c3c3c3; 
+	vertical-align:top;
+	padding:4px;
+	box-sizing:border-box;
+	font-family:"Courier New", Courier, monospace;
+}
+
+
+.foot .page {
+	padding:60px 0;
+}
+.results table {
+	table-layout:auto;
+}
+.results table {
+	border:solid 1px #d8d8d8;
+}
+.results th, .results td {
+	border:solid 1px #d8d8d8;
+	border-width: 0 1px;
+	-moz-box-shadow: inset 3px 3px 0 -2px #FFF;
+	-webkit-box-shadow: inset 3px 3px 0 -2px #FFF;
+	box-shadow: inset 3px 3px 0 -2px #FFF;
+	padding:9px 11px;
+}
+.results td{
+	vertical-align:top;
+}
+.results pre{
+	margin: 10px 0;
+}
+.results tr:nth-child(even) {
+background-color:#e9fbff;
+}
+.results .selectedCol {
+	background-color:#cbf3fb;
+}
+.results tr:hover td {
+	background-color: #ffffe2 !important;
+}
+.dataTables_filter {
+	float:right;
+	margin:5px 0;
+}
+.results th.sorting:hover {
+	background: #ffffff; /* old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f5f5f5 100%); /* firefox */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5)); /* webkit */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e4f8ff', GradientType=0 ); /* ie */
+	background: -o-linear-gradient(top, #ffffff 0%, #f5f5f5 100%); /* opera */
+}
+.results .sorting_asc:after, 
+.results .sorting_desc:after {
+	font-size: 10px;
+	content: '\2191';
+	background-color: #fff;
+	border-radius:7px;
+	padding:1px 4px 2px 4px;
+	display:inline-block;
+	margin-left: 5px;
+	float:right;
+	border:1px solid #d8d8d8;
+	border-color:  #d8d8d8 #e9e9e9 #e9e9e9 #d8d8d8;
+}
+.results .sorting_desc:after {
+	content:'\2193';
+	color:#222;
+}
+.results .text{
+position:absolute;
+visibility:hidden;
+}
+/*.results .selectedCol{}*/
+/* stupid but columns are worse */
+/* do w js instead */
+.firstRowSort tr td:nth-child(1), 
+.secondRowSort tr td:nth-child(2), 
+.thirdRowSort tr td:nth-child(3), 
+.fourthRowSort tr td:nth-child(4), 
+.fifthRowSort tr td:nth-child(5), 
+.sixthRowSort tr td:nth-child(6) {
+background-color:#e9fbff;
+}
+.firstRowSort tr:nth-child(even) td:nth-child(1), .secondRowSort tr:nth-child(even) td:nth-child(2), .thirdRowSort tr:nth-child(even) td:nth-child(3), .fourthRowSort tr:nth-child(even) td:nth-child(4), .fifthRowSort tr:nth-child(even) td:nth-child(5), .sixthRowSort tr:nth-child(even) td:nth-child(6) {
+background-color:#cbf3fb;
+}
+.codeHd {
+	background: #f5f5f5; /* Old browsers */
+	background: -moz-linear-gradient(top, #f5f5f5 0%, #f5f5f5 7%, #f3f3f3 11%, #f3f3f3 21%, #f1f1f1 25%, #f1f1f1 46%, #efefef 50%, #efefef 57%, #ececec 61%, #ebebeb 89%, #e9e9e9 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(7%, #f5f5f5), color-stop(11%, #f3f3f3), color-stop(21%, #f3f3f3), color-stop(25%, #f1f1f1), color-stop(46%, #f1f1f1), color-stop(50%, #efefef), color-stop(57%, #efefef), color-stop(61%, #ececec), color-stop(89%, #ebebeb), color-stop(100%, #e9e9e9)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f5f5f5 0%, #f5f5f5 7%, #f3f3f3 11%, #f3f3f3 21%, #f1f1f1 25%, #f1f1f1 46%, #efefef 50%, #efefef 57%, #ececec 61%, #ebebeb 89%, #e9e9e9 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f5f5f5 0%, #f5f5f5 7%, #f3f3f3 11%, #f3f3f3 21%, #f1f1f1 25%, #f1f1f1 46%, #efefef 50%, #efefef 57%, #ececec 61%, #ebebeb 89%, #e9e9e9 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #f5f5f5 0%, #f5f5f5 7%, #f3f3f3 11%, #f3f3f3 21%, #f1f1f1 25%, #f1f1f1 46%, #efefef 50%, #efefef 57%, #ececec 61%, #ebebeb 89%, #e9e9e9 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e9e9e9', GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #f5f5f5 0%, #f5f5f5 7%, #f3f3f3 11%, #f3f3f3 21%, #f1f1f1 25%, #f1f1f1 46%, #efefef 50%, #efefef 57%, #ececec 61%, #ebebeb 89%, #e9e9e9 100%); /* W3C */
+	padding:5px;
+}
+.inlineList {
+	margin:4px 0;
+}
+.inlineList li {
+	display:inline;
+	display:inline-block;
+}
+.actions {
+	text-align:right;
+}
+/* piped divider list */
+.piped li {
+	border-left: 1px solid #bfbfbf;
+	padding: 0 7px;
+	-moz-box-shadow: inset 3px 0 0 -2px white;
+	-webkit-box-shadow: inset 3px 0 0 -2px white;
+	box-shadow: inset 3px 0 0 -2px white;
+}
+.piped li:first-child {
+	border:none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.piped li:last-child {
+	padding-right:0;
+}
+/* code table */
+.codeView {
+	overflow-x:auto;
+	width:100%;
+}
+.codeView table {
+	font-family:"Courier New", Courier, monospace;
+	white-space:nowrap;
+}
+.codeView th {
+	border-right:1px solid #cccccd;
+}
+.codeView th, .codeView td {
+	padding:3px 5px;
+	cursor:pointer;
+}
+.codeView th {
+	color:#adaab3;
+	background-color: #ececec;
+	text-align:right;
+}
+.lineNum {
+	width:25px;
+}/* annoying to need to set this in pixels */
+.lineCode {
+}
+.highlight td {
+	background-color:#FFC;
+}
+/* code box */
+.codeBox .inner {
+	border:1px solid #cccccd;
+}
+.codeBox .hd {
+	border-bottom:1px solid #cccccd;
+}
+.codeBox .bd {
+}
+/* errors in code view */
+.error{
+	/*background-color: #FDEDEA;*/
+}
+
+.error td:before {
+	-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;-moz-box-shadow: inset 0 3px 0 -2px #FFF;-webkit-box-shadow: inset 0 3px 0 -2px #FFF;box-shadow: inset 0 3px 0 -2px #FFF;
+	content: "error";
+	border-color: #f2a199; 
+	background-color: #fdedea;
+	display:block;
+	float:right;
+	/*height: 5px;
+	width: 5px;*/
+}	
+
+.warn th:after{
+
+}
+
+.errors{
+ display:none;
+ *border: 5px solid #000;
+ /*border: 11px solid rgba(0,0,0,.5);*/
+ background-color:rgba(0,0,0,.5);
+ -moz-border-radius: 20px;
+ -webkit-border-radius: 20px;
+ -o-border-radius: 20px;
+ border-radius: 20px;
+ font-family: "futura";
+ font-size: 18px;
+ 
+ position:absolute;
+}
+.errors ul{
+	-moz-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	-o-border-radius: 11px;
+	border-radius: 11px;
+	background-color:#fff;
+	padding:11px;
+}
+.highlight .errors,
+.codeView td:hover .errors{
+	display:block;
+}
+/* input form */
+#in{overflow:hidden;_overflow:visible; zoom:1; margin:0 100px;}
+#in textarea{width:100%;height: 20em; box-sizing:border-box;padding:10px; color:#414141;}
+.right{float:right;}
+
+.footList{
+	text-align:center;
+}
+.footList a{
+	color: #666666;
+}
+/* views */
+#errorViewWrapper,
+#codeViewWrapper,
+#settingsViewWrapper,
+.resultsSummary,
+.errorPage #in,
+.settingsPage #in,
+.codePage #in
+{display:none;}
+.errorPage #errorViewWrapper,
+.codePage #codeViewWrapper,
+.settingsPage #settingsViewWrapper,
+.codePage .resultsSummary,
+.errorPage .resultsSummary{display:block;}

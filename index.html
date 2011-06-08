@@ -1,0 +1,600 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>CSS Lint</title>
+<link type="text/css" rel="stylesheet" href="../../blocks/all.css" />
+<link type="text/css" rel="stylesheet" href="style.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
+<script src="jquery.ba-hashchange.js"></script>
+<link rel="stylesheet" type="text/css" href="sunlight-1.14.419/themes/sunlight.default.css" />
+<script type="text/javascript" src="sunlight-1.14.419/sunlight-min.js"></script>
+<script type="text/javascript" src="sunlight-1.14.419/lang/sunlight.css-min.js"></script>
+<script type="text/javascript">
+ 
+ 
+ $(document).ready(function(){
+ 	// form stuffs
+		function toggleView(view) {
+			switch (view) {
+				case 'error': document.documentElement.setAttribute("class", "errorPage")
+					break;
+				case 'code': document.documentElement.setAttribute("class", "codePage")
+					break;	
+				case 'setting': document.documentElement.setAttribute("class", "settingsPage")
+					break;
+				default: document.documentElement.setAttribute("class", "")	
+			}			
+		}
+		
+		// Set CSS form submit event 
+		$('#in').submit(function() {
+			var css = $('#in textarea')[0];
+			//lint(css); TODO: how to call lint really?
+			highlightCSS();
+			errorFilter();
+			toggleView("error");
+			return false;
+		});
+	
+	
+/*
+ * set up error table 
+ */	
+	
+	// -- sorting
+	var errorTable = $('#errorView').dataTable({
+		"bPaginate": false,
+		"bLengthChange": false,
+		"bFilter": true,
+		"bSort": true,
+		"bInfo": false,
+		"bAutoWidth": false } ); 
+		
+	 // -- row click goes to code view line number
+	 $('.results tbody tr').each(function(index) {
+	 	$(this).click(function(event){
+			// collect the line number
+			var line = $(this).children('td')[2].innerHTML;
+			// link to the other table
+			location.href = "#L" + line;		
+	 	});
+	 });
+	 
+	 //when query string updates - change to code view
+	 $(function(){
+
+  // Hash changed
+		$(window).hashchange( function(){
+			//get #hash
+			var hash = window.location.hash;
+			//add a class "selected" (and remove it from any other row)
+			$(".highlight").removeClass("highlight");
+			$(hash).addClass("highlight");
+			
+			toggleView("code");
+		})
+	
+		// Trigger the event (useful on page load).
+		$(window).hashchange();
+		toggleView();
+	});
+	 
+	 
+	  
+	 
+	 
+	 //var highcss = highlighter.highlight(css, "css");
+	 //var cssByLine = highcss.split("\n");
+	 //console.log(highcss);
+	 
+	 //var printTo = ;
+	 
+	 
+	 /* 
+	 	*	set up code view table
+		*/
+		
+	// syntax highlighting		
+	 function highlightCSS(){
+	 	var css = $('#input')[0].value;
+		var highlighter = new Sunlight.Highlighter();
+		//first argument is the text to highlight, second is the language id
+		var context = highlighter.highlight(css, "css");
+		var nodes = context.getNodes(); //array of DOM nodes
+		
+		//the following will convert it to an HTML string
+		var dummyElement = document.createElement("div");
+		for (var i = 0; i < nodes.length; i++) {
+				dummyElement.appendChild(nodes[i]);
+		}
+		
+		var rawHtml = dummyElement.innerHTML;
+		$('#highlight').prepend(rawHtml);
+		
+		// split based on \n
+		var cssByLine = rawHtml.split('\n');
+		//console.log(cssByLine);
+		
+		// create template
+		var lineNum;
+		var lineErr = false;
+		var class = "";
+		var lineCode;
+		var tableRow; 
+	 	var tableRows;
+		var tableBody = document.createElement("tbody");
+		var lineAnchor;
+		// insert into template
+		
+		for (var i=0; i < cssByLine.length; i++){
+			lineCode = cssByLine[i];
+			lineNum = i+1; // unnecessary
+			if (lineNum == 1 || lineNum == 2 || lineNum == 3 || lineNum == 8 ){ //TODO: need a way to tell if a line has errors
+				class = " class='error'"; //would one of those ? : statements work better? I think this is broken, though it never executes, so not sure
+			}
+			lineAnchor = "id='L" + lineNum + "'";
+			tableRow = "<tr" + class + " " + lineAnchor + ">\n	<th>" + lineNum + "</th>\n	<td>" + lineCode + "</td>\n</tr>";// seems wrong but only way to avoid syntax errors?
+			tableBody.innerHTML += tableRow;
+			class = "";
+		}
+		document.getElementById("tableBody").innerHTML = tableBody.innerHTML;
+	 };
+	 
+	 // set up click events on TR in code view
+	function errorFilter(){
+		$('.error').each(function(index) {
+	 	$(this).click(function(event){
+			// collect the line number
+			var line = $(this).attr("id").substring(1);
+			// link to the other table
+			errorTable.fnFilter(line, 2);
+			toggleView("error");
+			$('#errorView_filter input').value = line;		
+	 	});
+	 }); 
+	}
+	
+ // -- color selected row of code view table (might remove)
+	 /*function colorSelectedRow(){
+		var curr = $('.codeView tr.highlight');
+		$('.codeView tr').each(function(index) {
+			$(this).click(function(event){
+				curr.removeClass("highlight");
+				$(this).toggleClass("highlight");
+				curr = $(this);
+			});
+		});
+	 }	*/	
+			
+	
+		
+		
+		/*colorSelectedRow();	*/
+	});
+</script>
+</head>
+
+<body>
+	<div class="head">
+		<div class="page">
+    	<div class="unit size1of2">
+      	<h1 class="logo">CSS <strong>LINT</strong></h1>
+      </div>
+    	<div class="unit size1of2 lastUnit">
+      	<div class="intro">
+      		<p>Will hurt your feelings<a href="http://www.jslint.com/">*</a></p>
+        	<p>(And help you code better)</p>
+        </div>
+      </div>
+    </div>
+	</div>
+	<div class="body">
+  	<div class="page">
+    	<div class="resultsSummary">
+        <div class="line">
+          <div class="unit size1of2">
+            <p class="summary">CSS lint found <strong>937</strong> errors and <strong>312</strong> warnings. How can you fix it? See the details below.</p>
+          </div>
+          <div class="unit size1of2 lastUnit">
+            <a class="bigButton" href="#">Fix It!</a>
+          </div>
+        </div>
+      </div>
+      <!-- form to submit css for linting -->
+      <form id="in">
+        <label for="input" class="summary">Your CSS goes here. The more, the better. Linting works best when we see the big picture, so give us everything you've got. </label>
+        <textarea id="input" name="css" class="css">
+.foo{
+ background-color:red;
+}
+#bar {
+ background-color: #da0000;
+ font-family: "Times New Roman";
+ background-image: url("foo.jpg");
+ _background-image: url(iefoo.jpg);
+ /* ugly! */
+}</textarea>
+        <button type="submit" class="bigButton right" href="#">Lint!</button>
+      </form>
+    </div>
+	</div>
+	<div class="foot">
+  	<div class="page">
+    
+    <div class="mod" id="errorViewWrapper">
+    	<div class="inner">
+      	<div class="bd">
+        	<div class="data results firstRowSort">
+    	<table id="errorView">
+      	<thead>
+          <tr class="codeHd">
+            <th scope="col" title="ascending by type"></th>
+            <th scope="col">file</th>
+            <th scope="col">line </th>
+            <th scope="col">col</th>
+            <th scope="col">title</th>
+            <th scope="col">description</th>
+            <th scope="col">browser</th>
+          </tr>
+        </thead>
+        <tbody>  
+          <tr>
+            <td><span class="text">warning</span><img title="warning" alt="warning" src="img/warn.png" /></td>
+            <td>style.css</td>
+            <td>1</td>
+           	<td>9</td>
+            <td>Duplication</td>
+            <td>Font-size:13px has been declared 412 times in your CSS.
+            	<pre>font-size:13px;</pre>
+            </td>
+            <td>All</td>
+          </tr>
+          <tr>
+            <td><span class="text">warning</span><img title="warning" alt="warning" src="img/warn.png" /></td>
+            <td>core.css</td>
+            <td>3</td>
+           	<td>5</td>
+            <td>Variation</td>
+            <td>The increment between font-size 15px bold and 16px is too small, choose one.
+            	<pre>font-size: 15px;
+font-weight: bold;</pre>
+            </td>
+            <td>All</td>
+          </tr>
+          <tr>
+            <td><span class="text">error</span><img title="error" alt="error" src="img/error.png" /></td>
+            <td>library.css</td>
+            <td>8</td>
+           	<td>3</td>
+            <td>Box Model Bug</td>
+            <td>Don't declare width and either padding or borders on the same element.
+            	<pre>padding: 1px; 
+width: 200px;</pre>
+            </td>
+            <td>FF, Safari, Opera, IE6</td>
+          </tr>
+          <tr>
+            <td><span class="text">error</span><img title="error" alt="error" src="img/error.png" /></td>
+            <td>core.css</td>
+            <td>2</td>
+           	<td>23</td>
+            <td>Invalid property</td>
+            <td>None is not a valid background-position.
+            	<pre>background-position:none;</pre>
+            </td>
+            <td>All</td>
+          </tr>
+        </tbody>
+      </table>
+		</div>
+        </div>
+        <div class="ft">
+        	<ul class="inlineList actions">
+            <li><a href="#">export</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+        
+    	
+    
+    
+    <!-- example tables -->
+    <!--<div class="box codeBox">
+    	<div class="inner">
+      	<div class="hd codeHd">
+        	<div class="media man">
+          	<a class="img"><img src="img/file.png" /></a>
+            <div class="imgExt">
+            	<ul class="inlineList piped">
+                <li><a href="#">export</a></li>
+                <li><a href="#">export</a></li>
+                <li><a href="#">export</a></li>
+                <li><a href="#">export</a></li>
+                <li><a href="#">export</a></li>
+              </ul>
+            </div>
+            <div class="bd">
+            	<ul class="inlineList piped">
+                <li>export</li>
+                <li>export</li>
+                <li>export</li>
+                <li>export</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="bd">
+        	<div class="data codeView">
+            <table id="codeView">
+              <col class="lineNum" />
+              <col class="lineCode" />
+              <tbody>
+                <tr>
+                  <th scope="row">0</th>
+                  <td>/* ----- alert, warn, confirm, info (extend message) ----- */</td>
+                </tr> 
+                <tr>
+                  <th scope="row">0</th>
+                  <td>/* ----- long scroll causing line ----- *//* ----- alert, warn, confirm, info (extend message) ----- *//* ----- alert, warn, confirm, info (extend message) ----- */</td>
+                </tr>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>.alert{</td>
+                </tr> 
+                
+                <tr class="error">
+                  <th scope="row">2</th>
+                  <td>	background-position: none; 
+                  	<div class="errors">
+                    	<ul>
+                    		<li>line 16: “none” is not a valid background position</li>
+                    	</ul>
+                    </div>
+                  </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">3</th>
+                  <td>	background-color: #fdedea;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">4</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr class="highlight">
+                  <th scope="row">5</th>
+                  <td>.warn{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">6</th>
+                  <td>	border-color: #f8e38e; </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">7</th>
+                  <td>	background-color: #ffffdc;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">8</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">9</th>
+                  <td>.confirm{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">10</th>
+                  <td>	border-color: #9bebb3; </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">11</th>
+                  <td>	background-color: #edfff1;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">12</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">13</th>
+                  <td>.info{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">14</th>
+                  <td>	border-color: #bee6ff;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">15</th>
+                  <td>	background-color: #f5fcff;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">16</th>
+                  <td>	}</td>
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h3>No scroll table</h3>
+    <div class="box codeBox">
+    	<div class="inner">
+      	<div class="hd codeHd">
+        	<div class="media man">
+          	<a class="img"><img src="img/file.png" /></a>
+            <div class="imgExt">
+            	<ul class="inlineList piped">
+                <li><a href="#">errors</a></li>
+                <li><a href="#">export</a></li>
+                <li><a href="#">priority</a></li>
+              </ul>
+            </div>
+            <div class="bd">
+            	<ul class="inlineList piped">
+                <li>message.css</li>
+                <li>16 lines</li>
+                <li>3 errors</li>
+                <li>5 warnings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="bd">
+        	<div class="data codeView dp-highlighter">
+            <table class="dp-c">
+              <col class="lineNum" />
+              <col class="lineCode" />
+              <tbody>
+                <tr>
+                  <th scope="row">0</th>
+                  <td>/* ----- alert, warn, confirm, info (extend message) ----- */</td>
+                </tr> 
+                <tr>
+                  <th scope="row">1</th>
+                  <td>.alert{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">2</th>
+                  <td>	border-color: #f2a199; </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">3</th>
+                  <td>	background-color: #fdedea;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">4</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">5</th>
+                  <td>.warn{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">6</th>
+                  <td>	border-color: #f8e38e; </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">7</th>
+                  <td>	background-color: #ffffdc;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">8</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">9</th>
+                  <td>.confirm{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">10</th>
+                  <td>	border-color: #9bebb3; </td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">11</th>
+                  <td>	background-color: #edfff1;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">12</th>
+                  <td>	}</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">13</th>
+                  <td>.info{</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">14</th>
+                  <td>	border-color: #bee6ff;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">15</th>
+                  <td>	background-color: #f5fcff;</td>
+                </tr> 
+                
+                <tr>
+                  <th scope="row">16</th>
+                  <td>	}</td>
+                </tr> 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <!-- insert in this table -->
+    <div class="box codeBox mtl" id="codeViewWrapper">
+    	<div class="inner">
+      	<div class="hd codeHd">
+        	<div class="media man">
+          	<a class="img"><img src="img/file.png" /></a>
+            <div class="imgExt">
+            	<ul class="inlineList piped">
+                <li><a href="#">errors</a></li>
+                <li><a href="#">export</a></li>
+                <li><a href="#">priority</a></li>
+              </ul>
+            </div>
+            <div class="bd">
+            	<ul class="inlineList piped">
+                <li>message.css</li>
+                <li>16 lines</li>
+                <li>3 errors</li>
+                <li>5 warnings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="bd">
+        	<div class="data codeView">
+            <table id="codeView">
+              <col class="lineNum" />
+              <col class="lineCode" />
+              <tbody id="tableBody">
+                 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <ul class="inlineList piped footList">
+    	<li><a href="#">Nicholas</a></li>
+      <li><a href="#">Nicole</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+    
+    
+   </div>
+	</div>
+</body>
+</html>
