@@ -5,7 +5,8 @@
 <title>CSS Lint</title>
 <link type="text/css" rel="stylesheet" href="../../blocks/all.css" />
 <link type="text/css" rel="stylesheet" href="style.css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
+<script type="text/javascript" src="js/jquery-1.6.1.js"></script>
 <script type="text/javascript" src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/jquery.ba-hashchange.js"></script>
 <link rel="stylesheet" type="text/css" href="js/sunlight-1.14.419/themes/sunlight.default.css" />
@@ -37,8 +38,7 @@
 			var css = $('#in textarea')[0].value,
 			results, 
 			messages;
-			lintCSS();
-			highlightCSS(); 
+			lintCSS(); 
 			toggleView("results");
 			return false;
 		});
@@ -71,6 +71,7 @@
 			document.getElementById("warningCount").innerHTML = warningCount;
 			document.getElementById("errors").innerHTML = tbody.innerHTML;
 			errorTableInit();
+			highlightCSS();
 		}
 		/*
 		 * Making "in" play nice w arrays
@@ -142,30 +143,31 @@
 	 	*	set up code view table
 		*/
 	 function highlightCSS(){
+	 	var css, dummyElement, rawHtml, cssByLine, lineErr, 
+		i,class, lineNum, lineCode, tableRow, tableRows,tableBody,lineAnchor;
 	 	//get css & instantiate highlighter
-	 	var css = $('#input')[0].value,
+	 	css = $('#input')[0].value,
 		highlighter = new Sunlight.Highlighter(),
 		context = highlighter.highlight(css, "css"),
 		nodes = context.getNodes();
 		
 		// convert nodes to an HTML string
-		var dummyElement = document.createElement("div");
-		for (var i = 0; i < nodes.length; i++) {
-				dummyElement.appendChild(nodes[i]);
+		dummyElement = document.createElement("div");
+		for (i = 0; i < nodes.length; i++) {
+			dummyElement.appendChild(nodes[i]);
 		}
-		var rawHtml = dummyElement.innerHTML;
+		rawHtml = dummyElement.innerHTML;
 		// split based by row - on \n
-		var cssByLine = rawHtml.split('\n');
+		cssByLine = rawHtml.split('\n');
 		//console.log(cssByLine);
 		
 		// create template
-		var lineErr = false,
-		class = "", lineNum, lineCode, tableRow, tableRows,
-		tableBody = document.createElement("tbody"),
-		lineAnchor;
+		lineErr = false;
+		class = "";
+		tableBody = document.createElement("tbody");
 		// insert into template
 		
-		for (var i=0; i < cssByLine.length; i++){
+		for (i=0; i < cssByLine.length; i++){
 			lineCode = cssByLine[i];
 			lineNum = i+1; // unnecessary
 			if (lineNum in oc(errorLines)){ //TODO: need a way to tell if a line has errors
@@ -190,25 +192,6 @@
 			});
 		 });
 	 }
-	 
-	 
-	
- // -- color selected row of code view table (might remove)
-	 /*function colorSelectedRow(){
-		var curr = $('.codeView tr.highlight');
-		$('.codeView tr').each(function(index) {
-			$(this).click(function(event){
-				curr.removeClass("highlight");
-				$(this).toggleClass("highlight");
-				curr = $(this);
-			});
-		});
-	 }	*/	
-			
-	
-		
-		
-		/*colorSelectedRow();	*/
 	});
 </script>
 </head>
@@ -243,6 +226,48 @@
       <form id="in">
         <label for="input" class="summary">Your CSS goes here. The more, the better. Linting works best when we see the big picture, so give us everything you've got. </label>
         <textarea id="input" name="css" class="css">
+
+@charset "UTF-8"; 
+
+@import url("booya.css") print,screen;
+@import "whatup.css" screen;
+@import "wicked.css";
+
+@namespace "http://www.w3.org/1999/xhtml";
+@namespace svg "http://www.w3.org/2000/svg";
+
+li.inline {
+  background: url("something.png");
+  display: inline;
+  padding-left: 3px;
+  padding-right: 7px;
+  border-right: 1px dotted #066;
+}
+
+li.last {
+  display: inline;
+  padding-left: 3px !important;
+  padding-right: 3px;
+  border-right: 0px;
+} 
+
+@media print {
+    li.inline {
+      color: black;
+    }
+}
+
+@page {
+  margin: 10%;
+  counter-increment: page;
+
+  @top-center {
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    content: counter(page);
+  }
+}
 .foo{
  background-color:red;
 }
@@ -255,8 +280,7 @@
 }
 
 #body
-{
-
+{}
 			</textarea>
         <button type="submit" class="bigButton right" href="#">Lint!</button>
       </form>
@@ -596,7 +620,7 @@ width: 200px;</pre>
     	<div class="inner">
       	<div class="hd codeHd">
         	<div class="media man">
-          	<a class="img"><img src="img/file.png" /></a>
+          	<a class="img fileType"><img src="img/paper16.png" /></a>
             <div class="imgExt">
             	<ul class="inlineList piped">
                 <li><a href="#">errors</a></li>
