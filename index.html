@@ -13,13 +13,16 @@
 <script type="text/javascript" src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
 <script type="text/javascript" src="js/csslint.js"></script>
 <script type="text/javascript">
- 
+//NCZ: type attribute not necessary on script tag
  
  $(document).ready(function(){
  		var errorLines = [];
 	/*
 	 * Views
 	 */
+     
+        //NCZ: document.documentElement.setAttribute could be done with jQuery methods
+        //NCZ: single-quotes or double-quotes? Pick a side, we're at war!
 		function toggleView(view) {
 			switch (view) {
 				case 'results': document.documentElement.setAttribute("class", "resultsPage")
@@ -34,27 +37,34 @@
 		 * Form: Sumbit css to be linted and highlighted 
 		 */
 		$('#in').submit(function() {
+            //NCZ: Indent variable under one another so you can tell what's going on
 			var css = $('#in textarea')[0].value,
-			results, 
-			messages;
+                results, 
+                messages;
+                
 			lintCSS();
 			highlightCSS(); 
 			toggleView("results");
 			return false;
 		});
+        
 		/*
 		 * Lint: lints css 
 		 */
 		function lintCSS(){
+            //NCZ: Indent variable under one another for better readability
 			var errorCount = 0, 
-			warningCount = 0,
-			type, 
-			tr = document.createElement("tr"), 
-			tbody = document.createElement("tbody");
+                warningCount = 0,
+                type, 
+                tr = document.createElement("tr"), 
+                tbody = document.createElement("tbody");
+                
+            //NCZ: intentional that these are global?
 			results = CSSLint.verify(document.getElementById("input").value);
 			messages = results.messages;
 			
 			// output results to table
+            //NCZ: The variables i and len are global here, probably not what you intended.
 			for (i=0, len=messages.length; i < len; i++){
 				if(messages[i].type == "error"){
 					errorCount ++;
@@ -67,6 +77,8 @@
 				} 
 				tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + "messages[i].title" + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + "messages[i].browser" + "</td></tr>";
 			}
+            
+            //NCZ: Why not use jQuery methods for this?
 			document.getElementById("errorCount").innerHTML = errorCount;
 			document.getElementById("warningCount").innerHTML = warningCount;
 			document.getElementById("errors").innerHTML = tbody.innerHTML;
@@ -75,6 +87,7 @@
 		/*
 		 * Making "in" play nice w arrays
 		 */
+        //NCZ: Would be nice to have a better function name
 		function oc(a)
 		{
 			var o = {};
@@ -90,6 +103,7 @@
 	 */
  
 	function errorTableInit(){
+        //NCZ: Careful with indentation here...
 		var errorTable = $('#errorView').dataTable({
 		"bPaginate": false,
 		"bLengthChange": false,
@@ -132,6 +146,7 @@
 			//highlight current row
 			$(".highlight").removeClass("highlight");
 			$("." + curr).addClass("highlight");
+            //NCZ: console.log should not make it to production
 			console.log(curr);
 		})
 		// Trigger the event (on page load).
@@ -160,6 +175,8 @@
 		
 		// create template
 		var lineErr = false,
+        
+        //NCZ: class is a reserved word in JavaScript - may cause errors in some browsers, change to something else
 		class = "", lineNum, lineCode, tableRow, tableRows,
 		tableBody = document.createElement("tbody"),
 		lineAnchor;
