@@ -55,7 +55,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7edf9', end
 	border-radius: 20px;
 	text-transform:uppercase;
 	color: #fff;
-	margin:20px 0 0 10px;
+	margin:7px 0 0 10px;
 	font-family:Futura;
 	font-size: 48px;
 	display:inline-block;
@@ -102,7 +102,10 @@ textarea{
 	vertical-align:top;
 }
 .results pre{
-	margin: 10px 0;
+	margin: 5px 0 0 0;
+	width:450px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .results tr:nth-child(even) {
 background-color:#e9fbff;
@@ -111,7 +114,7 @@ background-color:#e9fbff;
 	background-color:#cbf3fb;
 }
 .results tr:hover td {
-	background-color: #ffffe2 !important;
+	background-color: #cbf3fb;
 }
 .dataTables_filter {
 	float:right;
@@ -211,7 +214,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 }
 .codeView th, .codeView td {
 	padding:3px 5px;
-	cursor:pointer;
 }
 .codeView th {
 	color:#adaab3;
@@ -224,7 +226,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 .lineCode {
 }
 .highlight td {
-	background-color:#FFC;
+	background-color:#ffffe2 !important;
 }
 /* code box */
 .codeBox .inner {
@@ -237,24 +239,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 }
 /* errors in code view */
 .error{
-	/*background-color: #FDEDEA;*/
-}
-
-.error td:before {
-	-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;-moz-box-shadow: inset 0 3px 0 -2px #FFF;-webkit-box-shadow: inset 0 3px 0 -2px #FFF;box-shadow: inset 0 3px 0 -2px #FFF;
-	content: "error";
-	border-color: #f2a199; 
+	cursor:pointer;
 	background-color: #fdedea;
-	display:block;
-	float:right;
-	/*height: 5px;
-	width: 5px;*/
-}	
-
-.warn th:after{
-
 }
-
 .errors{
  display:none;
  *border: 5px solid #000;
@@ -283,7 +270,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 }
 /* input form */
 #in{overflow:hidden;_overflow:visible; zoom:1; margin:0 100px;}
-#in textarea{width:100%;height: 20em; box-sizing:border-box;padding:10px; color:#414141;}
+#in textarea{width:100%;height: 20em; box-sizing:border-box;padding:10px; color:#414141; margin-bottom:15px;}
 .right{float:right;}
 
 .footList{
@@ -297,12 +284,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 #codeViewWrapper,
 #settingsViewWrapper,
 .resultsSummary,
-.errorPage #in,
-.settingsPage #in,
-.codePage #in
+.resultsPage #in,
+.settingsPage #in
 {display:none;}
-.errorPage #errorViewWrapper,
-.codePage #codeViewWrapper,
+.resultsPage #errorViewWrapper,
+.resultsPage #codeViewWrapper,
 .settingsPage #settingsViewWrapper,
-.codePage .resultsSummary,
-.errorPage .resultsSummary{display:block;}
+.resultsPage .resultsSummary,
+.resultsPage .resultsSummary{display:block;}
