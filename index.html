@@ -10,10 +10,232 @@
 <script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
 <script src="js/jquery.ba-hashchange.js"></script>
 <link rel="stylesheet" type="text/css" href="js/sunlight-1.14.419/themes/sunlight.default.css" />
+<<<<<<< HEAD
 <script src="js/sunlight-1.14.419/sunlight-min.js"></script>
 <script src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
 <script src="js/csslint.js"></script>
 <script src="js/csslint-ui.js"></script>
+=======
+<script type="text/javascript" src="js/sunlight-1.14.419/sunlight-min.js"></script>
+<script type="text/javascript" src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
+<script type="text/javascript" src="js/csslint.js"></script>
+<script type="text/javascript">
+//NCZ: type attribute not necessary on script tag
+ 
+ $(document).ready(function(){
+ 		var errorLines = [];
+	/*
+	 * Views
+	 */
+     
+        //NCZ: document.documentElement.setAttribute could be done with jQuery methods
+        //NCZ: single-quotes or double-quotes? Pick a side, we're at war!
+		function toggleView(view) {
+			switch (view) {
+				case 'results': document.documentElement.setAttribute("class", "resultsPage")
+					break;
+				case 'setting': document.documentElement.setAttribute("class", "settingsPage")
+					break;
+				default: document.documentElement.setAttribute("class", "")	
+			}			
+		}
+		
+		/*
+		 * Form: Sumbit css to be linted and highlighted 
+		 */
+		$('#in').submit(function() {
+            //NCZ: Indent variable under one another so you can tell what's going on
+			var css = $('#in textarea')[0].value,
+                results, 
+                messages;
+                
+			lintCSS();
+			highlightCSS(); 
+			toggleView("results");
+			return false;
+		});
+        
+		/*
+		 * Lint: lints css 
+		 */
+		function lintCSS(){
+            //NCZ: Indent variable under one another for better readability
+			var errorCount = 0, 
+                warningCount = 0,
+                type, 
+                tr = document.createElement("tr"), 
+                tbody = document.createElement("tbody");
+                
+            //NCZ: intentional that these are global?
+			results = CSSLint.verify(document.getElementById("input").value);
+			messages = results.messages;
+			
+			// output results to table
+            //NCZ: The variables i and len are global here, probably not what you intended.
+			for (i=0, len=messages.length; i < len; i++){
+				if(messages[i].type == "error"){
+					errorCount ++;
+					type = "<img alt='error' src='img/error.png' />";
+					errorLines.push(messages[i].line);
+				} else if(messages[i].type == "warning"){
+					warningCount ++;
+					type = "<img title='warning' alt='warning' src='img/warn.png' />";
+					errorLines.push(messages[i].line);
+				} 
+				tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + "messages[i].title" + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + "messages[i].browser" + "</td></tr>";
+			}
+            
+            //NCZ: Why not use jQuery methods for this?
+			document.getElementById("errorCount").innerHTML = errorCount;
+			document.getElementById("warningCount").innerHTML = warningCount;
+			document.getElementById("errors").innerHTML = tbody.innerHTML;
+			errorTableInit();
+		}
+		/*
+		 * Making "in" play nice w arrays
+		 */
+        //NCZ: Would be nice to have a better function name
+		function oc(a)
+		{
+			var o = {};
+			for(var i=0;i<a.length;i++)
+			{
+				o[a[i]]='';
+			}
+			return o;
+		}
+
+	/*
+	 * set up error table 
+	 */
+ 
+	function errorTableInit(){
+        //NCZ: Careful with indentation here...
+		var errorTable = $('#errorView').dataTable({
+		"bPaginate": false,
+		"bLengthChange": false,
+		"bFilter": true,
+		"bSort": true,
+		"bInfo": false,
+		"bAutoWidth": false,
+	 	"aoColumns": [
+		{ "sType": "string" },
+		{ "sType": "numeric" },
+		{ "sType": "numeric" },
+		{ "sType": "string" },
+		{ "sType": "string" },
+		null
+		]
+	 } ); 
+		
+	 // setup events on error table row click - goes to code view line number
+	 $('.results tbody tr').each(function(index) {
+	 	$(this).click(function(event){
+			// collect the line number
+			var line = $(this).children('td')[1].innerHTML;
+			// link to the other table
+			location.href = "#L" + line;		
+	 	});
+	 });
+	}	
+	
+	 
+	 /*
+	 	* Setup query string based view changes -when query string updates - change to code view
+		*/
+
+	 $(function(){
+
+  // Hash changed
+		$(window).hashchange( function(){
+			//get #hash
+			var curr = window.location.hash.substring(1);
+			//highlight current row
+			$(".highlight").removeClass("highlight");
+			$("." + curr).addClass("highlight");
+            //NCZ: console.log should not make it to production
+			console.log(curr);
+		})
+		// Trigger the event (on page load).
+		$(window).hashchange();
+	});
+	 
+	 /* 
+	 	*	set up code view table
+		*/
+	 function highlightCSS(){
+	 	//get css & instantiate highlighter
+	 	var css = $('#input')[0].value,
+		highlighter = new Sunlight.Highlighter(),
+		context = highlighter.highlight(css, "css"),
+		nodes = context.getNodes();
+		
+		// convert nodes to an HTML string
+		var dummyElement = document.createElement("div");
+		for (var i = 0; i < nodes.length; i++) {
+				dummyElement.appendChild(nodes[i]);
+		}
+		var rawHtml = dummyElement.innerHTML;
+		// split based by row - on \n
+		var cssByLine = rawHtml.split('\n');
+		//console.log(cssByLine);
+		
+		// create template
+		var lineErr = false,
+        
+        //NCZ: class is a reserved word in JavaScript - may cause errors in some browsers, change to something else
+		class = "", lineNum, lineCode, tableRow, tableRows,
+		tableBody = document.createElement("tbody"),
+		lineAnchor;
+		// insert into template
+		
+		for (var i=0; i < cssByLine.length; i++){
+			lineCode = cssByLine[i];
+			lineNum = i+1; // unnecessary
+			if (lineNum in oc(errorLines)){ //TODO: need a way to tell if a line has errors
+				class = " class='error L" + lineNum +"' title='error'"; //would one of those ? : statements work better? I think this is broken, though it never executes, so not sure
+			}
+			lineAnchor = "id='L" + lineNum + "'";
+			tableRow = "<tr" + class + " " + lineAnchor + ">\n	<th>" + lineNum + "</th>\n	<td>" + lineCode + "</td>\n</tr>";// seems wrong but only way to avoid syntax errors?
+			tableBody.innerHTML += tableRow;
+			class = "";
+		}
+		document.getElementById("tableBody").innerHTML = tableBody.innerHTML;
+		codeTableInit();
+	 };
+	 
+	 
+	 function codeTableInit(){
+	 	// set up click events on TR in code table
+		 $('.error').each(function(index) {
+			$(this).click(function(event){
+				// href # param = line number
+				location.href = "#" + $(this).attr("id");
+			});
+		 });
+	 }
+	 
+	 
+	
+ // -- color selected row of code view table (might remove)
+	 /*function colorSelectedRow(){
+		var curr = $('.codeView tr.highlight');
+		$('.codeView tr').each(function(index) {
+			$(this).click(function(event){
+				curr.removeClass("highlight");
+				$(this).toggleClass("highlight");
+				curr = $(this);
+			});
+		});
+	 }	*/	
+			
+	
+		
+		
+		/*colorSelectedRow();	*/
+	});
+</script>
+>>>>>>> master
 </head>
 
 <body>
