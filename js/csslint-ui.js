@@ -32,14 +32,16 @@
 		 */
 		function lintCSS(){
 			var i,
+					results,
+					messages,
 					len,
 					errorCount = 0, 
 					warningCount = 0,
 					type, 
 					tr = document.createElement('tr'), 
 					tbody = document.createElement('tbody');
-					results = CSSLint.verify(document.getElementById('input').value);
-					messages = results.messages;
+			results = CSSLint.verify(document.getElementById('input').value);
+			messages = results.messages;
 			
 			// output results to table
 			for (i=0, len=messages.length; i < len; i++){
