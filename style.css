@@ -285,7 +285,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', end
 	border-bottom-color:#e5e5e5;
 	border-right-color: #e5e5e5;
 	border-radius: 3px;
-	padding:3px;
+	padding:3px 2px 3px 3px;
 	background-color: #fff;
 }
 /* views */
