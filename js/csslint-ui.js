@@ -148,7 +148,6 @@
 				lineAnchor;
 	 	//get css & instantiate highlighter
 	 	css = $('#input').val();
-		console.log(css.length);
 		if (css.length < 15000) { // no code view if more than 15000 css
 			highlighter = new Sunlight.Highlighter();
 			context = highlighter.highlight(css, 'css');
@@ -164,7 +163,6 @@
 			cssByLine = rawHtml.split('\n');
 			lineCount = cssByLine.length;
 			$('.lineCount').text(lineCount);
-			//console.log(cssByLine);
 			
 			// create template
 			lineErr = false;
