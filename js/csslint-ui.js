@@ -19,7 +19,7 @@
 		 * Form: Sumbit css to be linted and highlighted 
 		 */
 		$('#in').submit(function() {
-			var css = $('#input').val(),
+			var css,
 					results,
 					myCssLength,
 					messages;
@@ -40,7 +40,8 @@
 					type, 
 					tr = document.createElement('tr'), 
 					tbody = document.createElement('tbody');
-			results = CSSLint.verify(document.getElementById('input').value);
+			css = $('#input').val();
+			results = CSSLint.verify(css);
 			messages = results.messages;
 			
 			// output results to table
@@ -66,11 +67,9 @@
 		/*
 		 * Making "in" play nice w arrays
 		 */
-		function eachOfArray(a)
-		{
+		function eachOfArray(a){
 			var o = {};
-			for(var i=0;i<a.length;i++)
-			{
+			for(var i=0;i<a.length;i++) {
 				o[a[i]]='';
 			}
 			return o;
