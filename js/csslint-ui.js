@@ -7,6 +7,13 @@
 	 */
 		function toggleView(view) {
 			switch (view) {
+            
+                //NCZ: Generally, you want to avoid duplicate code
+                //Below you have $('html').addClass() three times
+                //but only the class name has changed. You can
+                //just store the class name in a variable and then
+                //use addClass() once.
+            
 				case 'results': $('html').addClass('resultsPage')
 					break;
 				case 'setting': $('html').addClass('settingsPage')
@@ -31,6 +38,7 @@
 		 * Lint: lints css 
 		 */
 		function lintCSS(){
+            //NCZ: Keep variables indented to the same level
 			var i,
 					results,
 					messages,
@@ -55,7 +63,7 @@
 					type = "<img title='warning' alt='warning' src='img/warn.png' />";
 					errorLines.push(messages[i].line);
 				} 
-				tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + "messages[i].title" + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + "messages[i].browser" + "</td></tr>";
+				tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td></tr>";
 			}
 			// set text summaries of warnings and errors
 			$('.errorCount').text(errorCount);
