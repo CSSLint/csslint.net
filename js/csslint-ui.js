@@ -1,10 +1,29 @@
 // JavaScript Document
  $(document).ready(function(){
  
- 
- 
  		var errorLines = [],
-            errorView;
+            errorView,
+            worker = null;
+            
+         
+            
+            
+        if (typeof Worker != "undefined"){
+        
+            //if being run locally, some browsers barf, so double-check
+            try {
+
+                worker =  new Worker("js/csslint-worker.js");
+        
+                worker.onmessage = function(event){
+                    outputResults(JSON.parse(event.data));
+                };
+            
+            } catch (ex){
+                //sigh, just don't use the worker
+            }
+        }    
+
 		$('#in button').removeAttr('disabled');
 	/*
 	 * Views
@@ -38,12 +57,25 @@
 			toggleView('results');
 			return false;
 		});
-		/*
+        
+        
+
+        /*
 		 * Lint: lints css 
 		 */
-		function lintCSS(){
+        function lintCSS(){
+			var css = $('#input').val();
+            
+            if (worker){
+                worker.postMessage(css);
+            } else {
+                outputResults(CSSLint.verify(css));
+            }
+        }
+        
+
+		function outputResults(results){
             var i,
-                results,
                 messages,
                 len,
                 errorCount = 0, 
@@ -51,8 +83,6 @@
                 type;
                 
             errorTableInit();
-			css = $('#input').val();
-			results = CSSLint.verify(css);
 			messages = results.messages;
 			
 			// output results to table
