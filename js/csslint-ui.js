@@ -181,7 +181,7 @@
 			nodes = context.getNodes();
 			
 			// convert nodes to an HTML string
-			dummyElement = document.createElement('div');
+			dummyElement = document.createElement('pre');
 			for (i = 0; i < nodes.length; i++) {
 				dummyElement.appendChild(nodes[i]);
 			}
