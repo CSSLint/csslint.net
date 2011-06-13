@@ -1,12 +1,23 @@
 // JavaScript Document
  $(document).ready(function(){
- 		var errorLines = [];
+ 
+ 
+ 
+ 		var errorLines = [],
+            errorView;
 		$('#in button').removeAttr('disabled');
 	/*
 	 * Views
 	 */
 		function toggleView(view) {
 			switch (view) {
+            
+                //NCZ: Generally, you want to avoid duplicate code
+                //Below you have $('html').addClass() three times
+                //but only the class name has changed. You can
+                //just store the class name in a variable and then
+                //use addClass() once.
+            
 				case 'results': $('html').addClass('resultsPage')
 					break;
 				case 'setting': $('html').addClass('settingsPage')
@@ -31,15 +42,15 @@
 		 * Lint: lints css 
 		 */
 		function lintCSS(){
-			var i,
-					results,
-					messages,
-					len,
-					errorCount = 0, 
-					warningCount = 0,
-					type, 
-					tr = document.createElement('tr'), 
-					tbody = document.createElement('tbody');
+            var i,
+                results,
+                messages,
+                len,
+                errorCount = 0, 
+                warningCount = 0,
+                type;
+                
+            errorTableInit();
 			css = $('#input').val();
 			results = CSSLint.verify(css);
 			messages = results.messages;
@@ -55,13 +66,25 @@
 					type = "<img title='warning' alt='warning' src='img/warn.png' />";
 					errorLines.push(messages[i].line);
 				} 
-				tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + "messages[i].title" + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + "messages[i].browser" + "</td></tr>";
+                errorView.fnAddData([
+                    type,
+                    messages[i].line,
+                    messages[i].col,
+                    messages[i].rule.name,
+                    messages[i].message + "<pre>" + messages[i].evidence + "</pre>",
+                    messages[i].rule.browsers                
+                ]);
+				//tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td></tr>";
+				//tr = document.createElement("tr");
+                //tr.className = "L" + messages[i].line;
+                //tr.innerHTML = "<td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td>"
+                //$('#errors').append(tr);
 			}
 			// set text summaries of warnings and errors
 			$('.errorCount').text(errorCount);
 			$('.warningCount').text(warningCount);
-			$('#errors').html(tbody.innerHTML);
-			errorTableInit();
+			//$('#errors').html(tbody.innerHTML);
+			errorTableEvents();
 			highlightCSS();
 		}
 		/*
@@ -80,7 +103,7 @@
 	 */
  
 	function errorTableInit(){
-		var errorTable = $('#errorView').dataTable({
+		errorView = $('#errorView').dataTable({
 			"bPaginate": false,
 			"bLengthChange": false,
 			"bFilter": true,
@@ -95,8 +118,10 @@
 				{ "sType": "string" },
 				null
 			]
-	 }); 
+        }); 
+    }
 		
+    function errorTableEvents(){
 	 // setup events on error table row click - goes to code view line number
 	 $('.results tbody tr').each(function(index) {
 	 	$(this).click(function(event){
@@ -134,19 +159,20 @@
 		*/
 	 function highlightCSS(){
 	 	var css, 
-				dummyElement, 
-				rawHtml, 
-				cssByLine, 
-				lineErr, 
-				lineCount,
-				i,
-				cssClass, 
-				lineNum, 
-				lineCode, 
-				tableRow, 
-				tableRows,
-				tableBody,
-				lineAnchor;
+            dummyElement, 
+            rawHtml, 
+            cssByLine, 
+            lineErr, 
+            lineCount,
+            i,
+            cssClass, 
+            lineNum, 
+            lineCode, 
+            tableRow, 
+            tableRows,
+            tableBody,
+            fragment,
+            lineAnchor;
 	 	//get css & instantiate highlighter
 	 	css = $('#input').val();
 		if (css.length < 15000) { // no code view if more than 15000 css
@@ -168,21 +194,34 @@
 			// create template
 			lineErr = false;
 			cssClass = "";
-			tableBody = document.createElement('tbody');
+			//tableBody = document.createElement('tbody');
 			// insert into template
-			
+            tableBody = document.getElementById('tableBody');
+			fragment = document.createDocumentFragment();
+            
 			for (i=0; i < cssByLine.length; i++){
 				lineCode = cssByLine[i];
 				lineNum = i+1; // unnecessary
 				if (lineNum in eachOfArray(errorLines)){ 
-					cssClass = " class='error L" + lineNum +"' title='error'"; 
-				}
-				lineAnchor = "id='L" + lineNum + "'";
-				tableRow = "<tr" + cssClass + " " + lineAnchor + ">\n	<th>" + lineNum + "</th>\n	<td>" + lineCode + "</td>\n</tr>";
-				tableBody.innerHTML += tableRow;
-				cssClass = '';
+					cssClass = " error L" + lineNum; 
+				} else {
+                    cssClass = "";
+                }
+                
+                tableRow = document.createElement("tr");
+                tableRow.id = "L" + lineNum;
+                tableRow.className = cssClass;
+                tableRow.appendChild(document.createElement("th"));
+                tableRow.cells[0].innerHTML = lineNum;
+                tableRow.insertCell(1);
+                tableRow.cells[1].innerHTML = lineCode;
+                fragment.appendChild(tableRow);
+				//lineAnchor = "id='L" + lineNum + "'";
+				//tableRow = "<tr" + cssClass + " " + lineAnchor + ">\n	<th>" + lineNum + "</th>\n	<td>" + lineCode + "</td>\n</tr>";
+				//tableBody.innerHTML += tableRow;
 			}
-			document.getElementById('tableBody').innerHTML = tableBody.innerHTML;
+            tableBody.appendChild(fragment);
+			//document.getElementById('tableBody').innerHTML = tableBody.innerHTML;
 		};
 	 };
 	});

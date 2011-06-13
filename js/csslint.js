@@ -1,5 +1,6 @@
 /* 
-Copyright (c) 2011 Nicole Sullivan. All rights reserved.
+CSSLint
+Copyright (c) 2011 Nicole Sullivan and Nicholas C. Zakas. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -4742,6 +4743,7 @@ Tokens              :Tokens
 
 
 
+
 /**
  * Main CSSLint object.
  * @class CSSLint
@@ -4821,6 +4823,7 @@ var CSSLint = (function(){
     return api;
 
 })();
+
 
 
 /**
@@ -4957,6 +4960,7 @@ Reporter.prototype = {
         this.stats[name] = value;
     }
 };
+
 /*
  * Utility functions that make life easier.
  */
@@ -5005,12 +5009,14 @@ function indexOf(values, value){
 CSSLint.addRule({
 
     //rule information
+    id: "adjoining-classes",
     name: "Adjoining Classes",
     desc: "Don't use adjoining classes.",
+    browsers: "IE6, IE7",
     
     //initialization
     init: function(parser, reporter){
-    
+        var rule = this;
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
                 selector,
@@ -5031,7 +5037,7 @@ CSSLint.addRule({
                                 classCount++;                                
                             }
                             if (classCount > 1){
-                                reporter.warn("Don't use adjoining selectors.", part.line, part.col, this);
+                                reporter.warn("Don't use adjoining selectors.", part.line, part.col, rule);
                             }
                         }
                     }                    
@@ -5042,18 +5048,129 @@ CSSLint.addRule({
 
 });
 /*
+ * Rule: Certain properties don't play well with certain display values. 
+ * - float should not be used with inline-block
+ * - height, width, margin, padding, float should not be used with inline
+ * - vertical-align should not be used with block
+ * - margin, float should not be used with table-*
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "display-property-grouping",
+    name: "Display Property Grouping",
+    desc: "Certain properties shouldn't be used with certain display property values.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+   
+        var propertiesToCheck = {
+                display: 1,
+                "float": 1,
+                height: 1,
+                width: 1,
+                margin: 1,
+                "margin-left": 1,
+                "margin-right": 1,
+                "margin-bottom": 1,
+                "margin-padding": 1,                
+                padding: 1,
+                "padding-left": 1,
+                "padding-right": 1,
+                "padding-bottom": 1,
+                "padding-padding": 1,                
+                "vertical-align": 1
+            },
+            properties;
+    
+        parser.addListener("startrule", function(event){
+            properties = {};            
+        });     
+
+        parser.addListener("property", function(event){
+            var name = event.property;
+            
+            if (propertiesToCheck[name]){
+                properties[name] = { value: event.value.text, line: name.line, col: name.col };
+            }        
+        });     
+        
+        parser.addListener("endrule", function(event){
+        
+            var display = properties.display ? properties.display.value : null;
+            if (display){
+                switch(display){
+             
+                    case "inline":
+                        //height, width, margin, padding, float should not be used with inline
+                        reportProperty("height", display);
+                        reportProperty("width", display);
+                        reportProperty("margin", display);
+                        reportProperty("margin-left", display);
+                        reportProperty("margin-right", display);
+                        reportProperty("margin-top", display);
+                        reportProperty("margin-bottom", display);
+                        reportProperty("padding", display);
+                        reportProperty("padding-left", display);
+                        reportProperty("padding-right", display);
+                        reportProperty("padding-top", display);
+                        reportProperty("padding-bottom", display);                
+                        reportProperty("float", display);
+                        break;
+                        
+                    case "block":
+                        //vertical-align should not be used with block
+                        reportProperty("vertical-align", display);
+                        break;
+                        
+                    case "inline-block":
+                        //float should not be used with inline-block
+                        reportProperty("float", display);
+                        break;
+                        
+                    default:
+                        //margin, float should not be used with table
+                        if (display.indexOf("table-") == 0){
+                            reportProperty("margin", display);
+                            reportProperty("margin-left", display);
+                            reportProperty("margin-right", display);
+                            reportProperty("margin-top", display);
+                            reportProperty("margin-bottom", display);
+                            reportProperty("float", display);                        
+                        }
+                        
+                        //otherwise do nothing            
+                }
+            }
+          
+        });     
+        
+        
+        function reportProperty(name, display){
+            if (properties[name]){
+                reporter.warn(name + " can't be used with display: " + display + ".", properties[name].line, properties[name].col, rule);
+            }            
+        }
+    }
+
+});
+/*
  * Rule: Style rules without any properties defined should be removed.
  */
 CSSLint.addRule({
 
     //rule information
+    id: "empty-rules",
     name: "Empty Rules",
     desc: "Rules without any properties specified should be removed.",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
-    
-        var count = 0;    
+        var rule = this,
+            count = 0;    
         
         parser.addListener("startrule", function(event){
             count=0;
@@ -5066,7 +5183,7 @@ CSSLint.addRule({
         parser.addListener("endrule", function(event){
             var selectors = event.selectors;
             if (count == 0){
-                reporter.warn("Rule is empty.", selectors[0].line, selectors[0].col, this);
+                reporter.warn("Rule is empty.", selectors[0].line, selectors[0].col, rule);
             }
         });        
     }
@@ -5078,14 +5195,17 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
-    name: "Fatal Error",
+    id: "errors",
+    name: "Parsing Errors",
     desc: "This rule looks for recoverable syntax errors.",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
+        var rule = this;
     
         parser.addListener("error", function(event){
-            reporter.error(event.message, event.line, event.col, this);
+            reporter.error(event.message, event.line, event.col, rule);
         });
 
     }
@@ -5098,12 +5218,14 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
+    id: "floats",
     name: "Floats",
     desc: "This rule tests if the float property is used too many times",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
-    
+        var rule = this;
         var count = 0;
     
         //count how many times "float" is used
@@ -5117,7 +5239,7 @@ CSSLint.addRule({
         parser.addListener("endstylesheet", function(event){
             reporter.stat("floats", count);
             if (count >= 10){
-                reporter.rollupWarn("Too many floats (" + count + "), abstraction needed.", this);
+                reporter.rollupWarn("Too many floats (" + count + "), abstraction needed.", rule);
             }
         }); 
     }
@@ -5129,13 +5251,15 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
+    id: "font-faces",
     name: "Font Faces",
     desc: "Too many different web fonts in the same stylesheet.",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
-    
-        var count = 0;
+        var rule = this,
+            count = 0;
     
         
         parser.addListener("startfontface", function(event){
@@ -5144,7 +5268,7 @@ CSSLint.addRule({
 
         parser.addListener("endstylesheet", function(event){
             if (count > 5){
-                reporter.rollupWarn("Too many @font-face declarations (" + count + ")", this);
+                reporter.rollupWarn("Too many @font-face declarations (" + count + ")", rule);
             }
         });        
     }
@@ -5162,13 +5286,15 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
+    id: "font-sizes",
     name: "Font Sizes",
     desc: "Checks the number of font-size declarations versus the number of unique font sizes",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
-    
-        var count = 0,
+        var rule = this,    
+            count = 0,
             data = {
                 values: [],
                 valuesPx: [],
@@ -5197,7 +5323,7 @@ CSSLint.addRule({
         parser.addListener("endstylesheet", function(event){
             reporter.stat("font-sizes", count);
             if (count >= 10){
-                reporter.rollupWarn("Too many font-size declarations (" + count + "), abstraction needed.", this);
+                reporter.rollupWarn("Too many font-size declarations (" + count + "), abstraction needed.", rule);
             }
         }); 
     }
@@ -5209,11 +5335,106 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
+    id: "ids",
     name: "IDs",
     desc: "Selectors should not contain IDs.",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
+        var rule = this;
+        parser.addListener("startrule", function(event){
+            var selectors = event.selectors,
+                selector,
+                part,
+                modifier,
+                idCount,
+                i, j, k;
+                
+            for (i=0; i < selectors.length; i++){
+                selector = selectors[i];
+                idCount = 0;
+
+                for (j=0; j < selector.parts.length; j++){  
+                    part = selector.parts[j];
+                    if (part instanceof parserlib.css.SelectorPart){
+                        for (k=0; k < part.modifiers.length; k++){
+                            modifier = part.modifiers[k];
+                            if (modifier.type == "id"){
+                                idCount++;
+                            }
+                        }
+                    }                    
+                }
+                
+                if (idCount == 1){
+                    reporter.warn("Don't use IDs in selectors", selector.line, selector.col, rule);            
+                } else if (idCount > 1){
+                    reporter.warn(idCount + " IDs in the selector, really?", selector.line, selector.col, rule);            
+                }
+            }            
+
+        });     
+    }
+
+});
+/*
+ * Rule: Don't use classes or IDs with elements (a.foo or a#foo).
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "overqualified-elements",
+    name: "Overqualified Elements",
+    desc: "Don't use classes or IDs with elements (a.foo or a#foo).",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+        parser.addListener("startrule", function(event){
+            var selectors = event.selectors,
+                selector,
+                part,
+                modifier,
+                i, j, k;
+                
+            for (i=0; i < selectors.length; i++){
+                selector = selectors[i];
+
+                for (j=0; j < selector.parts.length; j++){  
+                    part = selector.parts[j];
+                    if (part instanceof parserlib.css.SelectorPart){
+                        if (part.elementName){
+                            for (k=0; k < part.modifiers.length; k++){
+                                modifier = part.modifiers[k];
+                                if (modifier.type == "class" || modifier.type == "id"){
+                                    reporter.warn("Element (" + part + ") is overqualified, just use " + modifier + " without element name.", part.line, part.col, rule);
+                                }
+                            }
+
+                        }
+                    }                    
+                }
+            }
+        });     
+    }
+
+});
+/*
+ * Rule: Headings (h1-h6) should not be qualified (namespaced).
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "qualified-headings",
+    name: "Qualified Headings",
+    desc: "Headings should not be qualified (namespaced).",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
     
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
@@ -5228,11 +5449,8 @@ CSSLint.addRule({
                 for (j=0; j < selector.parts.length; j++){  
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
-                        for (k=0; k < part.modifiers.length; k++){
-                            modifier = part.modifiers[k];
-                            if (modifier.type == "id"){
-                                reporter.warn("Don't use IDs in selectors (" + part + ")", modifier.line, modifier.col, this);
-                            }
+                        if (part.elementName && /h[1-6]/.test(part.elementName.toString()) && j > 0){
+                            reporter.warn("Heading (" + part.elementName + ") should not be qualified.", part.line, part.col, rule);
                         }
                     }                    
                 }
@@ -5247,13 +5465,15 @@ CSSLint.addRule({
 CSSLint.addRule({
 
     //rule information
+    id: "rules-count",
     name: "Rules Count",
     desc: "Track how many rules there are.",
+    browsers: "All",
     
     //initialization
     init: function(parser, reporter){
-    
-        var count = 0;
+        var rule = this,
+            count = 0;
     
         //count each rule
         parser.addListener("startrule", function(event){
@@ -5262,6 +5482,83 @@ CSSLint.addRule({
         
         parser.addListener("endstylesheet", function(event){
             reporter.stat("rule-count", count);
+        });        
+    }
+
+});
+/*
+ * Rule: Headings (h1-h6) should be defined only once.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "unique-headings",
+    name: "Unique Headings",
+    desc: "Headings should be defined only once.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+    
+        var headings =  {
+                h1: 0,
+                h2: 0,
+                h3: 0,
+                h4: 0,
+                h5: 0,
+                h6: 0
+            };
+    
+        parser.addListener("startrule", function(event){
+            var selectors = event.selectors,
+                selector,
+                part,
+                modifier,
+                i, j, k;
+                
+            for (i=0; i < selectors.length; i++){
+                selector = selectors[i];
+
+                for (j=0; j < selector.parts.length; j++){  
+                    part = selector.parts[j];
+                    if (part instanceof parserlib.css.SelectorPart){
+                        if (part.elementName && /(h[1-6])/.test(part.elementName.toString())){                       
+                            headings[RegExp.$1]++;
+                            if (headings[RegExp.$1] > 1) {
+                                reporter.warn("Heading (" + part.elementName + ") has already been defined.", part.line, part.col, rule);
+                            }
+                        }
+                    }                    
+                }
+            }
+        });     
+    }
+
+});
+/*
+ * Rule: If an element has a width of 100%, be careful when placing within
+ * an element that has padding. It may look strange.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "width-100",
+    name: "Width 100%",
+    desc: "Be careful when using width: 100% on elements.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+
+        parser.addListener("property", function(event){
+            var name = event.property,
+                value = event.value;
+                
+            if (name == "width" && value == "100%"){
+                reporter.warn("Elements with  a width of 100% may not appear as you expect inside of other elements.", name.line, name.col, rule);
+            }
         });        
     }
 
