@@ -165,18 +165,25 @@ th, td{vertical-align:top;}
 
 /* ------ page layout ------ */
 body{color: #414141;}
-.logo{color:#414141;	text-transform:uppercase;	font-size:78px;	font-family:"Futura",Helvetica, sans-serif;	font-weight:bold;	padding-top:40px;}
+.logo{color:#414141;	text-transform:uppercase;	font-size:78px;	font-family:Futura, "Gill Sans", Helvetica, sans-serif;	font-weight:bold;	padding-top:40px;}
 .logo strong{color:#768c1c;}
-.intro{font-size:30px;	font-family:Futura;	color:#414141;	padding:42px 0 42px 0;}
+.intro{font-size:30px;	font-family:Futura, "Gill Sans", Helvetica, sans-serif;	color:#414141;	padding:42px 0 42px 0;}
 .head{border-bottom:12px solid #008080;}
-.body{background-color: #a6ebf7;	background: #a7edf9; /* Old browsers */	background: -moz-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* FF3.6+ */	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a7edf9), color-stop(100%, #acf3ff)); /* Chrome,Safari4+ */	background: -webkit-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Chrome10+,Safari5.1+ */	background: -o-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Opera11.10+ */	background: -ms-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* IE10+ */filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7edf9', endColorstr='#acf3ff', GradientType=0 ); /* IE6-9 */	background: linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* W3C */}
+.body{background-color: #a6ebf7;	
+background: #a7edf9; /* Old browsers */	
+background: -moz-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* FF3.6+ */	
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a7edf9), color-stop(100%, #acf3ff)); /* Chrome,Safari4+ */	
+background: -webkit-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Chrome10+,Safari5.1+ */	
+background: -o-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* Opera11.10+ */	
+background: -ms-linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* IE10+ */
+background: linear-gradient(top, #a7edf9 0%, #acf3ff 100%); /* W3C */}
 .page{width: 978px;}
 .body .page{background:url(img/clouds.png) center bottom no-repeat;	padding:50px 0 145px 0;}
 .summary{font-family:"Gill Sans", "Gill Sans MT", sans-serif;	font-size:20px;	padding: 0 25px 25px 0;	margin-bottom: 20px;	display:block;}
 .summary strong{font-size: 30px;}
 .foot .page{padding:60px 0;}
 /* ------ form ------ */
-.bigButton{background-color:#34cfe5;	padding: 11px 84px;	border-radius: 20px;	text-transform:uppercase;	color: #fff;	margin:7px 0 0 10px;	font-family:Futura;	font-size: 48px;	display:inline-block;	border:none;}
+.bigButton{background-color:#34cfe5;	padding: 11px 84px;	border-radius: 20px;	text-transform:uppercase;	color: #fff;	margin:7px 0 0 10px;	font-family:Futura, "Gill Sans", Helvetica, sans-serif;	font-size: 48px;	display:inline-block;	border:none;}
 .bigButton:hover, .bigButton:focus, .bigButton:active{background-color:#32c6db;	text-decoration:none;	color: #fff;}
 .bigButton:visited{color:#fff;}
 textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color: #7c7c7c #c3c3c3 #ddd #c3c3c3; 	vertical-align:top;	padding:4px;	box-sizing:border-box;	font-family:"Courier New", Courier, monospace;}
@@ -233,7 +240,7 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 .codeBox .hd{border-bottom:1px solid #cccccd;}
 /* errors in code view */
 .error{cursor:pointer;	background-color: #fdedea;}
-.errors{ display:none; *border: 5px solid #000; /*border: 11px solid rgba(0,0,0,.5);*/ background-color:rgba(0,0,0,.5); -moz-border-radius: 20px; -webkit-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; font-family: "futura"; font-size: 18px;  position:absolute;}
+.errors{ display:none; *border: 5px solid #000; /*border: 11px solid rgba(0,0,0,.5);*/ background-color:rgba(0,0,0,.5); -moz-border-radius: 20px; -webkit-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; font-family: Futura, "Gill Sans", Helvetica, sans-serif; font-size: 18px;  position:absolute;}
 .errors ul{-moz-border-radius: 11px;	-webkit-border-radius: 11px;	-o-border-radius: 11px;	border-radius: 11px;	background-color:#fff;	padding:11px;}
 .highlight .errors,.codeView td:hover .errors{display:block;}
 /* input form */
