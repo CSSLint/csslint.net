@@ -168,6 +168,7 @@ body{color: #414141;}
 .logo{color:#414141;	text-transform:uppercase;	font-size:78px;	font-family:Futura, "Gill Sans", Helvetica, sans-serif;	font-weight:bold;	padding-top:40px;}
 .logo strong{color:#768c1c;}
 .intro{font-size:30px;	font-family:Futura, "Gill Sans", Helvetica, sans-serif;	color:#414141;	padding:42px 0 42px 0;}
+.intro a:hover{text-decoration:none;}
 .head{border-bottom:12px solid #008080;}
 .body{background-color: #a6ebf7;	
 background: #a7edf9; /* Old browsers */	
