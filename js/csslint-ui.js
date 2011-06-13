@@ -80,10 +80,12 @@
                 len,
                 errorCount = 0, 
                 warningCount = 0,
+                tbody = document.getElementById("errors"),
+                fragment = document.createDocumentFragment(),
+                tr, td,
                 type;
-                
-            errorTableInit();
-			messages = results.messages;
+            
+            messages = results.messages;
 			
 			// output results to table
 			for (i=0, len=messages.length; i < len; i++){
@@ -96,20 +98,41 @@
 					type = "<img title='warning' alt='warning' src='img/warn.png' />";
 					errorLines.push(messages[i].line);
 				} 
-                errorView.fnAddData([
-                    type,
-                    messages[i].line,
-                    messages[i].col,
-                    messages[i].rule.name,
-                    messages[i].message + "<pre>" + messages[i].evidence + "</pre>",
-                    messages[i].rule.browsers                
-                ]);
+                //errorView.fnAddData([
+                //    type,
+                //    messages[i].line,
+                //    messages[i].col,
+                //    messages[i].rule.name,
+                //    messages[i].message + "<pre>" + messages[i].evidence + "</pre>",
+                //    messages[i].rule.browsers                
+                //]);
+                
+                tr = document.createElement("tr");
+                tr.className = "L" + messages[i].line;
+                tr.insertCell(0);
+                tr.cells[0].innerHTML = type;
+                tr.insertCell(1);
+                tr.cells[1].innerHTML = typeof messages[i].line == "number" ? messages[i].line : "(rollup)";
+                tr.insertCell(2);
+                tr.cells[2].innerHTML = typeof messages[i].col == "number" ? messages[i].col : "(rollup)";
+                tr.insertCell(3);
+                tr.cells[3].innerHTML = messages[i].rule.name;
+                tr.insertCell(4);
+                tr.cells[4].innerHTML = messages[i].message + "<pre>" + messages[i].evidence + "</pre>";
+                tr.insertCell(5);
+                tr.cells[5].innerHTML = messages[i].rule.browsers;
+                
+                fragment.appendChild(tr);
 				//tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td></tr>";
 				//tr = document.createElement("tr");
                 //tr.className = "L" + messages[i].line;
                 //tr.innerHTML = "<td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td>"
                 //$('#errors').append(tr);
 			}
+            
+            tbody.appendChild(fragment);
+            errorTableInit();
+
 			// set text summaries of warnings and errors
 			$('.errorCount').text(errorCount);
 			$('.warningCount').text(warningCount);
