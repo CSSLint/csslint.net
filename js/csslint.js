@@ -5330,6 +5330,67 @@ CSSLint.addRule({
 
 });
 /*
+ * Rule: When using a vendor-prefixed gradient, make sure to use them all.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "zero-units",
+    name: "Zero Units",
+    desc: "When using a vendor-prefixed gradient, make sure to use them all.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this,
+            gradients;
+            
+        parser.addListener("startrule", function(event){
+            gradients = {
+                moz: 0,
+                webkit: 0,
+                ms: 0,
+                o: 0
+            };
+        });
+            
+        parser.addListener("property", function(event){
+            
+            if (/\-(moz|ms|o|webkit)(?:\-(?:linear|radial))\-gradient/.test(event.value)){
+                gradients[RegExp.$1] = 1;
+            }
+            
+        });
+        
+        parser.addListener("endrule", function(event){
+            var missing = [];
+            
+            if (!gradients.moz){
+                missing.push("Firefox 3.6+");
+            }
+            
+            if (!gradients.webkit){
+                missing.push("Webkit (Safari, Chrome)");
+            }
+            
+            if (!gradients.ms){
+                missing.push("Internet Explorer 10+");
+            }
+            
+            if (!gradients.o){
+                missing.push("Opera 11.1+");
+            }
+                        
+            if (missing.length && missing.length < 4){            
+                reporter.warn("Missing vendor-prefixed CSS gradients for " + missing.join(", ") + ".", event.selectors[0].line, event.selectors[0].col, rule); 
+            }            
+
+        });
+
+    }
+
+});
+/*
  * Rule: Don't use IDs for selectors.
  */
 CSSLint.addRule({
@@ -5537,6 +5598,83 @@ CSSLint.addRule({
 
 });
 /*
+ * Rule: When using a vendor-prefixed property, make sure to
+ * include the standard one.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "vendor-prefix",
+    name: "Vendor Prefix",
+    desc: "When using a vendor-prefixed property, make sure to include the standard one.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this,
+            properties,
+            num;
+            
+        parser.addListener("startrule", function(event){
+            properties = {};
+            num=1;
+        });
+            
+        parser.addListener("property", function(event){
+            var name = event.property,
+                parts = event.value.parts,
+                i = 0, 
+                len = parts.length,
+                j;
+                
+            if (!properties[name]){
+                properties[name] = [];
+            }    
+            
+            properties[name].push({ name: event.property, value : event.value, pos:num++ });             
+        });
+        
+        parser.addListener("endrule", function(event){
+            var prop,
+                i, len,
+                standard,
+                needed,
+                actual,
+                needsStandard = [];
+            
+            for (prop in properties){
+                if (/(\-(?:ms|moz|webkit|o)\-)/.test(prop)){
+                    needsStandard.push({ actual: prop, needed: prop.substring(RegExp.$1.length)});
+                }
+            }
+            
+            for (i=0, len=needsStandard.length; i < len; i++){
+                needed = needsStandard[i].needed;
+                actual = needsStandard[i].actual;
+
+                //special case for Mozilla's border radius
+                if (/\-moz\-border\-radius\-(.+)/.test(actual)){
+                    standard = "border-" + RegExp.$1.replace(/(left|right)/, "-$1") + "-radius";
+                } else {
+                    standard = needed; 
+                }
+
+                if (!properties[needed]){               
+                    reporter.warn("Missing standard property '" + standard + "' to go along with '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
+                } else {
+                    //make sure standard property is last
+                    if (properties[needed][0].pos < properties[actual][0].pos){
+                        reporter.warn("Standard property '" + standard + "' should come after vendor-prefixed property '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
+                    }
+                }
+            }
+
+        });
+
+    }
+
+});
+/*
  * Rule: If an element has a width of 100%, be careful when placing within
  * an element that has padding. It may look strange.
  */
@@ -5560,6 +5698,40 @@ CSSLint.addRule({
                 reporter.warn("Elements with  a width of 100% may not appear as you expect inside of other elements.", name.line, name.col, rule);
             }
         });        
+    }
+
+});
+/*
+ * Rule: You don't need to specify units when a value is 0.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "zero-units",
+    name: "Zero Units",
+    desc: "You don't need to specify units when a value is 0.",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+    
+        //count how many times "float" is used
+        parser.addListener("property", function(event){
+            var parts = event.value.parts,
+                i = 0, 
+                len = parts.length,
+                j;
+                
+            while(i < len){
+                if (parts[i].units && parts[i].value === 0){
+                    reporter.warn("Values of 0 shouldn't have units specified.", parts[i].line, parts[i].col, rule);
+                }
+                i++;
+            }
+            
+        });
+
     }
 
 });
