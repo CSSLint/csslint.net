@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>About</title>
+
+<link type="text/css" rel="stylesheet" href="style.css" />
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
+<!--<script src="js/jquery-1.6.1.js"></script>
+<script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
+<script src="js/jquery.ba-hashchange.js"></script>
+<link rel="stylesheet" type="text/css" href="js/sunlight-1.14.419/themes/sunlight.default.css" />
+<script src="js/sunlight-1.14.419/sunlight-min.js"></script>
+<script src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
+<script src="js/csslint.js"></script>
+<script src="js/csslint-ui.js"></script>-->
+
+<style type="text/css">
+	pre{background-color:#FFFFE2;}
+</style>
+</head>
+
+<body>
+	<div class="head">
+		<div class="page">
+    	<div class="unit size1of2">
+      	<h1 class="logo">CSS <strong>LINT</strong></h1>
+      </div>
+    	<div class="unit size1of2 lastUnit">
+      	<div class="intro">
+      		<p>Will hurt your feelings<a href="http://www.jslint.com/">*</a></p>
+        	<p>(And help you code better)</p>
+        </div>
+      </div>
+    </div>
+	</div>
+	<div class="body">
+  	<div class="page">
+    	<div>
+        <div class="line">
+          <div class="unit size1of2">
+            <p class="summary">CSS Lint is a tool to help point out problems with your CSS code. It does basic syntax checking as well as applying a set of rules to the code that look for problematic patterns or signs of inefficiency. The rules are all pluggable, so you can easily write your own or omit ones you don't want.</p>
+          </div>
+          <div class="unit size1of2 lastUnit">
+            <a class="bigButton" href="index.html">Go Lint!</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+	</div>
+	<div class="foot">
+  	<div class="page">
+    	
+      
+<h2 id="docs">The CSS Lint Rules</h2>
+
+<h3>Parsing errors should be fixed</h3>
+
+<p>By default, CSSLint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSSLint, the most important issues to fix.</p>
+
+<h3>Don't use adjoining classes</h3>
+
+<p>Adjoining classes look like <code>.foo.bar</code>. While technically allowed in CSS, these aren't handled properly by Internet Explorer 7 and earlier.</p>
+
+<h3>Remove empty rules</h3>
+
+<p>Any rule that doesn't contain any properties, such as:</p>
+
+<div class="highlight">
+<pre><span class="nc">.foo</span> <span class="p">{</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<p>A lot of times, empty rules appear as a result of refactoring without further cleanup. Eliminating empty rules results in smaller file sizes and less style information for the browser to deal with.</p>
+
+<h3>Use correct properties for a display</h3>
+
+<p>Even though you can define any group of properties together in a CSS rule, some of them will be ignored due to the <code>display</code> of the element. This leads to extra cruft in the CSS file. The list of properties that CSSLint checks for are:</p>
+
+<ul>
+<li>
+<code>display: inline</code> should not use <code>width</code>, <code>height</code>, <code>margin</code> (and all variants), <code>padding</code> (and all variants), or <code>float</code>.</li>
+<li>
+<code>display: inline-block</code> should not use <code>float</code>.</li>
+<li>
+<code>display: block</code> should not use <code>vertical-align</code>.</li>
+<li>
+<code>display: table-*</code> should not use <code>margin</code> (and all variants) or <code>float</code>.</li>
+</ul><p>Removed the ignored or problematic properties decreases file size and improves performance.</p>
+
+<h3>Don't use too many floats</h3>
+
+<p>Using <code>float</code> for layout isn't a great idea, but sometimes you have to. CSSLint simply checks to see if you've used <code>float</code> more than 10 times, and if so, displays a warning. Using this many floats usually means you need some sort of abstraction to achieve the layout.</p>
+
+<h3>Don't use too many web fonts</h3>
+
+<p>Web fonts are growing in popularity and use of <code>@font-face</code> is on the rise. However, using web fonts comes with performance implications as font files can be quite large and some browsers block rendering while downloading them. For this reason, CSSLint will warn you when there are more than five web fonts in a style sheet.</p>
+
+<h3>Don't use too may font-size declarations</h3>
+
+<p>A site is typically made up of a finite number of font treatments, including font size. If you have 10 or more font sizes specified, you probably want to refactor into a standard set of font size classes that can be used in markup.</p>
+
+<h3>Don't use IDs in selectors</h3>
+
+<p>IDs shouldn't be used in selectors because these rules are too tightly coupled with the HTML and have no possibility of reuse. It's much preferred to use classes in selectors and then apply a class to an element in the page.</p>
+
+<h3>Don't qualify headings</h3>
+
+<p>Heading elements (<code>h1</code>-<code>h6</code>) should be defined as top-level styles and not scoped to particular areas of the page. For example, this is an example of an overqualified heading:</p>
+
+<div class="highlight">
+<pre><span class="nc">.foo</span> <span class="nt">h1</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">110</span><span class="o">%</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<p>Heading elements should have a consistent appearance across a site.</p>
+
+<h3>Heading styles should only be defined once</h3>
+
+<p>Heading elements (<code>h1</code>-<code>h6</code>) should have exactly one rule on a site. CSSLint warns if it finds more than one.</p>
+
+<h3>Be careful using width: 100%</h3>
+
+<p>Using <code>width: 100%</code> on an element whose parent element has padding will result in the child stretching outside of the parent's bounding box. It's generally not a good idea to use <code>width: 100%</code>. Instead, use <code>width: auto</code> or <code>display: block</code>.</p>
+
+<h3>Zero values don't need units</h3>
+
+<p>An easy way to save bytes in CSS is not include units when a value is 0. For instance, <code>0px</code> and <code>0</code> are the exact same measurement, so leave off the units and save!</p>
+
+<h3>Vendor prefixed properties should also have the standard</h3>
+
+<p>When using vendor-prefixed properties such as <code>-moz-border-radius</code>, make sure to also include the standard property. The standard property should preferably come after the vendor-prefixed one, such as:</p>
+
+<div class="highlight">
+<pre><span class="nc">.foo</span> <span class="p">{</span>
+    <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<h3>CSS gradients require all browser prefixes</h3>
+
+<p>Right now, there is no standard CSS gradient implementation, which means using CSS gradients in a cross-browser way requires using many different vendor-prefixed versions. CSSLint warns when a rule with a CSS gradient doesn't have gradients for all supporting browsers. </p>
+
+<h3>Avoid selectors that look like regular expressions</h3>
+
+<p>CSS3 adds complex attribute selectors such as <code>~=</code> that are slow. When using attribute selectors, don't use the complex equality operators to avoid performance penalties.</p>
+
+<h3>Beware of broken box models</h3>
+
+<p>Borders and padding add space outside of an element's content. Setting <code>width</code> or <code>height</code> along with borders and padding is usually a mistake because you won't get the visual result you're looking for. CSSLint warns when a rule uses <code>width</code> or <code>height</code> in addition to padding and/or border.</p>
+    	<h2 id="settings">Settings</h2>
+      <p>Coming soon. We'll allow you to turn off individual rules you do not wish to test for.</p>  
+    	<h2 id="contribute">Contribute</h2>
+    	<p>Many people have expressed an interest in contributing to the CSS Lint project. We were waiting to have a solid plugable architecture and API before taking contributions. The exciting news is that we are now ready! There are several ways you can contribute:</p>
+    	<ol class="enumlist">
+      	<li>If you are comfortable with CSS, <a href="https://github.com/stubbornella/csslint/issues">submit rule ideas</a>. You must provide the rule name, a human readable explanation, browsers affected, and a test case.</li>
+        <li>If you are comfortable in JavaScript, <a href="https://github.com/stubbornella/csslint">fork the github project</a>, code up a rule, and submit a pull request. You'll need to provide all the same documentation requsted in item 1.</li>
+      	<li>If you are comfortable with Node, <a href="https://github.com/stubbornella/csslint/tree/master/src/node">test out the command line version</a>, submit feature requests.</li>
+      </ol>
+  		<h2 id="node">Node</h2>
+      <h2>Thanks</h2>
+      <p>Many people encouraged me to build this tool. Deepest thank you to the guys from github, Nicholas Zakas, Chris Klaiber, Gonzalo Cordero, Douglas Crockford and JSLint, everyone at JSConf, Rebecca Murphy.</p>
+    <!-- insert in this table -->
+    
+    <div id="output"></div>
+    <ul class="inlineList piped footList">
+    	<li><a href="http://www.nczonline.net/">Nicholas</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#settings">Settings</a></li>
+      <li><a href="about.html#contribute">Contribute</a></li>
+      <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
+      <li><a href="about.html#node">Node</a></li>
+      <li><a href="about.html#docs">Documentation</a></li>
+      <li><a href="http://www.stubbornella.org/">Nicole</a></li>
+    </ul>
+    
+    
+   </div>
+	</div>
+</body>
+</html>
