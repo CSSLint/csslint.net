@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="js/sunlight-1.14.419/themes/sunlight.default.css" />
 <script src="js/sunlight-1.14.419/sunlight-min.js"></script>
 <script src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
-<script src="js/csslint.js"></script>
-<script src="js/csslint-ui.js"></script>-->
+<script src="js/CSS Lint.js"></script>
+<script src="js/CSS Lint-ui.js"></script>-->
 
 <style type="text/css">
     pre{background-color:#FFFFE2;}
@@ -57,7 +57,7 @@
 
 <h3>Parsing errors should be fixed</h3>
 
-<p>By default, CSSLint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSSLint, the most important issues to fix.</p>
+<p>By default, CSS Lint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSS Lint, the most important issues to fix.</p>
 
 <h3>Don't use adjoining classes</h3>
 
@@ -78,7 +78,7 @@
 
 <h3>Use correct properties for a display</h3>
 
-<p>Even though you can define any group of properties together in a CSS rule, some of them will be ignored due to the <code>display</code> of the element. This leads to extra cruft in the CSS file. The list of properties that CSSLint checks for are:</p>
+<p>Even though you can define any group of properties together in a CSS rule, some of them will be ignored due to the <code>display</code> of the element. This leads to extra cruft in the CSS file. The list of properties that CSS Lint checks for are:</p>
 
 <ul>
 <li>
@@ -93,11 +93,11 @@
 
 <h3>Don't use too many floats</h3>
 
-<p>Using <code>float</code> for layout isn't a great idea, but sometimes you have to. CSSLint simply checks to see if you've used <code>float</code> more than 10 times, and if so, displays a warning. Using this many floats usually means you need some sort of abstraction to achieve the layout.</p>
+<p>Using <code>float</code> for layout isn't a great idea, but sometimes you have to. CSS Lint simply checks to see if you've used <code>float</code> more than 10 times, and if so, displays a warning. Using this many floats usually means you need some sort of abstraction to achieve the layout.</p>
 
 <h3>Don't use too many web fonts</h3>
 
-<p>Web fonts are growing in popularity and use of <code>@font-face</code> is on the rise. However, using web fonts comes with performance implications as font files can be quite large and some browsers block rendering while downloading them. For this reason, CSSLint will warn you when there are more than five web fonts in a style sheet.</p>
+<p>Web fonts are growing in popularity and use of <code>@font-face</code> is on the rise. However, using web fonts comes with performance implications as font files can be quite large and some browsers block rendering while downloading them. For this reason, CSS Lint will warn you when there are more than five web fonts in a style sheet.</p>
 
 <h3>Don't use too may font-size declarations</h3>
 
@@ -123,7 +123,7 @@
 
 <h3>Heading styles should only be defined once</h3>
 
-<p>Heading elements (<code>h1</code>-<code>h6</code>) should have exactly one rule on a site. CSSLint warns if it finds more than one.</p>
+<p>Heading elements (<code>h1</code>-<code>h6</code>) should have exactly one rule on a site. CSS Lint warns if it finds more than one.</p>
 
 <h3>Be careful using width: 100%</h3>
 
@@ -148,7 +148,7 @@
 
 <h3>CSS gradients require all browser prefixes</h3>
 
-<p>Right now, there is no standard CSS gradient implementation, which means using CSS gradients in a cross-browser way requires using many different vendor-prefixed versions. CSSLint warns when a rule with a CSS gradient doesn't have gradients for all supporting browsers. </p>
+<p>Right now, there is no standard CSS gradient implementation, which means using CSS gradients in a cross-browser way requires using many different vendor-prefixed versions. CSS Lint warns when a rule with a CSS gradient doesn't have gradients for all supporting browsers. </p>
 
 <h3>Avoid selectors that look like regular expressions</h3>
 
@@ -156,21 +156,21 @@
 
 <h3>Beware of broken box models</h3>
 
-<p>Borders and padding add space outside of an element's content. Setting <code>width</code> or <code>height</code> along with borders and padding is usually a mistake because you won't get the visual result you're looking for. CSSLint warns when a rule uses <code>width</code> or <code>height</code> in addition to padding and/or border.</p>
+<p>Borders and padding add space outside of an element's content. Setting <code>width</code> or <code>height</code> along with borders and padding is usually a mistake because you won't get the visual result you're looking for. CSS Lint warns when a rule uses <code>width</code> or <code>height</code> in addition to padding and/or border.</p>
         <h2 id="settings">Settings</h2>
       <p>Coming soon. We'll allow you to turn off individual rules you do not wish to test for.</p>  
         <h2 id="contribute">Contribute</h2>
         <p>Many people have expressed an interest in contributing to the CSS Lint project. We were waiting to have a solid plugable architecture and API before taking contributions. The exciting news is that we are now ready! There are several ways you can contribute:</p>
         <ol class="enumlist">
-          <li>If you are comfortable with CSS, <a href="https://github.com/stubbornella/csslint/issues">submit rule ideas</a>. You must provide the rule name, a human readable explanation, browsers affected, and a test case.</li>
-        <li>If you are comfortable in JavaScript, <a href="https://github.com/stubbornella/csslint">fork the github project</a>, code up a rule, and submit a pull request. You'll need to provide all the same documentation requsted in item 1.</li>
-          <li>If you are comfortable with Node, <a href="https://github.com/stubbornella/csslint/tree/master/src/node">test out the command line version</a>, submit feature requests.</li>
+          <li>If you are comfortable with CSS, <a href="https://github.com/stubbornella/CSS Lint/issues">submit rule ideas</a>. You must provide the rule name, a human readable explanation, browsers affected, and a test case.</li>
+        <li>If you are comfortable in JavaScript, <a href="https://github.com/stubbornella/CSS Lint">fork the github project</a>, code up a rule, and submit a pull request. You'll need to provide all the same documentation requsted in item 1.</li>
+          <li>If you are comfortable with Node, <a href="https://github.com/stubbornella/CSS Lint/tree/master/src/node">test out the command line version</a>, submit feature requests.</li>
       </ol>
-      <h2 id="node">CSSLint for Node.js</h2>
-      <p>If you'd like a command line version of CSSLint, you can install CSSLint for Node.js using <a href="http://npmjs.org">npm</a> using the following:</p>
-      <pre><code>sudo npm install -g csslint</code></pre>
+      <h2 id="node">CSS Lint for Node.js</h2>
+      <p>If you'd like a command line version of CSS Lint, you can install CSS Lint for Node.js using <a href="http://npmjs.org">npm</a> using the following:</p>
+      <pre><code>sudo npm install -g CSS Lint</code></pre>
       <p>Once installed, you can pass in any number of CSS files or directories containing CSS files to see the results. For example:</p>
-      <pre><code>csslint test.css dir_of_css/ test2.css</code></pre>
+      <pre><code>CSS Lint test.css dir_of_css/ test2.css</code></pre>
       <p>You'll receive the same errors and warnings as you would with the web interface.</p>
       <h2>Thanks</h2>
       <p>Many people encouraged me to build this tool. Deepest thank you to Chris Klaiber, Gonzalo Cordero, Douglas Crockford and JSLint, Rebecca Murphy, the guys at GitHub, and everyone at JSConf.</p>
@@ -182,7 +182,7 @@
       <li><a href="about.html">About</a></li>
       <li><a href="about.html#settings">Settings</a></li>
       <li><a href="about.html#contribute">Contribute</a></li>
-      <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
+      <li><a href="https://github.com/stubbornella/CSS Lint">Source</a></li>
       <li><a href="about.html#node">Node</a></li>
       <li><a href="about.html#docs">Documentation</a></li>
       <li><a href="http://www.stubbornella.org/">Nicole</a></li>
