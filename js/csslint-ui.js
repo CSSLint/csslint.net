@@ -29,19 +29,17 @@
 	 * Views
 	 */
 		function toggleView(view) {
-			switch (view) {
+            $('html').removeClass('resultsPage settingsPage loadingPage');
+			switch (view) {            
             
-                //NCZ: Generally, you want to avoid duplicate code
-                //Below you have $('html').addClass() three times
-                //but only the class name has changed. You can
-                //just store the class name in a variable and then
-                //use addClass() once.
-            
-				case 'results': $('html').addClass('resultsPage')
+                
+				case 'results': $('html').addClass('resultsPage');
 					break;
-				case 'setting': $('html').addClass('settingsPage')
+				case 'setting': $('html').addClass('settingsPage');
 					break;
-				default: $('html').addClass('')	
+                case 'loading': $('html').addClass('loadingPage');
+                    break;
+				default: $('html').addClass('');
 			}			
 		}
 		
@@ -54,7 +52,6 @@
 					myCssLength,
 					messages;
 			lintCSS(); 
-			toggleView('results');
 			return false;
 		});
         
@@ -65,7 +62,7 @@
 		 */
         function lintCSS(){
 			var css = $('#input').val();
-            
+            toggleView("loading");
             if (worker){
                 worker.postMessage(css);
             } else {
@@ -85,6 +82,7 @@
                 tr, td,
                 type;
             
+            toggleView('results');
             messages = results.messages;
 			
 			// output results to table

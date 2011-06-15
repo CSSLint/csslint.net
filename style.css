@@ -266,14 +266,20 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 #errorViewWrapper,
 #codeViewWrapper,
 #settingsViewWrapper,
+.loadingMessage,
 .resultsSummary,
+.loadingPage #in,
 .resultsPage #in,
 .settingsPage #in{display:none;}
+
+.loadingPage .loadingMessage,
 .resultsPage #errorViewWrapper,
 .resultsPage #codeViewWrapper,
 .settingsPage #settingsViewWrapper,
 .resultsPage .resultsSummary,
 .resultsPage .resultsSummary{display:block;}
+
+
 
 /* styles for docs copied from github */
 .highlight .c{color:#998;font-style:italic;}
