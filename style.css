@@ -164,7 +164,7 @@ s,m,l,n = small(5px),medium(10px),large(20px),none(0px)
  * Table row takes precedence over table
  */
 .data{position:relative; zoom:1;vertical-align: top;text-align: left; /*border-right:solid 1px transparent;*//* border fixes a FF2 bug which causes the data table to overlay its borders*/}
-.data table{width:100%; table-layout:fixed;}
+.data table{width:100%; }
 th, td{vertical-align:top;}
 /* horizontal alignment */
 .txtC, table .txtC, table tr .txtC{text-align:center;}
