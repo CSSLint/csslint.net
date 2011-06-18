@@ -9635,33 +9635,39 @@ CSSLint.addRule({
     //initialization
     init: function(parser, reporter){
         var rule = this,
-            propertiesToCheck = {
+            widthProperties = {
                 border: 1,
                 "border-left": 1,
-                "border-right": 1,
+                "border-right": 1,              
+                padding: 1,
+                "padding-left": 1,
+                "padding-right": 1           
+            },
+            heightProperties = {
+                border: 1,
                 "border-bottom": 1,
                 "border-top": 1,                
                 padding: 1,
-                "padding-left": 1,
-                "padding-right": 1,
                 "padding-bottom": 1,
-                "padding-top": 1                
+                "padding-top": 1               
             },
             properties;
             
         parser.addListener("startrule", function(event){
-            properties = {            
+            properties = {                
             };
         });
     
         parser.addListener("property", function(event){
-            var name = event.property;
+            var name = event.property.text.toLowerCase();
             
-            if (propertiesToCheck[name]){
-                properties[name] = { line: name.line, col: name.col };
+            if (heightProperties[name] || widthProperties){
+                if (event.value != "0"){
+                    properties[name] = { line: name.line, col: name.col };
+                }
             } else {
                 if (name == "width" || name == "height"){
-                    properties._flagProperty = name.text;
+                    properties[name] = 1;
                 }
             }
             
@@ -9669,13 +9675,22 @@ CSSLint.addRule({
         
         parser.addListener("endrule", function(event){
             var prop;
-            if (properties._flagProperty){
-                for (prop in propertiesToCheck){
-                    if (propertiesToCheck.hasOwnProperty(prop) && properties[prop]){
-                        reporter.warn("Broken box model: using " + properties._flagProperty + " with " + prop + ".", properties[prop].line, properties[prop].col, rule);
+            if (properties["height"]){
+                for (prop in heightProperties){
+                    if (heightProperties.hasOwnProperty(prop) && properties[prop]){
+                        reporter.warn("Broken box model: using height with " + prop + ".", properties[prop].line, properties[prop].col, rule);
                     }
-                }
+                }            
             }
+            
+            if (properties["width"]){
+                for (prop in widthProperties){
+                    if (widthProperties.hasOwnProperty(prop) && properties[prop]){
+                        reporter.warn("Broken box model: using width with " + prop + ".", properties[prop].line, properties[prop].col, rule);
+                    }
+                }    
+            }
+
         });
     }
 
@@ -9701,7 +9716,7 @@ CSSLint.addRule({
    
         var propertiesToCheck = {
                 display: 1,
-                "float": 1,
+                "float": "none",
                 height: 1,
                 width: 1,
                 margin: 1,
@@ -9783,7 +9798,9 @@ CSSLint.addRule({
         
         function reportProperty(name, display){
             if (properties[name]){
-                reporter.warn(name + " can't be used with display: " + display + ".", properties[name].line, properties[name].col, rule);
+                if (!(typeof propertiesToCheck[name] == "string") || properties[name].value.toLowerCase() != propertiesToCheck[name]){
+                    reporter.warn(name + " can't be used with display: " + display + ".", properties[name].line, properties[name].col, rule);
+                }
             }            
         }
     }
@@ -9863,7 +9880,8 @@ CSSLint.addRule({
     
         //count how many times "float" is used
         parser.addListener("property", function(event){
-            if (event.property == "float"){
+            if (event.property.text.toLowerCase() == "float" && 
+                    event.value.text.toLowerCase() != "none"){
                 count++;
             }
         });
@@ -10053,6 +10071,43 @@ CSSLint.addRule({
 
 });
 /*
+ * Rule: Make sure !important is not overused, this could lead to specificity
+ * war. Display a warning on !important declarations, an error if it's
+ * used more at least 10 times.
+ */
+CSSLint.addRule({
+
+    //rule information
+    id: "important",
+    name: "Important",
+    desc: "Be careful when using !important declaration",
+    browsers: "All",
+
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+        var count = 0;
+
+        //warn that important is used and increment the declaration counter
+        parser.addListener("property", function(event){
+            var name = event.property;
+            if (event.important === true){
+                count++;
+                reporter.warn("Use of !important", name.line, name.col, rule);
+            }
+        });
+
+        //report the results
+        parser.addListener("endstylesheet", function(event){
+            reporter.stat("important", count);
+            if (count >= 10){
+                reporter.rollupError("Too many !important declarations (" + count + "), be careful with rule specificity", rule);
+            }
+        });
+    }
+
+});
+/*
  * Rule: Don't use classes or IDs with elements (a.foo or a#foo).
  */
 CSSLint.addRule({
@@ -10236,18 +10291,14 @@ CSSLint.addRule({
                 
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
+                part = selector.parts[selector.parts.length-1];
 
-                for (j=0; j < selector.parts.length; j++){  
-                    part = selector.parts[j];
-                    if (part instanceof parserlib.css.SelectorPart){
-                        if (part.elementName && /(h[1-6])/.test(part.elementName.toString())){                       
-                            headings[RegExp.$1]++;
-                            if (headings[RegExp.$1] > 1) {
-                                reporter.warn("Heading (" + part.elementName + ") has already been defined.", part.line, part.col, rule);
-                            }
-                        }
-                    }                    
-                }
+                if (part.elementName && /(h[1-6])/.test(part.elementName.toString())){                       
+                    headings[RegExp.$1]++;
+                    if (headings[RegExp.$1] > 1) {
+                        reporter.warn("Heading (" + part.elementName + ") has already been defined.", part.line, part.col, rule);
+                    }
+                }         
             }
         });     
     }
@@ -10277,7 +10328,7 @@ CSSLint.addRule({
         });
             
         parser.addListener("property", function(event){
-            var name = event.property,
+            var name = event.property.text.toLowerCase(),
                 parts = event.value.parts,
                 i = 0, 
                 len = parts.length,
@@ -10315,11 +10366,11 @@ CSSLint.addRule({
                     standard = needed; 
                 }
 
-                if (!properties[needed]){               
+                if (!properties[standard]){               
                     reporter.warn("Missing standard property '" + standard + "' to go along with '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
                 } else {
                     //make sure standard property is last
-                    if (properties[needed][0].pos < properties[actual][0].pos){
+                    if (properties[standard][0].pos < properties[actual][0].pos){
                         reporter.warn("Standard property '" + standard + "' should come after vendor-prefixed property '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
                     }
                 }
@@ -10344,16 +10395,31 @@ CSSLint.addRule({
     
     //initialization
     init: function(parser, reporter){
-        var rule = this;
+        var rule = this,
+            width100,
+            boxsizing;
+            
+        parser.addListener("startrule", function(event){
+            width100 = null;
+            boxsizing = false;
+        });
 
         parser.addListener("property", function(event){
-            var name = event.property,
+            var name = event.property.text.toLowerCase(),
                 value = event.value;
                 
             if (name == "width" && value == "100%"){
-                reporter.warn("Elements with a width of 100% may not appear as you expect inside of other elements.", name.line, name.col, rule);
+                width100 = event.property;
+            } else if (name == "box-sizing" || /\-(?:webkit|ms|moz)\-box-sizing/.test(name)){  //means you know what you're doing
+                boxsizing = true;
             }
         });        
+        
+        parser.addListener("endrule", function(event){
+            if (width100 && !boxsizing){
+                reporter.warn("Elements with a width of 100% may not appear as you expect inside of other elements.", width100.line, width100.col, rule);            
+            }
+        });
     }
 
 });

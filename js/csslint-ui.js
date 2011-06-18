@@ -55,6 +55,11 @@
 			return false;
 		});
         
+        $("#restart-btn").click(function(){
+            toggleView('');
+            return false;
+        });
+        
         
 
         /*
@@ -81,6 +86,10 @@
                 fragment = document.createDocumentFragment(),
                 tr, td,
                 type;
+            
+            if (errorView){
+                errorView.fnClearTable();
+            }
             
             toggleView('results');
             messages = results.messages;
@@ -134,6 +143,12 @@
 			// set text summaries of warnings and errors
 			$('.errorCount').text(errorCount);
 			$('.warningCount').text(warningCount);
+            
+            if(errorCount === 0 && warningCount === 0){
+                $("#fix-it").hide();
+            } else {
+                $("#fix-it").show();
+            }
 			//$('#errors').html(tbody.innerHTML);
 			errorTableEvents();
 			highlightCSS();
@@ -154,22 +169,24 @@
 	 */
  
 	function errorTableInit(){
-		errorView = $('#errorView').dataTable({
-			"bPaginate": false,
-			"bLengthChange": false,
-			"bFilter": true,
-			"bSort": true,
-			"bInfo": false,
-			"bAutoWidth": false,
-	 		"aoColumns": [
-				{ "sType": "string" },
-				{ "sType": "numeric" },
-				{ "sType": "numeric" },
-				{ "sType": "string" },
-				{ "sType": "string" },
-				null
-			]
+        errorView = $('#errorView').dataTable({
+            "bDestroy": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "aoColumns": [
+                { "sType": "string" },
+                { "sType": "numeric" },
+                { "sType": "numeric" },
+                { "sType": "string" },
+                { "sType": "string" },
+                null
+            ]
         }); 
+
     }
 		
     function errorTableEvents(){
