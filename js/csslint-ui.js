@@ -265,6 +265,12 @@
 			//tableBody = document.createElement('tbody');
 			// insert into template
             tableBody = document.getElementById('tableBody');
+            
+            //clear existing content
+            while(tableBody.rows.length){
+                tableBody.deleteRow(0);
+            }
+            
 			fragment = document.createDocumentFragment();
             
 			for (i=0; i < cssByLine.length; i++){

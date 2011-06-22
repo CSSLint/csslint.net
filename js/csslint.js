@@ -1,4 +1,4 @@
-/* 
+/*! 
 CSSLint
 Copyright (c) 2011 Nicole Sullivan and Nicholas C. Zakas. All rights reserved.
 
@@ -21,9 +21,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+/* Build time: 22-June-2011 03:40:31 */
 var CSSLint = (function(){
-/* 
-Copyright (c) 2009 Nicholas C. Zakas. All rights reserved.
+/*!
+Parser-Lib
+Copyright (c) 2009-2011 Nicholas C. Zakas. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -44,9 +46,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+/* Build time: 22-June-2011 03:37:31 */
 var parserlib = {};
 (function(){
-
 
 /**
  * A generic base to inherit from for any object
@@ -910,7 +912,6 @@ TokenStreamBase.prototype = {
 
 
 
-
 parserlib.util = {
 StringReader: StringReader,
 SyntaxError : SyntaxError,
@@ -920,9 +921,9 @@ TokenStreamBase : TokenStreamBase
 };
 })();
 
-
 /* 
-Copyright (c) 2009 Nicholas C. Zakas. All rights reserved.
+Parser-Lib
+Copyright (c) 2009-2011 Nicholas C. Zakas. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -943,13 +944,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+/* Build time: 22-June-2011 03:37:31 */
 (function(){
 var EventTarget = parserlib.util.EventTarget,
 TokenStreamBase = parserlib.util.TokenStreamBase,
 StringReader = parserlib.util.StringReader,
 SyntaxError = parserlib.util.SyntaxError,
 SyntaxUnit  = parserlib.util.SyntaxUnit;
-
 
 var Colors = {
     aliceblue       :"#f0f8ff",
@@ -4722,7 +4723,6 @@ var Tokens  = [
 
 
 
-
 parserlib.css = {
 Colors              :Colors,    
 Combinator          :Combinator,                
@@ -4739,7 +4739,6 @@ TokenStream         :TokenStream,
 Tokens              :Tokens
 };
 })();
-
 
 
 /**
@@ -4776,16 +4775,16 @@ YUITest.EventTarget = function(){
     this._handlers = {};
 
 };
-    
+
 YUITest.EventTarget.prototype = {
 
     //restore prototype
     constructor: YUITest.EventTarget,
-            
+
     //-------------------------------------------------------------------------
     // Event Handling
     //-------------------------------------------------------------------------
-    
+
     /**
      * Adds a listener for a given event type.
      * @param {String} type The type of event to add a listener for.
@@ -4800,7 +4799,7 @@ YUITest.EventTarget.prototype = {
 
         this._handlers[type].push(listener);
     },
-    
+
     /**
      * Adds a listener for a given event type.
      * @param {String} type The type of event to add a listener for.
@@ -4812,14 +4811,14 @@ YUITest.EventTarget.prototype = {
     subscribe: function(type, listener){
         this.attach.apply(this, arguments);
     },
-    
+
     /**
      * Fires an event based on the passed-in object.
      * @param {Object|String} event An object with at least a 'type' attribute
      *      or a string indicating the event name.
      * @return {void}
      * @method fire
-     */    
+     */
     fire: function(event){
         if (typeof event == "string"){
             event = { type: event };
@@ -4827,17 +4826,17 @@ YUITest.EventTarget.prototype = {
         if (!event.target){
             event.target = this;
         }
-        
+
         if (!event.type){
             throw new Error("Event object missing 'type' property.");
         }
-        
+
         if (this._handlers[event.type] instanceof Array){
             var handlers = this._handlers[event.type];
             for (var i=0, len=handlers.length; i < len; i++){
                 handlers[i].call(this, event);
             }
-        }            
+        }
     },
 
     /**
@@ -4856,9 +4855,9 @@ YUITest.EventTarget.prototype = {
                     break;
                 }
             }
-        }            
+        }
     },
-    
+
     /**
      * Removes a listener for a given event type.
      * @param {String} type The type of event to remove a listener from.
@@ -4868,8 +4867,8 @@ YUITest.EventTarget.prototype = {
      * @deprecated
      */
     unsubscribe: function(type, listener){
-        this.detach.apply(this, arguments);          
-    }    
+        this.detach.apply(this, arguments);
+    }
 
 };
 
@@ -4892,16 +4891,16 @@ YUITest.Util = {
      * @static
      */
     mix: function(receiver, supplier){
-    
+
         for (var prop in supplier){
             if (supplier.hasOwnProperty(prop)){
                 receiver[prop] = supplier[prop];
             }
         }
-        
-        return receiver;    
+
+        return receiver;
     },
-    
+
     /**
      * Stub for JSON functionality. When the native JSON utility
      * is available, it will be used. Otherwise, a stub object
@@ -4916,11 +4915,11 @@ YUITest.Util = {
         stringify: function(){
             //TODO: Should include code to do this?
             throw new Error("No JSON utility specified.");
-        }    
+        }
     }
 
 };
-    
+
 
 /**
  * Error is thrown whenever an assertion fails. It provides methods
@@ -4931,16 +4930,16 @@ YUITest.Util = {
  * @namespace YUITest
  * @class AssertionError
  * @constructor
- */ 
+ */
 YUITest.AssertionError = function (message){
-    
+
     /**
      * Error message. Must be duplicated to ensure browser receives it.
      * @type String
      * @property message
      */
     this.message = message;
-    
+
     /**
      * The name of the error that occurred.
      * @type String
@@ -4963,7 +4962,7 @@ YUITest.AssertionError.prototype = {
     getMessage : function () {
         return this.message;
     },
-    
+
     /**
      * Returns a string representation of the error.
      * @method toString
@@ -4983,37 +4982,37 @@ YUITest.AssertionError.prototype = {
  * @param {String} message The message to display when the error occurs.
  * @param {Object} expected The expected value.
  * @param {Object} actual The actual value that caused the assertion to fail.
- * @namespace YUITest 
+ * @namespace YUITest
  * @extends AssertionError
  * @class ComparisonFailure
  * @constructor
- */ 
+ */
 YUITest.ComparisonFailure = function (message, expected, actual){
 
     //call superclass
     YUITest.AssertionError.call(this, message);
-    
+
     /**
      * The expected value.
      * @type Object
      * @property expected
      */
     this.expected = expected;
-    
+
     /**
      * The actual value.
      * @type Object
      * @property actual
      */
     this.actual = actual;
-    
+
     /**
      * The name of the error that occurred.
      * @type String
      * @property name
      */
     this.name = "ComparisonFailure";
-    
+
 };
 
 //inherit from YUITest.AssertionError
@@ -5038,23 +5037,23 @@ YUITest.ComparisonFailure.prototype.getMessage = function(){
  * a test is expected to throw an error but doesn't.
  *
  * @param {String} message The message to display when the error occurs.
- * @namespace YUITest 
+ * @namespace YUITest
  * @extends AssertionError
  * @class ShouldError
  * @constructor
- */ 
+ */
 YUITest.ShouldError = function (message){
 
     //call superclass
     YUITest.AssertionError.call(this, message || "This test should have thrown an error but didn't.");
-    
+
     /**
      * The name of the error that occurred.
      * @type String
      * @property name
      */
     this.name = "ShouldError";
-    
+
 };
 
 //inherit from YUITest.AssertionError
@@ -5068,23 +5067,23 @@ YUITest.ShouldError.prototype.constructor = YUITest.ShouldError;
  * a test was expected to fail but did not.
  *
  * @param {String} message The message to display when the error occurs.
- * @namespace YUITest 
+ * @namespace YUITest
  * @extends YUITest.AssertionError
  * @class ShouldFail
  * @constructor
- */ 
+ */
 YUITest.ShouldFail = function (message){
 
     //call superclass
     YUITest.AssertionError.call(this, message || "This test should fail but didn't.");
-    
+
     /**
      * The name of the error that occurred.
      * @type String
      * @property name
      */
     this.name = "ShouldFail";
-    
+
 };
 
 //inherit from YUITest.AssertionError
@@ -5098,39 +5097,39 @@ YUITest.ShouldFail.prototype.constructor = YUITest.ShouldFail;
  * an error occurs within the course of a test and the test was not expected
  * to throw an error.
  *
- * @param {Error} cause The unexpected error that caused this error to be 
+ * @param {Error} cause The unexpected error that caused this error to be
  *                      thrown.
- * @namespace YUITest 
+ * @namespace YUITest
  * @extends YUITest.AssertionError
  * @class UnexpectedError
  * @constructor
- */  
+ */
 YUITest.UnexpectedError = function (cause){
 
     //call superclass
     YUITest.AssertionError.call(this, "Unexpected error: " + cause.message);
-    
+
     /**
      * The unexpected error that occurred.
      * @type Error
      * @property cause
      */
     this.cause = cause;
-    
+
     /**
      * The name of the error that occurred.
      * @type String
      * @property name
      */
     this.name = "UnexpectedError";
-    
+
     /**
      * Stack information for the error (if provided).
      * @type String
      * @property stack
      */
     this.stack = cause.stack;
-    
+
 };
 
 //inherit from YUITest.AssertionError
@@ -5147,30 +5146,30 @@ YUITest.UnexpectedError.prototype.constructor = YUITest.UnexpectedError;
  *
  * @param {String} message The message to display when the error occurs.
  * @param {Object} unexpected The unexpected value.
- * @namespace YUITest 
+ * @namespace YUITest
  * @extends AssertionError
  * @class UnexpectedValue
  * @constructor
- */ 
+ */
 YUITest.UnexpectedValue = function (message, unexpected){
 
     //call superclass
     YUITest.AssertionError.call(this, message);
-    
+
     /**
      * The unexpected value.
      * @type Object
      * @property unexpected
      */
     this.unexpected = unexpected;
-    
+
     /**
      * The name of the error that occurred.
      * @type String
      * @property name
      */
     this.name = "UnexpectedValue";
-    
+
 };
 
 //inherit from YUITest.AssertionError
@@ -5201,7 +5200,7 @@ YUITest.UnexpectedValue.prototype.getMessage = function(){
  *
  */
 YUITest.Wait = function (segment, delay) {
-    
+
     /**
      * The segment of code to run when the wait is over.
      * @type Function
@@ -5214,10 +5213,10 @@ YUITest.Wait = function (segment, delay) {
      * @type int
      * @property delay
      */
-    this.delay = (typeof delay == "number" ? delay : 0);        
+    this.delay = (typeof delay == "number" ? delay : 0);
 };
 
-  
+
 /**
  * The Assert object provides functions to test JavaScript values against
  * known and expected results. Whenever a comparison (assertion) fails,
@@ -5239,7 +5238,7 @@ YUITest.Assert = {
     //-------------------------------------------------------------------------
     // Helper Methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * Formats a message so that it can contain the original assertion message
      * in addition to the custom message.
@@ -5255,9 +5254,9 @@ YUITest.Assert = {
             return customMessage.replace("{message}", defaultMessage);
         } else {
             return defaultMessage;
-        }        
+        }
     },
-    
+
     /**
      * Returns the number of assertions that have been performed.
      * @method _getCount
@@ -5267,7 +5266,7 @@ YUITest.Assert = {
     _getCount: function(){
         return this._asserts;
     },
-    
+
     /**
      * Increments the number of assertions that have been performed.
      * @method _increment
@@ -5277,7 +5276,7 @@ YUITest.Assert = {
     _increment: function(){
         this._asserts++;
     },
-    
+
     /**
      * Resets the number of assertions that have been performed to 0.
      * @method _reset
@@ -5287,12 +5286,12 @@ YUITest.Assert = {
     _reset: function(){
         this._asserts = 0;
     },
-    
+
     //-------------------------------------------------------------------------
     // Generic Assertion Methods
     //-------------------------------------------------------------------------
-    
-    /** 
+
+    /**
      * Forces an assertion error to occur.
      * @param {String} message (Optional) The message to display with the failure.
      * @method fail
@@ -5300,12 +5299,12 @@ YUITest.Assert = {
      */
     fail : function (message) {
         throw new YUITest.AssertionError(YUITest.Assert._formatMessage(message, "Test force-failed."));
-    },       
-    
+    },
+
     //-------------------------------------------------------------------------
     // Equality Assertion Methods
-    //-------------------------------------------------------------------------    
-    
+    //-------------------------------------------------------------------------
+
     /**
      * Asserts that a value is equal to another. This uses the double equals sign
      * so type cohersion may occur.
@@ -5321,7 +5320,7 @@ YUITest.Assert = {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Values should be equal."), expected, actual);
         }
     },
-    
+
     /**
      * Asserts that a value is not equal to another. This uses the double equals sign
      * so type cohersion may occur.
@@ -5331,14 +5330,14 @@ YUITest.Assert = {
      * @method areNotEqual
      * @static
      */
-    areNotEqual : function (unexpected, actual, 
+    areNotEqual : function (unexpected, actual,
                          message) {
         YUITest.Assert._increment();
         if (unexpected == actual) {
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Values should not be equal."), unexpected);
         }
     },
-    
+
     /**
      * Asserts that a value is not the same as another. This uses the triple equals sign
      * so no type cohersion may occur.
@@ -5369,12 +5368,12 @@ YUITest.Assert = {
         if (expected !== actual) {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Values should be the same."), expected, actual);
         }
-    },    
-    
+    },
+
     //-------------------------------------------------------------------------
     // Boolean Assertion Methods
-    //-------------------------------------------------------------------------    
-    
+    //-------------------------------------------------------------------------
+
     /**
      * Asserts that a value is false. This uses the triple equals sign
      * so no type cohersion may occur.
@@ -5389,7 +5388,7 @@ YUITest.Assert = {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value should be false."), false, actual);
         }
     },
-    
+
     /**
      * Asserts that a value is true. This uses the triple equals sign
      * so no type cohersion may occur.
@@ -5405,11 +5404,11 @@ YUITest.Assert = {
         }
 
     },
-    
+
     //-------------------------------------------------------------------------
     // Special Value Assertion Methods
-    //-------------------------------------------------------------------------    
-    
+    //-------------------------------------------------------------------------
+
     /**
      * Asserts that a value is not a number.
      * @param {Object} actual The value to test.
@@ -5421,9 +5420,9 @@ YUITest.Assert = {
         YUITest.Assert._increment();
         if (!isNaN(actual)){
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value should be NaN."), NaN, actual);
-        }    
+        }
     },
-    
+
     /**
      * Asserts that a value is not the special NaN value.
      * @param {Object} actual The value to test.
@@ -5435,9 +5434,9 @@ YUITest.Assert = {
         YUITest.Assert._increment();
         if (isNaN(actual)){
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Values should not be NaN."), NaN);
-        }    
+        }
     },
-    
+
     /**
      * Asserts that a value is not null. This uses the triple equals sign
      * so no type cohersion may occur.
@@ -5482,7 +5481,7 @@ YUITest.Assert = {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value should be null."), null, actual);
         }
     },
-        
+
     /**
      * Asserts that a value is undefined. This uses the triple equals sign
      * so no type cohersion may occur.
@@ -5496,12 +5495,12 @@ YUITest.Assert = {
         if (typeof actual != "undefined") {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value should be undefined."), undefined, actual);
         }
-    },    
-    
+    },
+
     //--------------------------------------------------------------------------
     // Instance Assertion Methods
-    //--------------------------------------------------------------------------    
-   
+    //--------------------------------------------------------------------------
+
     /**
      * Asserts that a value is an array.
      * @param {Object} actual The value to test.
@@ -5519,9 +5518,9 @@ YUITest.Assert = {
         }
         if (shouldFail){
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be an array."), actual);
-        }    
+        }
     },
-   
+
     /**
      * Asserts that a value is a Boolean.
      * @param {Object} actual The value to test.
@@ -5533,9 +5532,9 @@ YUITest.Assert = {
         YUITest.Assert._increment();
         if (typeof actual != "boolean"){
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be a Boolean."), actual);
-        }    
+        }
     },
-   
+
     /**
      * Asserts that a value is a function.
      * @param {Object} actual The value to test.
@@ -5547,9 +5546,9 @@ YUITest.Assert = {
         YUITest.Assert._increment();
         if (!(actual instanceof Function)){
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be a function."), actual);
-        }    
+        }
     },
-   
+
     /**
      * Asserts that a value is an instance of a particular object. This may return
      * incorrect results when comparing objects from one frame to constructors in
@@ -5566,7 +5565,7 @@ YUITest.Assert = {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value isn't an instance of expected type."), expected, actual);
         }
     },
-    
+
     /**
      * Asserts that a value is a number.
      * @param {Object} actual The value to test.
@@ -5578,9 +5577,9 @@ YUITest.Assert = {
         YUITest.Assert._increment();
         if (typeof actual != "number"){
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be a number."), actual);
-        }    
-    },    
-    
+        }
+    },
+
     /**
      * Asserts that a value is an object.
      * @param {Object} actual The value to test.
@@ -5594,7 +5593,7 @@ YUITest.Assert = {
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be an object."), actual);
         }
     },
-    
+
     /**
      * Asserts that a value is a string.
      * @param {Object} actual The value to test.
@@ -5608,9 +5607,9 @@ YUITest.Assert = {
             throw new YUITest.UnexpectedValue(YUITest.Assert._formatMessage(message, "Value should be a string."), actual);
         }
     },
-    
+
     /**
-     * Asserts that a value is of a particular type. 
+     * Asserts that a value is of a particular type.
      * @param {String} expectedType The expected type of the variable.
      * @param {Object} actualValue The actual value to test.
      * @param {String} message (Optional) The message to display if the assertion fails.
@@ -5623,11 +5622,11 @@ YUITest.Assert = {
             throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Value should be of type " + expectedType + "."), expectedType, typeof actualValue);
         }
     },
-    
+
     //--------------------------------------------------------------------------
     // Error Detection Methods
-    //--------------------------------------------------------------------------    
-   
+    //--------------------------------------------------------------------------
+
     /**
      * Asserts that executing a particular method should throw an error of
      * a specific type. This is a replacement for _should.error.
@@ -5646,44 +5645,44 @@ YUITest.Assert = {
     throwsError: function(expectedError, method, message){
         YUITest.Assert._increment();
         var error = false;
-    
+
         try {
-            method();        
+            method();
         } catch (thrown) {
-            
+
             //check to see what type of data we have
             if (typeof expectedError == "string"){
-                
+
                 //if it's a string, check the error message
                 if (thrown.message != expectedError){
                     error = true;
                 }
             } else if (typeof expectedError == "function"){
-            
+
                 //if it's a function, see if the error is an instance of it
                 if (!(thrown instanceof expectedError)){
                     error = true;
                 }
-            
+
             } else if (typeof expectedError == "object" && expectedError !== null){
-            
+
                 //if it's an object, check the instance and message
-                if (!(thrown instanceof expectedError.constructor) || 
+                if (!(thrown instanceof expectedError.constructor) ||
                         thrown.message != expectedError.message){
                     error = true;
                 }
-            
+
             } else { //if it gets here, the argument could be wrong
                 error = true;
             }
-            
+
             if (error){
-                throw new YUITest.UnexpectedError(thrown);                    
+                throw new YUITest.UnexpectedError(thrown);
             } else {
                 return;
             }
         }
-        
+
         //if it reaches here, the error wasn't thrown, which is a bad thing
         throw new YUITest.AssertionError(YUITest.Assert._formatMessage(message, "Error should have been thrown."));
     }
@@ -5698,13 +5697,13 @@ YUITest.Assert = {
  * @class ArrayAssert
  * @static
  */
- 
+
 YUITest.ArrayAssert = {
 
     //=========================================================================
     // Private methods
     //=========================================================================
-    
+
     /**
      * Simple indexOf() implementation for an array. Defers to native
      * if available.
@@ -5726,7 +5725,7 @@ YUITest.ArrayAssert = {
             return -1;
         }
     },
-    
+
     /**
      * Simple some() implementation for an array. Defers to native
      * if available.
@@ -5748,10 +5747,10 @@ YUITest.ArrayAssert = {
             }
             return false;
         }
-    },    
+    },
 
     /**
-     * Asserts that a value is present in an array. This uses the triple equals 
+     * Asserts that a value is present in an array. This uses the triple equals
      * sign so no type cohersion may occur.
      * @param {Object} needle The value that is expected in the array.
      * @param {Array} haystack An array of values.
@@ -5759,10 +5758,10 @@ YUITest.ArrayAssert = {
      * @method contains
      * @static
      */
-    contains : function (needle, haystack, 
+    contains : function (needle, haystack,
                            message) {
-        
-        YUITest.Assert._increment();               
+
+        YUITest.Assert._increment();
 
         if (this._indexOf(haystack, needle) == -1){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value " + needle + " (" + (typeof needle) + ") not found in array [" + haystack + "]."));
@@ -5770,7 +5769,7 @@ YUITest.ArrayAssert = {
     },
 
     /**
-     * Asserts that a set of values are present in an array. This uses the triple equals 
+     * Asserts that a set of values are present in an array. This uses the triple equals
      * sign so no type cohersion may occur. For this assertion to pass, all values must
      * be found.
      * @param {Object[]} needles An array of values that are expected in the array.
@@ -5779,9 +5778,9 @@ YUITest.ArrayAssert = {
      * @method containsItems
      * @static
      */
-    containsItems : function (needles, haystack, 
+    containsItems : function (needles, haystack,
                            message) {
-        YUITest.Assert._increment();               
+        YUITest.Assert._increment();
 
         //begin checking values
         for (var i=0; i < needles.length; i++){
@@ -5800,23 +5799,23 @@ YUITest.ArrayAssert = {
      * @method containsMatch
      * @static
      */
-    containsMatch : function (matcher, haystack, 
+    containsMatch : function (matcher, haystack,
                            message) {
-        
-        YUITest.Assert._increment();               
+
+        YUITest.Assert._increment();
         //check for valid matcher
         if (typeof matcher != "function"){
             throw new TypeError("ArrayAssert.containsMatch(): First argument must be a function.");
         }
-        
+
         if (!this._some(haystack, matcher)){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "No match found in array [" + haystack + "]."));
         }
     },
 
     /**
-     * Asserts that a value is not present in an array. This uses the triple equals 
-     * Asserts that a value is not present in an array. This uses the triple equals 
+     * Asserts that a value is not present in an array. This uses the triple equals
+     * Asserts that a value is not present in an array. This uses the triple equals
      * sign so no type cohersion may occur.
      * @param {Object} needle The value that is expected in the array.
      * @param {Array} haystack An array of values.
@@ -5824,10 +5823,10 @@ YUITest.ArrayAssert = {
      * @method doesNotContain
      * @static
      */
-    doesNotContain : function (needle, haystack, 
+    doesNotContain : function (needle, haystack,
                            message) {
-        
-        YUITest.Assert._increment();               
+
+        YUITest.Assert._increment();
 
         if (this._indexOf(haystack, needle) > -1){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value found in array [" + haystack + "]."));
@@ -5835,7 +5834,7 @@ YUITest.ArrayAssert = {
     },
 
     /**
-     * Asserts that a set of values are not present in an array. This uses the triple equals 
+     * Asserts that a set of values are not present in an array. This uses the triple equals
      * sign so no type cohersion may occur. For this assertion to pass, all values must
      * not be found.
      * @param {Object[]} needles An array of values that are not expected in the array.
@@ -5844,10 +5843,10 @@ YUITest.ArrayAssert = {
      * @method doesNotContainItems
      * @static
      */
-    doesNotContainItems : function (needles, haystack, 
+    doesNotContainItems : function (needles, haystack,
                            message) {
 
-        YUITest.Assert._increment();               
+        YUITest.Assert._increment();
 
         for (var i=0; i < needles.length; i++){
             if (this._indexOf(haystack, needles[i]) > -1){
@@ -5856,7 +5855,7 @@ YUITest.ArrayAssert = {
         }
 
     },
-        
+
     /**
      * Asserts that no values matching a condition are present in an array. This uses
      * a function to determine a match.
@@ -5866,21 +5865,21 @@ YUITest.ArrayAssert = {
      * @method doesNotContainMatch
      * @static
      */
-    doesNotContainMatch : function (matcher, haystack, 
+    doesNotContainMatch : function (matcher, haystack,
                            message) {
-        
-        YUITest.Assert._increment();     
-      
+
+        YUITest.Assert._increment();
+
         //check for valid matcher
         if (typeof matcher != "function"){
             throw new TypeError("ArrayAssert.doesNotContainMatch(): First argument must be a function.");
         }
-        
+
         if (this._some(haystack, matcher)){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value found in array [" + haystack + "]."));
         }
     },
-        
+
     /**
      * Asserts that the given value is contained in an array at the specified index.
      * This uses the triple equals sign so no type cohersion will occur.
@@ -5892,23 +5891,23 @@ YUITest.ArrayAssert = {
      * @static
      */
     indexOf : function (needle, haystack, index, message) {
-    
-        YUITest.Assert._increment();     
+
+        YUITest.Assert._increment();
 
         //try to find the value in the array
         for (var i=0; i < haystack.length; i++){
             if (haystack[i] === needle){
                 if (index != i){
-                    YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value exists at index " + i + " but should be at index " + index + "."));                    
+                    YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value exists at index " + i + " but should be at index " + index + "."));
                 }
                 return;
             }
         }
-        
+
         //if it makes it here, it wasn't found at all
         YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value doesn't exist in array [" + haystack + "]."));
     },
-        
+
     /**
      * Asserts that the values in an array are equal, and in the same position,
      * as values in another array. This uses the double equals sign
@@ -5920,16 +5919,16 @@ YUITest.ArrayAssert = {
      * @method itemsAreEqual
      * @static
      */
-    itemsAreEqual : function (expected, actual, 
+    itemsAreEqual : function (expected, actual,
                            message) {
-        
-        YUITest.Assert._increment();     
-        
+
+        YUITest.Assert._increment();
+
         //first check array length
         if (expected.length != actual.length){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Array should have a length of " + expected.length + " but has a length of " + actual.length));
         }
-       
+
         //begin checking values
         for (var i=0; i < expected.length; i++){
             if (expected[i] != actual[i]){
@@ -5937,7 +5936,7 @@ YUITest.ArrayAssert = {
             }
         }
     },
-    
+
     /**
      * Asserts that the values in an array are equivalent, and in the same position,
      * as values in another array. This uses a function to determine if the values
@@ -5952,21 +5951,21 @@ YUITest.ArrayAssert = {
      * @method itemsAreEquivalent
      * @static
      */
-    itemsAreEquivalent : function (expected, actual, 
+    itemsAreEquivalent : function (expected, actual,
                            comparator, message) {
-        
-        YUITest.Assert._increment();     
+
+        YUITest.Assert._increment();
 
         //make sure the comparator is valid
         if (typeof comparator != "function"){
             throw new TypeError("ArrayAssert.itemsAreEquivalent(): Third argument must be a function.");
         }
-        
+
         //first check array length
         if (expected.length != actual.length){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Array should have a length of " + expected.length + " but has a length of " + actual.length));
         }
-        
+
         //begin checking values
         for (var i=0; i < expected.length; i++){
             if (!comparator(expected[i], actual[i])){
@@ -5974,7 +5973,7 @@ YUITest.ArrayAssert = {
             }
         }
     },
-    
+
     /**
      * Asserts that an array is empty.
      * @param {Array} actual The array to test.
@@ -5982,13 +5981,13 @@ YUITest.ArrayAssert = {
      * @method isEmpty
      * @static
      */
-    isEmpty : function (actual, message) {        
-        YUITest.Assert._increment();     
+    isEmpty : function (actual, message) {
+        YUITest.Assert._increment();
         if (actual.length > 0){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Array should be empty."));
         }
-    },    
-    
+    },
+
     /**
      * Asserts that an array is not empty.
      * @param {Array} actual The array to test.
@@ -5996,13 +5995,13 @@ YUITest.ArrayAssert = {
      * @method isNotEmpty
      * @static
      */
-    isNotEmpty : function (actual, message) {        
-        YUITest.Assert._increment();     
+    isNotEmpty : function (actual, message) {
+        YUITest.Assert._increment();
         if (actual.length === 0){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Array should not be empty."));
         }
-    },    
-    
+    },
+
     /**
      * Asserts that the values in an array are the same, and in the same position,
      * as values in another array. This uses the triple equals sign
@@ -6014,16 +6013,16 @@ YUITest.ArrayAssert = {
      * @method itemsAreSame
      * @static
      */
-    itemsAreSame : function (expected, actual, 
+    itemsAreSame : function (expected, actual,
                           message) {
-        
-        YUITest.Assert._increment();     
+
+        YUITest.Assert._increment();
 
         //first check array length
         if (expected.length != actual.length){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Array should have a length of " + expected.length + " but has a length of " + actual.length));
         }
-                    
+
         //begin checking values
         for (var i=0; i < expected.length; i++){
             if (expected[i] !== actual[i]){
@@ -6031,7 +6030,7 @@ YUITest.ArrayAssert = {
             }
         }
     },
-    
+
     /**
      * Asserts that the given value is contained in an array at the specified index,
      * starting from the back of the array.
@@ -6044,21 +6043,21 @@ YUITest.ArrayAssert = {
      * @static
      */
     lastIndexOf : function (needle, haystack, index, message) {
-    
+
         //try to find the value in the array
         for (var i=haystack.length; i >= 0; i--){
             if (haystack[i] === needle){
                 if (index != i){
-                    YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value exists at index " + i + " but should be at index " + index + "."));                    
+                    YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value exists at index " + i + " but should be at index " + index + "."));
                 }
                 return;
             }
         }
-        
+
         //if it makes it here, it wasn't found at all
-        YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value doesn't exist in array."));        
+        YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Value doesn't exist in array."));
     }
-    
+
 };
 
 
@@ -6082,17 +6081,17 @@ YUITest.ObjectAssert = {
      * @deprecated
      */
     areEqual: function(expected, actual, message) {
-        YUITest.Assert._increment();         
+        YUITest.Assert._increment();
 
         for (var name in expected){
             if (expected.hasOwnProperty(name)){
                 if (expected[name] != actual[name]){
                     throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, "Values should be equal for property " + name), expected[name], actual[name]);
-                }            
+                }
             }
-        }           
+        }
     },
-    
+
     /**
      * Asserts that an object has a property with the given name.
      * @param {String} propertyName The name of the property to test.
@@ -6101,11 +6100,11 @@ YUITest.ObjectAssert = {
      * @method hasKey
      * @static
      * @deprecated Use ownsOrInheritsKey() instead
-     */    
+     */
     hasKey: function (propertyName, object, message) {
-        YUITest.ObjectAssert.ownsOrInheritsKey(propertyName, object, message);   
+        YUITest.ObjectAssert.ownsOrInheritsKey(propertyName, object, message);
     },
-    
+
     /**
      * Asserts that an object has all properties of a reference object.
      * @param {Array} properties An array of property names that should be on the object.
@@ -6114,11 +6113,11 @@ YUITest.ObjectAssert = {
      * @method hasKeys
      * @static
      * @deprecated Use ownsOrInheritsKeys() instead
-     */    
+     */
     hasKeys: function (properties, object, message) {
         YUITest.ObjectAssert.ownsOrInheritsKeys(properties, objects, message);
     },
-    
+
     /**
      * Asserts that a property with the given name exists on an object's prototype.
      * @param {String} propertyName The name of the property to test.
@@ -6126,14 +6125,14 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method inheritsKey
      * @static
-     */    
+     */
     inheritsKey: function (propertyName, object, message) {
-        YUITest.Assert._increment();               
+        YUITest.Assert._increment();
         if (!(propertyName in object && !object.hasOwnProperty(propertyName))){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + propertyName + "' not found on object instance."));
-        }     
+        }
     },
-    
+
     /**
      * Asserts that all properties exist on an object prototype.
      * @param {Array} properties An array of property names that should be on the object.
@@ -6141,16 +6140,16 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method inheritsKeys
      * @static
-     */    
+     */
     inheritsKeys: function (properties, object, message) {
-        YUITest.Assert._increment();        
+        YUITest.Assert._increment();
         for (var i=0; i < properties.length; i++){
             if (!(propertyName in object && !object.hasOwnProperty(properties[i]))){
                 YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + properties[i] + "' not found on object instance."));
-            }      
+            }
         }
     },
-    
+
     /**
      * Asserts that a property with the given name exists on an object instance (not on its prototype).
      * @param {String} propertyName The name of the property to test.
@@ -6158,14 +6157,14 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method ownsKey
      * @static
-     */    
+     */
     ownsKey: function (propertyName, object, message) {
-        YUITest.Assert._increment();               
+        YUITest.Assert._increment();
         if (!object.hasOwnProperty(propertyName)){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + propertyName + "' not found on object instance."));
-        }     
+        }
     },
-    
+
     /**
      * Asserts that all properties exist on an object instance (not on its prototype).
      * @param {Array} properties An array of property names that should be on the object.
@@ -6173,25 +6172,25 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method ownsKeys
      * @static
-     */    
+     */
     ownsKeys: function (properties, object, message) {
-        YUITest.Assert._increment();        
+        YUITest.Assert._increment();
         for (var i=0; i < properties.length; i++){
             if (!object.hasOwnProperty(properties[i])){
                 YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + properties[i] + "' not found on object instance."));
-            }      
+            }
         }
     },
-    
+
     /**
      * Asserts that an object owns no properties.
      * @param {Object} object The object to check.
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method ownsNoKeys
      * @static
-     */    
+     */
     ownsNoKeys : function (object, message) {
-        YUITest.Assert._increment();  
+        YUITest.Assert._increment();
         var count = 0,
             name;
         for (name in object){
@@ -6199,9 +6198,9 @@ YUITest.ObjectAssert = {
                 count++;
             }
         }
-        
+
         if (count !== 0){
-            YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Object owns " + count + " properties but should own none."));        
+            YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Object owns " + count + " properties but should own none."));
         }
 
     },
@@ -6213,14 +6212,14 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method ownsOrInheritsKey
      * @static
-     */    
+     */
     ownsOrInheritsKey: function (propertyName, object, message) {
-        YUITest.Assert._increment();               
+        YUITest.Assert._increment();
         if (!(propertyName in object)){
             YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + propertyName + "' not found on object."));
-        }    
+        }
     },
-    
+
     /**
      * Asserts that an object has all properties of a reference object.
      * @param {Array} properties An array of property names that should be on the object.
@@ -6228,15 +6227,15 @@ YUITest.ObjectAssert = {
      * @param {String} message (Optional) The message to display if the assertion fails.
      * @method ownsOrInheritsKeys
      * @static
-     */    
+     */
     ownsOrInheritsKeys: function (properties, object, message) {
-        YUITest.Assert._increment();  
+        YUITest.Assert._increment();
         for (var i=0; i < properties.length; i++){
             if (!(properties[i] in object)){
                 YUITest.Assert.fail(YUITest.Assert._formatMessage(message, "Property '" + properties[i] + "' not found on object."));
-            }      
+            }
         }
-    }     
+    }
 };
 
 
@@ -6248,7 +6247,7 @@ YUITest.ObjectAssert = {
  * @class DateAssert
  * @static
  */
- 
+
 YUITest.DateAssert = {
 
     /**
@@ -6260,25 +6259,25 @@ YUITest.DateAssert = {
      * @static
      */
     datesAreEqual : function (expected, actual, message){
-        YUITest.Assert._increment();        
+        YUITest.Assert._increment();
         if (expected instanceof Date && actual instanceof Date){
             var msg = "";
-            
+
             //check years first
             if (expected.getFullYear() != actual.getFullYear()){
                 msg = "Years should be equal.";
             }
-            
+
             //now check months
             if (expected.getMonth() != actual.getMonth()){
                 msg = "Months should be equal.";
-            }                
-            
+            }
+
             //last, check the day of the month
             if (expected.getDate() != actual.getDate()){
                 msg = "Days of month should be equal.";
-            }                
-            
+            }
+
             if (msg.length){
                 throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, msg), expected, actual);
             }
@@ -6299,22 +6298,22 @@ YUITest.DateAssert = {
         YUITest.Assert._increment();
         if (expected instanceof Date && actual instanceof Date){
             var msg = "";
-            
+
             //check hours first
             if (expected.getHours() != actual.getHours()){
                 msg = "Hours should be equal.";
             }
-            
+
             //now check minutes
             if (expected.getMinutes() != actual.getMinutes()){
                 msg = "Minutes should be equal.";
-            }                
-            
+            }
+
             //last, check the seconds
             if (expected.getSeconds() != actual.getSeconds()){
                 msg = "Seconds should be equal.";
-            }                
-            
+            }
+
             if (msg.length){
                 throw new YUITest.ComparisonFailure(YUITest.Assert._formatMessage(message, msg), expected, actual);
             }
@@ -6322,7 +6321,7 @@ YUITest.DateAssert = {
             throw new TypeError("YUITest.DateAssert.timesAreEqual(): Expected and actual values must be Date objects.");
         }
     }
-    
+
 };
 
 /**
@@ -6337,10 +6336,10 @@ YUITest.Mock = function(template){
 
     //use blank object is nothing is passed in
     template = template || {};
-    
+
     var mock,
         name;
-    
+
     //try to create mock that keeps prototype chain intact
     //fails in the case of ActiveX objects
     try {
@@ -6365,9 +6364,9 @@ YUITest.Mock = function(template){
     }
 
     //return it
-    return mock;    
+    return mock;
 };
-    
+
 /**
  * Assigns an expectation to a mock object. This is used to create
  * methods and properties on the mock object that are monitored for
@@ -6380,7 +6379,7 @@ YUITest.Mock = function(template){
  * @return {void}
  * @method expect
  * @static
- */ 
+ */
 YUITest.Mock.expect = function(mock /*:Object*/, expectation /*:Object*/){
 
     //make sure there's a place to store the expectations
@@ -6397,31 +6396,31 @@ YUITest.Mock.expect = function(mock /*:Object*/, expectation /*:Object*/){
             error = expectation.error,
             run = expectation.run || function(){},
             i;
-            
+
         //save expectations
         mock.__expectations[name] = expectation;
         expectation.callCount = callCount;
         expectation.actualCallCount = 0;
-            
+
         //process arguments
         for (i=0; i < args.length; i++){
              if (!(args[i] instanceof YUITest.Mock.Value)){
                 args[i] = YUITest.Mock.Value(YUITest.Assert.areSame, [args[i]], "Argument " + i + " of " + name + "() is incorrect.");
-            }       
+            }
         }
-    
+
         //if the method is expected to be called
         if (callCount > 0){
-            mock[name] = function(){   
+            mock[name] = function(){
                 try {
                     expectation.actualCallCount++;
                     YUITest.Assert.areEqual(args.length, arguments.length, "Method " + name + "() passed incorrect number of arguments.");
                     for (var i=0, len=args.length; i < len; i++){
                         args[i].verify(arguments[i]);
-                    }                
+                    }
 
                     run.apply(this, arguments);
-                    
+
                     if (error){
                         throw error;
                     }
@@ -6429,11 +6428,11 @@ YUITest.Mock.expect = function(mock /*:Object*/, expectation /*:Object*/){
                     //route through TestRunner for proper handling
                     YUITest.TestRunner._handleError(ex);
                 }
-                
+
                 return result;
             };
         } else {
-        
+
             //method should fail if called when not expected
             mock[name] = function(){
                 try {
@@ -6441,7 +6440,7 @@ YUITest.Mock.expect = function(mock /*:Object*/, expectation /*:Object*/){
                 } catch (ex){
                     //route through TestRunner for proper handling
                     YUITest.TestRunner._handleError(ex);
-                }                    
+                }
             };
         }
     } else if (expectation.property){
@@ -6457,18 +6456,18 @@ YUITest.Mock.expect = function(mock /*:Object*/, expectation /*:Object*/){
  * @return {void}
  * @method verify
  * @static
- */ 
-YUITest.Mock.verify = function(mock){    
+ */
+YUITest.Mock.verify = function(mock){
     try {
-    
+
         for (var name in mock.__expectations){
             if (mock.__expectations.hasOwnProperty(name)){
                 var expectation = mock.__expectations[name];
                 if (expectation.method) {
                     YUITest.Assert.areEqual(expectation.callCount, expectation.actualCallCount, "Method " + expectation.method + "() wasn't called the expected number of times.");
                 } else if (expectation.property){
-                    YUITest.Assert.areEqual(expectation.value, mock[expectation.property], "Property " + expectation.property + " wasn't set to the correct value."); 
-                }                
+                    YUITest.Assert.areEqual(expectation.value, mock[expectation.property], "Property " + expectation.property + " wasn't set to the correct value.");
+                }
             }
         }
 
@@ -6565,49 +6564,49 @@ YUITest.Results = function(name){
      * @property name
      */
     this.name = name;
-    
+
     /**
      * Number of passed tests.
      * @type int
      * @property passed
      */
     this.passed = 0;
-    
+
     /**
      * Number of failed tests.
      * @type int
      * @property failed
      */
     this.failed = 0;
-    
+
     /**
      * Number of errors that occur in non-test methods.
      * @type int
      * @property errors
      */
     this.errors = 0;
-    
+
     /**
      * Number of ignored tests.
      * @type int
      * @property ignored
      */
     this.ignored = 0;
-    
+
     /**
      * Number of total tests.
      * @type int
      * @property total
      */
     this.total = 0;
-    
+
     /**
      * Amount of time (ms) it took to complete testing.
      * @type int
      * @property duration
      */
     this.duration = 0;
-}
+};
 
 /**
  * Includes results from another results object into this one.
@@ -6632,31 +6631,31 @@ YUITest.Results.prototype.include = function(results){
  * @constructor
  */
 YUITest.TestCase = function (template) {
-    
+
     /**
      * Special rules for the test case. Possible subobjects
      * are fail, for tests that should fail, and error, for
      * tests that should throw an error.
      */
     this._should = {};
-    
+
     //copy over all properties from the template to this object
     for (var prop in template) {
         this[prop] = template[prop];
-    }    
-    
+    }
+
     //check for a valid name
     if (typeof this.name != "string"){
         this.name = "testCase" + (+new Date());
     }
 
 };
-        
-YUITest.TestCase.prototype = {  
+
+YUITest.TestCase.prototype = {
 
     //restore constructor
     constructor: YUITest.TestCase,
-    
+
     /**
      * Method to call from an async init method to
      * restart the test case. When called, returns a function
@@ -6690,10 +6689,10 @@ YUITest.TestCase.prototype = {
      * @method wait
      */
     wait : function (segment, delay){
-        
+
         var actualDelay = (typeof segment == "number" ? segment : delay);
         actualDelay = (typeof actualDelay == "number" ? actualDelay : 10000);
-    
+
 		if (typeof segment == "function"){
             throw new YUITest.Wait(segment, actualDelay);
         } else {
@@ -6702,7 +6701,7 @@ YUITest.TestCase.prototype = {
             }, actualDelay);
         }
     },
-    
+
     //-------------------------------------------------------------------------
     // Assertion Methods
     //-------------------------------------------------------------------------
@@ -6718,18 +6717,18 @@ YUITest.TestCase.prototype = {
         YUITest.Assert._increment();
         if (!condition){
             throw new YUITest.AssertionError(YUITest.Assert._formatMessage(message, "Assertion failed."));
-        }    
+        }
     },
-    
+
     /**
      * Forces an assertion error to occur. Shortcut for YUITest.Assert.fail().
      * @method fail
      * @param {String} message (Optional) The message to display with the failure.
      */
-    fail: function (message) {    
+    fail: function (message) {
         YUITest.Assert.fail(message);
     },
-    
+
     //-------------------------------------------------------------------------
     // Stub Methods
     //-------------------------------------------------------------------------
@@ -6741,7 +6740,7 @@ YUITest.TestCase.prototype = {
     init: function(){
         //noop
     },
-    
+
     /**
      * Function to run once after tests finish running.
      * This executes after the last call to tearDown().
@@ -6758,19 +6757,19 @@ YUITest.TestCase.prototype = {
     setUp : function () {
         //noop
     },
-    
+
     /**
      * Function to run after each test is executed.
      * @return {Void}
      * @method tearDown
      */
-    tearDown: function () {    
+    tearDown: function () {
         //noop
     }
 };
 
 
-    
+
 /**
  * A test suite that can contain a collection of TestCase and TestSuite objects.
  * @param {String||Object} data The name of the test suite or an object containing
@@ -6813,12 +6812,12 @@ YUITest.TestSuite = function (data) {
     }
 
 };
-    
+
 YUITest.TestSuite.prototype = {
-    
+
     //restore constructor
     constructor: YUITest.TestSuite,
-    
+
     /**
      * Adds a test suite or test case to the test suite.
      * @param {YUITest.TestSuite||YUITest.TestCase} testObject The test suite or test case to add.
@@ -6831,7 +6830,7 @@ YUITest.TestSuite.prototype = {
         }
         return this;
     },
-    
+
     //-------------------------------------------------------------------------
     // Stub Methods
     //-------------------------------------------------------------------------
@@ -6843,7 +6842,7 @@ YUITest.TestSuite.prototype = {
      */
     setUp : function () {
     },
-    
+
     /**
      * Function to run after each test is executed.
      * @return {Void}
@@ -6851,7 +6850,7 @@ YUITest.TestSuite.prototype = {
      */
     tearDown: function () {
     }
-    
+
 };
 
 /**
@@ -6861,7 +6860,7 @@ YUITest.TestSuite.prototype = {
  * @static
  */
 YUITest.TestFormat = function(){
-    
+
     /* (intentionally not documented)
      * Basic XML escaping method. Replaces quotes, less-than, greater-than,
      * apostrophe, and ampersand characters with their corresponding entities.
@@ -6869,7 +6868,7 @@ YUITest.TestFormat = function(){
      * @return {String} The XML-escaped text.
      */
     function xmlEscape(text){
-    
+
         return text.replace(/[<>"'&]/g, function(value){
             switch(value){
                 case "<":   return "&lt;";
@@ -6879,12 +6878,12 @@ YUITest.TestFormat = function(){
                 case "&":   return "&amp;";
             }
         });
-    
+
     }
-        
-        
+
+
     return {
-    
+
         /**
          * Returns test results formatted as a JSON string. Requires JSON utility.
          * @param {Object} result The results object created by TestRunner.
@@ -6895,7 +6894,7 @@ YUITest.TestFormat = function(){
         JSON: function(results) {
             return YUITest.Util.JSON.stringify(results);
         },
-        
+
         /**
          * Returns test results formatted as an XML string.
          * @param {Object} result The results object created by TestRunner.
@@ -6907,11 +6906,11 @@ YUITest.TestFormat = function(){
 
             function serializeToXML(results){
                 var xml = "<" + results.type + " name=\"" + xmlEscape(results.name) + "\"";
-                
+
                 if (typeof(results.duration)=="number"){
                     xml += " duration=\"" + results.duration + "\"";
                 }
-                
+
                 if (results.type == "test"){
                     xml += " result=\"" + results.result + "\" message=\"" + xmlEscape(results.message) + "\">";
                 } else {
@@ -6922,12 +6921,12 @@ YUITest.TestFormat = function(){
                                 xml += serializeToXML(results[prop]);
                             }
                         }
-                    }       
+                    }
                 }
 
                 xml += "</" + results.type + ">";
-                
-                return xml;    
+
+                return xml;
             }
 
             return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + serializeToXML(results);
@@ -6946,7 +6945,7 @@ YUITest.TestFormat = function(){
 
             function serializeToJUnitXML(results){
                 var xml = "";
-                    
+
                 switch (results.type){
                     //equivalent to testcase in JUnit
                     case "test":
@@ -6958,23 +6957,23 @@ YUITest.TestFormat = function(){
                             xml+= "</testcase>";
                         }
                         break;
-                        
+
                     //equivalent to testsuite in JUnit
                     case "testcase":
-                    
+
                         xml = "<testsuite name=\"" + xmlEscape(results.name) + "\" tests=\"" + results.total + "\" failures=\"" + results.failed + "\" time=\"" + (results.duration/1000) + "\">";
-                        
+
                         for (var prop in results){
                             if (results.hasOwnProperty(prop)){
                                 if (results[prop] && typeof results[prop] == "object" && !(results[prop] instanceof Array)){
                                     xml += serializeToJUnitXML(results[prop]);
                                 }
                             }
-                        }            
-                        
+                        }
+
                         xml += "</testsuite>";
                         break;
-                    
+
                     //no JUnit equivalent, don't output anything
                     case "testsuite":
                         for (var prop in results){
@@ -6983,34 +6982,34 @@ YUITest.TestFormat = function(){
                                     xml += serializeToJUnitXML(results[prop]);
                                 }
                             }
-                        }                                                     
+                        }
                         break;
-                        
+
                     //top-level, equivalent to testsuites in JUnit
                     case "report":
-                    
+
                         xml = "<testsuites>";
-                    
+
                         for (var prop in results){
                             if (results.hasOwnProperty(prop)){
                                 if (results[prop] && typeof results[prop] == "object" && !(results[prop] instanceof Array)){
                                     xml += serializeToJUnitXML(results[prop]);
                                 }
                             }
-                        }            
-                        
-                        xml += "</testsuites>";            
-                    
+                        }
+
+                        xml += "</testsuites>";
+
                     //no default
                 }
-                
+
                 return xml;
-         
+
             }
 
             return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + serializeToJUnitXML(results);
         },
-    
+
         /**
          * Returns test results formatted in TAP format.
          * For more information, see <a href="http://testanything.org/">Test Anything Protocol</a>.
@@ -7020,81 +7019,81 @@ YUITest.TestFormat = function(){
          * @static
          */
         TAP: function(results) {
-        
+
             var currentTestNum = 1;
 
             function serializeToTAP(results){
                 var text = "";
-                    
+
                 switch (results.type){
 
                     case "test":
                         if (results.result != "ignore"){
 
                             text = "ok " + (currentTestNum++) + " - " + results.name;
-                            
+
                             if (results.result == "fail"){
                                 text = "not " + text + " - " + results.message;
                             }
-                            
+
                             text += "\n";
                         } else {
                             text = "#Ignored test " + results.name + "\n";
                         }
                         break;
-                        
+
                     case "testcase":
-                    
+
                         text = "#Begin testcase " + results.name + "(" + results.failed + " failed of " + results.total + ")\n";
-                                        
+
                         for (var prop in results){
                             if (results.hasOwnProperty(prop)){
                                 if (results[prop] && typeof results[prop] == "object" && !(results[prop] instanceof Array)){
                                     text += serializeToTAP(results[prop]);
                                 }
                             }
-                        }            
-                        
+                        }
+
                         text += "#End testcase " + results.name + "\n";
-                        
-                        
+
+
                         break;
-                    
+
                     case "testsuite":
 
-                        text = "#Begin testsuite " + results.name + "(" + results.failed + " failed of " + results.total + ")\n";                
-                    
+                        text = "#Begin testsuite " + results.name + "(" + results.failed + " failed of " + results.total + ")\n";
+
                         for (var prop in results){
                             if (results.hasOwnProperty(prop)){
                                 if (results[prop] && typeof results[prop] == "object" && !(results[prop] instanceof Array)){
                                     text += serializeToTAP(results[prop]);
                                 }
                             }
-                        }                                                      
+                        }
 
                         text += "#End testsuite " + results.name + "\n";
                         break;
 
                     case "report":
-                    
+
                         for (var prop in results){
                             if (results.hasOwnProperty(prop)){
                                 if (results[prop] && typeof results[prop] == "object" && !(results[prop] instanceof Array)){
                                     text += serializeToTAP(results[prop]);
                                 }
                             }
-                        }              
-                        
+                        }
+
                     //no default
                 }
-                
+
                 return text;
-         
+
             }
 
             return "1.." + results.total + "\n" + serializeToTAP(results);
         }
-    
+
     };
 }();
 
@@ -7117,7 +7116,7 @@ YUITest.CoverageFormat = {
     JSON: function(coverage){
         return YUITest.Util.JSON.stringify(coverage);
     },
-    
+
     /**
      * Returns the coverage report in a JSON format compatible with
      * Xdebug. See <a href="http://www.xdebug.com/docs/code_coverage">Xdebug Documentation</a>
@@ -7127,9 +7126,9 @@ YUITest.CoverageFormat = {
      * @return {String} A JSON-formatted string of coverage data.
      * @method XdebugJSON
      * @namespace YUITest.CoverageFormat
-     */    
+     */
     XdebugJSON: function(coverage){
-    
+
         var report = {};
         for (var prop in coverage){
             if (coverage.hasOwnProperty(prop)){
@@ -7152,7 +7151,7 @@ YUITest.CoverageFormat = {
 YUITest.Event = (function() {
 
     var
-     
+
     //mouse events supported
     mouseEvents = {
         click:      1,
@@ -7163,14 +7162,14 @@ YUITest.Event = (function() {
         mouseup:    1,
         mousemove:  1
     },
-    
+
     //key events supported
     keyEvents   = {
         keydown:    1,
         keyup:      1,
         keypress:   1
     },
-    
+
     //HTML events supported
     uiEvents  = {
         blur:       1,
@@ -7180,7 +7179,7 @@ YUITest.Event = (function() {
         scroll:     1,
         select:     1
     },
-    
+
     //events that bubble by default
     bubbleEvents = {
         scroll:     1,
@@ -7191,7 +7190,7 @@ YUITest.Event = (function() {
         select:     1,
         error:      1,
         abort:      1,
-        
+
         //also mouse events
         click:      1,
         dblclick:   1,
@@ -7200,17 +7199,17 @@ YUITest.Event = (function() {
         mousedown:  1,
         mouseup:    1,
         mousemove:  1,
-        
+
         //and keyboard events
         keydown:    1,
         keyup:      1,
-        keypress:   1        
-        
+        keypress:   1
+
     },
-    
+
     //the object to return
     object,
-    
+
     //used for property name iteration
     prop;
 
@@ -7232,7 +7231,7 @@ YUITest.Event = (function() {
      *      default. The default is true.
      * @param {Boolean} cancelable (Optional) Indicates if the event can be
      *      canceled using preventDefault(). DOM Level 3 specifies that all
-     *      key events can be cancelled. The default 
+     *      key events can be cancelled. The default
      *      is true.
      * @param {Window} view (Optional) The view containing the target. This is
      *      typically the window object. The default is window.
@@ -7244,23 +7243,23 @@ YUITest.Event = (function() {
      *      is pressed while the event is firing. The default is false.
      * @param {Boolean} metaKey (Optional) Indicates if one of the META keys
      *      is pressed while the event is firing. The default is false.
-     * @param {int} keyCode (Optional) The code for the key that is in use. 
+     * @param {int} keyCode (Optional) The code for the key that is in use.
      *      The default is 0.
      * @param {int} charCode (Optional) The Unicode code for the character
      *      associated with the key being used. The default is 0.
      */
-    function simulateKeyEvent(target /*:HTMLElement*/, type /*:String*/, 
-                                 bubbles /*:Boolean*/,  cancelable /*:Boolean*/,    
+    function simulateKeyEvent(target /*:HTMLElement*/, type /*:String*/,
+                                 bubbles /*:Boolean*/,  cancelable /*:Boolean*/,
                                  view /*:Window*/,
-                                 ctrlKey /*:Boolean*/,    altKey /*:Boolean*/, 
-                                 shiftKey /*:Boolean*/,   metaKey /*:Boolean*/, 
-                                 keyCode /*:int*/,        charCode /*:int*/) /*:Void*/                             
+                                 ctrlKey /*:Boolean*/,    altKey /*:Boolean*/,
+                                 shiftKey /*:Boolean*/,   metaKey /*:Boolean*/,
+                                 keyCode /*:int*/,        charCode /*:int*/) /*:Void*/
     {
-        //check target    
+        //check target
         if (!target){
             throw new Error("simulateKeyEvent(): Invalid target.");
         }
-        
+
         //check event type
         if (typeof type == "string"){
             type = type.toLowerCase();
@@ -7278,7 +7277,7 @@ YUITest.Event = (function() {
         } else {
             throw new Error("simulateKeyEvent(): Event type must be a string.");
         }
-        
+
         //setup default values
         if (typeof bubbles != "boolean"){
             bubbles = true; //all key events bubble
@@ -7305,20 +7304,20 @@ YUITest.Event = (function() {
             keyCode = 0;
         }
         if (typeof charCode != "number"){
-            charCode = 0; 
+            charCode = 0;
         }
 
         //try to create a mouse event
         var customEvent = null;
-            
+
         //check for DOM-compliant browsers first
         if (typeof document.createEvent == "function"){
-        
+
             try {
-                
+
                 //try to create key event
                 customEvent = document.createEvent("KeyEvents");
-                
+
                 /*
                  * Interesting problem: Firefox implemented a non-standard
                  * version of initKeyEvent() based on DOM Level 2 specs.
@@ -7329,12 +7328,12 @@ YUITest.Event = (function() {
                  */
                 // @TODO: Decipher between Firefox's implementation and a correct one.
                 customEvent.initKeyEvent(type, bubbles, cancelable, view, ctrlKey,
-                    altKey, shiftKey, metaKey, keyCode, charCode);       
-                
+                    altKey, shiftKey, metaKey, keyCode, charCode);
+
             } catch (ex){
 
                 /*
-                 * If it got here, that means key events aren't officially supported. 
+                 * If it got here, that means key events aren't officially supported.
                  * Safari/WebKit is a real problem now. WebKit 522 won't let you
                  * set keyCode, charCode, or other properties if you use a
                  * UIEvent, so we first must try to create a generic event. The
@@ -7364,19 +7363,19 @@ YUITest.Event = (function() {
                     customEvent.metaKey = metaKey;
                     customEvent.keyCode = keyCode;
                     customEvent.charCode = charCode;
-          
-                }          
-             
+
+                }
+
             }
-            
+
             //fire the event
             target.dispatchEvent(customEvent);
 
         } else if (typeof document.createEventObject != "undefined"){ //IE
-        
+
             //create an IE event object
             customEvent = document.createEventObject();
-            
+
             //assign available properties
             customEvent.bubbles = bubbles;
             customEvent.cancelable = cancelable;
@@ -7385,17 +7384,17 @@ YUITest.Event = (function() {
             customEvent.altKey = altKey;
             customEvent.shiftKey = shiftKey;
             customEvent.metaKey = metaKey;
-            
+
             /*
              * IE doesn't support charCode explicitly. CharCode should
              * take precedence over any keyCode value for accurate
              * representation.
              */
             customEvent.keyCode = (charCode > 0) ? charCode : keyCode;
-            
+
             //fire the event
-            target.fireEvent("on" + type, customEvent);  
-                    
+            target.fireEvent("on" + type, customEvent);
+
         } else {
             throw new Error("simulateKeyEvent(): No event simulation framework present.");
         }
@@ -7419,8 +7418,8 @@ YUITest.Event = (function() {
      *      default. The default is true.
      * @param {Boolean} cancelable (Optional) Indicates if the event can be
      *      canceled using preventDefault(). DOM Level 2 specifies that all
-     *      mouse events except mousemove can be cancelled. The default 
-     *      is true for all events except mousemove, for which the default 
+     *      mouse events except mousemove can be cancelled. The default
+     *      is true for all events except mousemove, for which the default
      *      is false.
      * @param {Window} view (Optional) The view containing the target. This is
      *      typically the window object. The default is window.
@@ -7452,25 +7451,25 @@ YUITest.Event = (function() {
      *      events, this is the element that the mouse has moved from. This
      *      argument is ignored for all other events. The default is null.
      */
-    function simulateMouseEvent(target /*:HTMLElement*/, type /*:String*/, 
-                                   bubbles /*:Boolean*/,  cancelable /*:Boolean*/,    
-                                   view /*:Window*/,        detail /*:int*/, 
-                                   screenX /*:int*/,        screenY /*:int*/, 
-                                   clientX /*:int*/,        clientY /*:int*/,       
-                                   ctrlKey /*:Boolean*/,    altKey /*:Boolean*/, 
-                                   shiftKey /*:Boolean*/,   metaKey /*:Boolean*/, 
+    function simulateMouseEvent(target /*:HTMLElement*/, type /*:String*/,
+                                   bubbles /*:Boolean*/,  cancelable /*:Boolean*/,
+                                   view /*:Window*/,        detail /*:int*/,
+                                   screenX /*:int*/,        screenY /*:int*/,
+                                   clientX /*:int*/,        clientY /*:int*/,
+                                   ctrlKey /*:Boolean*/,    altKey /*:Boolean*/,
+                                   shiftKey /*:Boolean*/,   metaKey /*:Boolean*/,
                                    button /*:int*/,         relatedTarget /*:HTMLElement*/) /*:Void*/
     {
-        
-        //check target   
+
+        //check target
         if (!target){
             throw new Error("simulateMouseEvent(): Invalid target.");
         }
-        
+
         //check event type
         if (typeof type == "string"){
             type = type.toLowerCase();
-            
+
             //make sure it's a supported mouse event
             if (!mouseEvents[type]){
                 throw new Error("simulateMouseEvent(): Event type '" + type + "' not supported.");
@@ -7478,7 +7477,7 @@ YUITest.Event = (function() {
         } else {
             throw new Error("simulateMouseEvent(): Event type must be a string.");
         }
-        
+
         //setup default values
         if (typeof bubbles != "boolean"){
             bubbles = true; //all mouse events bubble
@@ -7493,16 +7492,16 @@ YUITest.Event = (function() {
             detail = 1;  //number of mouse clicks must be at least one
         }
         if (typeof screenX != "number"){
-            screenX = 0; 
+            screenX = 0;
         }
         if (typeof screenY != "number"){
-            screenY = 0; 
+            screenY = 0;
         }
         if (typeof clientX != "number"){
-            clientX = 0; 
+            clientX = 0;
         }
         if (typeof clientY != "number"){
-            clientY = 0; 
+            clientY = 0;
         }
         if (typeof ctrlKey != "boolean"){
             ctrlKey = false;
@@ -7517,29 +7516,29 @@ YUITest.Event = (function() {
             metaKey = false;
         }
         if (typeof button != "number"){
-            button = 0; 
+            button = 0;
         }
-        
+
         if (!relatedTarget){
             relatedTarget = null;
         }
 
         //try to create a mouse event
         var customEvent /*:MouseEvent*/ = null;
-            
+
         //check for DOM-compliant browsers first
         if (typeof document.createEvent == "function"){
-        
+
             customEvent = document.createEvent("MouseEvents");
-        
+
             //Safari 2.x (WebKit 418) still doesn't implement initMouseEvent()
             if (customEvent.initMouseEvent){
                 customEvent.initMouseEvent(type, bubbles, cancelable, view, detail,
-                                     screenX, screenY, clientX, clientY, 
-                                     ctrlKey, altKey, shiftKey, metaKey, 
+                                     screenX, screenY, clientX, clientY,
+                                     ctrlKey, altKey, shiftKey, metaKey,
                                      button, relatedTarget);
             } else { //Safari
-            
+
                 //the closest thing available in Safari 2.x is UIEvents
                 customEvent = document.createEvent("UIEvents");
                 customEvent.initEvent(type, bubbles, cancelable);
@@ -7556,7 +7555,7 @@ YUITest.Event = (function() {
                 customEvent.button = button;
                 customEvent.relatedTarget = relatedTarget;
             }
-            
+
             /*
              * Check to see if relatedTarget has been assigned. Firefox
              * versions less than 2.0 don't allow it to be assigned via
@@ -7573,15 +7572,15 @@ YUITest.Event = (function() {
                     customEvent.fromElement = relatedTarget;
                 }
             }
-            
+
             //fire the event
             target.dispatchEvent(customEvent);
 
         } else if (typeof document.createEventObject != "undefined"){ //IE
-        
+
             //create an IE event object
             customEvent = document.createEventObject();
-            
+
             //assign available properties
             customEvent.bubbles = bubbles;
             customEvent.cancelable = cancelable;
@@ -7608,8 +7607,8 @@ YUITest.Event = (function() {
                     //leave as is
                     break;
                 default:
-                    customEvent.button = 0;                    
-            }    
+                    customEvent.button = 0;
+            }
 
             /*
              * Have to use relatedTarget because IE won't allow assignment
@@ -7617,10 +7616,10 @@ YUITest.Event = (function() {
              * YAHOO.util.customEvent.getRelatedTarget() functional.
              */
             customEvent.relatedTarget = relatedTarget;
-            
+
             //fire the event
             target.fireEvent("on" + type, customEvent);
-                    
+
         } else {
             throw new Error("simulateMouseEvent(): No event simulation framework present.");
         }
@@ -7644,28 +7643,28 @@ YUITest.Event = (function() {
      *      default. The default is true.
      * @param {Boolean} cancelable (Optional) Indicates if the event can be
      *      canceled using preventDefault(). DOM Level 2 specifies that all
-     *      mouse events except mousemove can be cancelled. The default 
-     *      is true for all events except mousemove, for which the default 
+     *      mouse events except mousemove can be cancelled. The default
+     *      is true for all events except mousemove, for which the default
      *      is false.
      * @param {Window} view (Optional) The view containing the target. This is
      *      typically the window object. The default is window.
      * @param {int} detail (Optional) The number of times the mouse button has
      *      been used. The default value is 1.
      */
-    function simulateUIEvent(target /*:HTMLElement*/, type /*:String*/, 
-                                   bubbles /*:Boolean*/,  cancelable /*:Boolean*/,    
+    function simulateUIEvent(target /*:HTMLElement*/, type /*:String*/,
+                                   bubbles /*:Boolean*/,  cancelable /*:Boolean*/,
                                    view /*:Window*/,        detail /*:int*/) /*:Void*/
     {
-        
-        //check target   
+
+        //check target
         if (!target){
             throw new Error("simulateUIEvent(): Invalid target.");
         }
-        
+
         //check event type
         if (typeof type == "string"){
             type = type.toLowerCase();
-            
+
             //make sure it's a supported mouse event
             if (!uiEvents[type]){
                 throw new Error("simulateUIEvent(): Event type '" + type + "' not supported.");
@@ -7673,11 +7672,11 @@ YUITest.Event = (function() {
         } else {
             throw new Error("simulateUIEvent(): Event type must be a string.");
         }
-        
+
         //try to create a mouse event
-        var customEvent = null;    
-        
-        
+        var customEvent = null;
+
+
         //setup default values
         if (typeof bubbles != "boolean"){
             bubbles = (type in bubbleEvents);  //not all events bubble
@@ -7691,22 +7690,22 @@ YUITest.Event = (function() {
         if (typeof detail != "number"){
             detail = 1;  //usually not used but defaulted to this
         }
-            
+
         //check for DOM-compliant browsers first
         if (typeof document.createEvent == "function"){
-        
+
             //just a generic UI Event object is needed
             customEvent = document.createEvent("UIEvents");
             customEvent.initUIEvent(type, bubbles, cancelable, view, detail);
-            
+
             //fire the event
             target.dispatchEvent(customEvent);
 
         } else if (typeof document.createEventObject != "undefined"){ //IE
-        
+
             //create an IE event object
             customEvent = document.createEventObject();
-            
+
             //assign available properties
             customEvent.bubbles = bubbles;
             customEvent.cancelable = cancelable;
@@ -7715,7 +7714,7 @@ YUITest.Event = (function() {
 
             //fire the event
             target.fireEvent("on" + type, customEvent);
-                    
+
         } else {
             throw new Error("simulateUIEvent(): No event simulation framework present.");
         }
@@ -7729,7 +7728,7 @@ YUITest.Event = (function() {
      * @static
      */
     object = {
-    
+
         /**
          * Simulates the event with the given name on a target.
          * @param {HTMLElement} target The DOM element that's the target of the event.
@@ -7743,21 +7742,21 @@ YUITest.Event = (function() {
         simulate: function(target, type, options){
 
             options = options || {};
-            
+
             if (mouseEvents[type]){
                 simulateMouseEvent(target, type, options.bubbles,
-                    options.cancelable, options.view, options.detail, options.screenX,        
+                    options.cancelable, options.view, options.detail, options.screenX,
                     options.screenY, options.clientX, options.clientY, options.ctrlKey,
-                    options.altKey, options.shiftKey, options.metaKey, options.button,         
-                    options.relatedTarget);        
+                    options.altKey, options.shiftKey, options.metaKey, options.button,
+                    options.relatedTarget);
             } else if (keyEvents[type]){
                 simulateKeyEvent(target, type, options.bubbles,
                     options.cancelable, options.view, options.ctrlKey,
-                    options.altKey, options.shiftKey, options.metaKey, 
-                    options.keyCode, options.charCode);   
+                    options.altKey, options.shiftKey, options.metaKey,
+                    options.keyCode, options.charCode);
             } else if (uiEvents[type]){
                 simulateUIEvent(target, type, options.bubbles,
-                    options.cancelable, options.view, options.detail);        
+                    options.cancelable, options.view, options.detail);
              } else {
                 throw new Error("simulate(): Event '" + type + "' can't be simulated.");
             }
@@ -7771,9 +7770,9 @@ YUITest.Event = (function() {
                 return function(target, options){
                     options = options || {};
                     simulateMouseEvent(target, type, options.bubbles,
-                        options.cancelable, options.view, options.detail, options.screenX,        
+                        options.cancelable, options.view, options.detail, options.screenX,
                         options.screenY, options.clientX, options.clientY, options.ctrlKey,
-                        options.altKey, options.shiftKey, options.metaKey, options.button,         
+                        options.altKey, options.shiftKey, options.metaKey, options.button,
                         options.relatedTarget);
                 };
             })(prop);
@@ -7788,7 +7787,7 @@ YUITest.Event = (function() {
                     options = options || {};
                     simulateKeyEvent(target, type, options.bubbles,
                         options.cancelable, options.view, options.ctrlKey,
-                        options.altKey, options.shiftKey, options.metaKey, 
+                        options.altKey, options.shiftKey, options.metaKey,
                         options.keyCode, options.charCode);
                 };
             })(prop);
@@ -7802,7 +7801,7 @@ YUITest.Event = (function() {
                 return function(target, options){
                     options = options || {};
                     simulateUIEvent(target, type, options.bubbles,
-                        options.cancelable, options.view, options.detail); 
+                        options.cancelable, options.view, options.detail);
                 };
             })(prop);
         }
@@ -7812,7 +7811,7 @@ YUITest.Event = (function() {
 
 })();
 
-    
+
     /**
      * An object capable of sending test results to a server.
      * @param {String} url The URL to submit the results to.
@@ -7823,21 +7822,21 @@ YUITest.Event = (function() {
      * @class Reporter
      */
     YUITest.Reporter = function(url, format) {
-    
+
         /**
          * The URL to submit the data to.
          * @type String
          * @property url
          */
         this.url = url;
-    
+
         /**
          * The formatting function to call when submitting the data.
          * @type Function
          * @property format
          */
         this.format = format || YUITest.TestFormat.XML;
-    
+
         /**
          * Extra fields to submit with the request.
          * @type Object
@@ -7845,7 +7844,7 @@ YUITest.Event = (function() {
          * @private
          */
         this._fields = new Object();
-        
+
         /**
          * The form element used to submit the results.
          * @type HTMLFormElement
@@ -7853,7 +7852,7 @@ YUITest.Event = (function() {
          * @private
          */
         this._form = null;
-    
+
         /**
          * Iframe used as a target for form submission.
          * @type HTMLIFrameElement
@@ -7862,12 +7861,12 @@ YUITest.Event = (function() {
          */
         this._iframe = null;
     };
-    
+
     YUITest.Reporter.prototype = {
-    
+
         //restore missing constructor
         constructor: YUITest.Reporter,
-    
+
         /**
          * Adds a field to the form that submits the results.
          * @param {String} name The name of the field.
@@ -7876,9 +7875,9 @@ YUITest.Event = (function() {
          * @method addField
          */
         addField : function (name, value){
-            this._fields[name] = value;    
+            this._fields[name] = value;
         },
-        
+
         /**
          * Removes all previous defined fields.
          * @return {Void}
@@ -7887,7 +7886,7 @@ YUITest.Event = (function() {
         clearFields : function(){
             this._fields = new Object();
         },
-    
+
         /**
          * Cleans up the memory associated with the TestReporter, removing DOM elements
          * that were created.
@@ -7898,14 +7897,14 @@ YUITest.Event = (function() {
             if (this._form){
                 this._form.parentNode.removeChild(this._form);
                 this._form = null;
-            }        
+            }
             if (this._iframe){
                 this._iframe.parentNode.removeChild(this._iframe);
                 this._iframe = null;
             }
             this._fields = null;
         },
-    
+
         /**
          * Sends the report to the server.
          * @param {Object} results The results object created by TestRunner.
@@ -7913,7 +7912,7 @@ YUITest.Event = (function() {
          * @method report
          */
         report : function(results){
-        
+
             //if the form hasn't been created yet, create it
             if (!this._form){
                 this._form = document.createElement("form");
@@ -7922,7 +7921,7 @@ YUITest.Event = (function() {
                 this._form.style.position = "absolute";
                 this._form.style.top = 0;
                 document.body.appendChild(this._form);
-            
+
                 //IE won't let you assign a name using the DOM, must do it the hacky way
                 try {
                     this._iframe = document.createElement("<iframe name=\"yuiTestTarget\" />");
@@ -7930,29 +7929,29 @@ YUITest.Event = (function() {
                     this._iframe = document.createElement("iframe");
                     this._iframe.name = "yuiTestTarget";
                 }
-    
+
                 this._iframe.src = "javascript:false";
                 this._iframe.style.visibility = "hidden";
                 this._iframe.style.position = "absolute";
                 this._iframe.style.top = 0;
                 document.body.appendChild(this._iframe);
-    
+
                 this._form.target = "yuiTestTarget";
             }
-    
+
             //set the form's action
             this._form.action = this.url;
-        
+
             //remove any existing fields
             while(this._form.hasChildNodes()){
                 this._form.removeChild(this._form.lastChild);
             }
-            
+
             //create default fields
             this._fields.results = this.format(results);
             this._fields.useragent = navigator.userAgent;
             this._fields.timestamp = (new Date()).toLocaleString();
-    
+
             //add fields to the form
             for (var prop in this._fields){
                 var value = this._fields[prop];
@@ -7964,18 +7963,18 @@ YUITest.Event = (function() {
                     this._form.appendChild(input);
                 }
             }
-    
+
             //remove default fields
             delete this._fields.results;
             delete this._fields.useragent;
             delete this._fields.timestamp;
-            
+
             if (arguments[1] !== false){
                 this._form.submit();
             }
-        
+
         }
-    
+
     };
 
 
@@ -8026,8 +8025,8 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
     //-------------------------------------------------------------------------
     // Private Properties
     //-------------------------------------------------------------------------
-    
-    
+
+
     /**
      * The URL of the page currently being executed.
      * @type String
@@ -8036,7 +8035,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @static
      */
     _curPage: null,
-    
+
     /**
      * The frame used to load and run tests.
      * @type Window
@@ -8045,7 +8044,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @static
      */
     _frame: null,
-    
+
     /**
      * The timeout ID for the next iteration through the tests.
      * @type int
@@ -8054,7 +8053,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @static
      */
     _timeoutId: 0,
-    
+
     /**
      * Array of pages to load.
      * @type String[]
@@ -8063,7 +8062,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @static
      */
     _pages: [],
-    
+
     /**
      * Aggregated results
      * @type Object
@@ -8072,11 +8071,11 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @static
      */
     _results: null,
-    
+
     //-------------------------------------------------------------------------
     // Private Methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * Handles TestRunner.COMPLETE_EVENT, storing the results and beginning
      * the loop again.
@@ -8092,14 +8091,14 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             page: this._curPage,
             results: data.results
         });
-    
+
         //save results
         //this._results[this.curPage] = data.results;
-        
+
         //process 'em
         this._processResults(this._curPage, data.results);
-        
-    
+
+
         //if there's more to do, set a timeout to begin again
         if (this._pages.length){
             this._timeoutId = setTimeout(function(){
@@ -8109,7 +8108,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             this.fire(this.TEST_MANAGER_COMPLETE_EVENT, this._results);
         }
     },
-    
+
     /**
      * Processes the results of a test page run, outputting log messages
      * for failed tests.
@@ -8121,25 +8120,25 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
     _processResults : function (page, results){
 
         var r = this._results;
-        
+
         r.passed += results.passed;
         r.failed += results.failed;
         r.ignored += results.ignored;
         r.total += results.total;
         r.duration += results.duration;
-        
+
         if (results.failed){
             r.failedPages.push(page);
         } else {
             r.passedPages.push(page);
         }
-        
+
         results.name = page;
         results.type = "page";
-        
+
         r[page] = results;
     },
-    
+
     /**
      * Loads the next test page into the iframe.
      * @return {Void}
@@ -8148,22 +8147,22 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
      * @private
      */
     _run : function () /*:Void*/ {
-    
+
         //set the current page
         this._curPage = this._pages.shift();
 
         this.fire(this.TEST_PAGE_BEGIN_EVENT, this._curPage);
-        
+
         //load the frame - destroy history in case there are other iframes that
         //need testing
         this._frame.location.replace(this._curPage);
-    
+
     },
-        
+
     //-------------------------------------------------------------------------
     // Public Methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * Signals that a test page has been loaded. This should be called from
      * within the test page itself to notify the TestManager that it is ready.
@@ -8175,22 +8174,22 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
         if (parent.YUITest.PageManager !== this){
             parent.YUITest.PageManager.load();
         } else {
-            
+
             if (this._frame) {
                 //assign event handling
                 var TestRunner = this._frame.YUITest.TestRunner;
 
                 TestRunner.subscribe(TestRunner.COMPLETE_EVENT, this._handleTestRunnerComplete, this, true);
-                
+
                 //run it
                 TestRunner.run();
             }
         }
     },
-    
+
     /**
      * Sets the pages to be loaded.
-     * @param {String[]} pages An array of URLs to load.     
+     * @param {String[]} pages An array of URLs to load.
      * @return {Void}
      * @method setPages
      * @static
@@ -8198,7 +8197,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
     setPages : function (pages /*:String[]*/) /*:Void*/ {
         this._pages = pages;
     },
-    
+
     /**
      * Begins the process of running the tests.
      * @return {Void}
@@ -8215,7 +8214,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @param curPage {string} the page being loaded
              * @static
              */
-            
+
             /**
              * Fires when a test page is complete
              * @event testpagecomplete
@@ -8223,13 +8222,13 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * page that was loaded, and the test suite results
              * @static
              */
-            
+
             /**
              * Fires when the test manager starts running all test pages
              * @event testmanagerbegin
              * @static
              */
-            
+
             /**
              * Fires when the test manager finishes running all test pages.  External
              * test runners should subscribe to this event in order to get the
@@ -8240,7 +8239,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              *              page_results: {} }
              * @static
              */
-            
+
             //create iframe if not already available
             if (!this._frame){
                 var frame /*:HTMLElement*/ = document.createElement("iframe");
@@ -8256,7 +8255,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
 
         // reset the results cache
         this._results = {
-        
+
             passed: 0,
             failed: 0,
             ignored: 0,
@@ -8285,7 +8284,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
 
         this.fire(this.TEST_MANAGER_BEGIN_EVENT, null);
         this._run();
-    
+
     },
 
     /**
@@ -8300,7 +8299,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
 
 });
 
-    
+
     /**
      * Runs test suites and test cases, providing events to allowing for the
      * interpretation of test results.
@@ -8320,7 +8319,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
         function inGroups(testGroups, filter){
             if (!filter.length){
                 return true;
-            } else {                
+            } else {
                 if (testGroups){
                     for (var i=0, len=testGroups.length; i < len; i++){
                         if (filter.indexOf("," + testGroups[i] + ",") > -1){
@@ -8331,7 +8330,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 return false;
             }
         }
-    
+
         /**
          * A node in the test tree structure. May represent a TestSuite, TestCase, or
          * test function.
@@ -8341,49 +8340,49 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
          * @private
          */
         function TestNode(testObject){
-        
+
             /**
              * The TestSuite, TestCase, or test function represented by this node.
              * @type Variant
              * @property testObject
              */
             this.testObject = testObject;
-            
+
             /**
              * Pointer to this node's first child.
              * @type TestNode
              * @property firstChild
-             */        
+             */
             this.firstChild = null;
-            
+
             /**
              * Pointer to this node's last child.
              * @type TestNode
              * @property lastChild
-             */        
+             */
             this.lastChild = null;
-            
+
             /**
              * Pointer to this node's parent.
              * @type TestNode
              * @property parent
-             */        
-            this.parent = null; 
-       
+             */
+            this.parent = null;
+
             /**
              * Pointer to this node's next sibling.
              * @type TestNode
              * @property next
-             */        
+             */
             this.next = null;
-            
+
             /**
              * Test results for this test object.
              * @type object
              * @property results
-             */                
+             */
             this.results = new YUITest.Results();
-            
+
             //initialize results
             if (testObject instanceof YUITest.TestSuite){
                 this.results.type = "testsuite";
@@ -8392,11 +8391,11 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 this.results.type = "testcase";
                 this.results.name = testObject.name;
             }
-           
+
         }
-        
+
         TestNode.prototype = {
-        
+
             /**
              * Appends a new test object (TestSuite, TestCase, or test function name) as a child
              * of this node.
@@ -8413,9 +8412,9 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 }
                 node.parent = this;
                 return node;
-            }       
+            }
         };
-    
+
         /**
          * Runs test suites and test cases, providing events to allowing for the
          * interpretation of test results.
@@ -8424,10 +8423,10 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
          * @static
          */
         function TestRunner(){
-        
+
             //inherit from EventTarget
             YUITest.EventTarget.call(this);
-            
+
             /**
              * Suite on which to attach all TestSuites and TestCases to be run.
              * @type YUITest.TestSuite
@@ -8435,8 +8434,8 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              * @private
              */
-            this.masterSuite = new YUITest.TestSuite("yuitests" + (new Date()).getTime());        
-    
+            this.masterSuite = new YUITest.TestSuite("yuitests" + (new Date()).getTime());
+
             /**
              * Pointer to the current node in the test tree.
              * @type TestNode
@@ -8445,7 +8444,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._cur = null;
-            
+
             /**
              * Pointer to the root node in the test tree.
              * @type TestNode
@@ -8454,7 +8453,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._root = null;
-            
+
             /**
              * Indicates if the TestRunner will log events or not.
              * @type Boolean
@@ -8463,7 +8462,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._log = true;
-            
+
             /**
              * Indicates if the TestRunner is waiting as a result of
              * wait() being called.
@@ -8473,7 +8472,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._waiting = false;
-            
+
             /**
              * Indicates if the TestRunner is currently running tests.
              * @type Boolean
@@ -8482,7 +8481,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._running = false;
-            
+
             /**
              * Holds copy of the results object generated when all tests are
              * complete.
@@ -8491,8 +8490,8 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @property _lastResults
              * @static
              */
-            this._lastResults = null;       
-            
+            this._lastResults = null;
+
             /**
              * Data object that is passed around from method to method.
              * @type Object
@@ -8501,7 +8500,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             this._context = null;
-            
+
             /**
              * The list of test groups to run. The list is represented
              * by a comma delimited string with commas at the start and
@@ -8513,93 +8512,93 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              */
             this._groups = "";
         }
-        
+
         TestRunner.prototype = YUITest.Util.mix(new YUITest.EventTarget(), {
-        
+
             //restore prototype
             constructor: YUITest.TestRunner,
-        
+
             //-------------------------------------------------------------------------
             // Constants
             //-------------------------------------------------------------------------
-             
+
             /**
-             * Fires when a test case is opened but before the first 
+             * Fires when a test case is opened but before the first
              * test is executed.
              * @event testcasebegin
              * @static
-             */         
+             */
             TEST_CASE_BEGIN_EVENT : "testcasebegin",
-            
+
             /**
              * Fires when all tests in a test case have been executed.
              * @event testcasecomplete
              * @static
-             */        
+             */
             TEST_CASE_COMPLETE_EVENT : "testcasecomplete",
-            
+
             /**
-             * Fires when a test suite is opened but before the first 
+             * Fires when a test suite is opened but before the first
              * test is executed.
              * @event testsuitebegin
              * @static
-             */        
+             */
             TEST_SUITE_BEGIN_EVENT : "testsuitebegin",
-            
+
             /**
              * Fires when all test cases in a test suite have been
              * completed.
              * @event testsuitecomplete
              * @static
-             */        
+             */
             TEST_SUITE_COMPLETE_EVENT : "testsuitecomplete",
-            
+
             /**
              * Fires when a test has passed.
              * @event pass
              * @static
-             */        
+             */
             TEST_PASS_EVENT : "pass",
-            
+
             /**
              * Fires when a test has failed.
              * @event fail
              * @static
-             */        
+             */
             TEST_FAIL_EVENT : "fail",
-            
+
             /**
              * Fires when a non-test method has an error.
              * @event error
              * @static
-             */        
+             */
             ERROR_EVENT : "error",
-            
+
             /**
              * Fires when a test has been ignored.
              * @event ignore
              * @static
-             */        
+             */
             TEST_IGNORE_EVENT : "ignore",
-            
+
             /**
              * Fires when all test suites and test cases have been completed.
              * @event complete
              * @static
-             */        
+             */
             COMPLETE_EVENT : "complete",
-            
+
             /**
              * Fires when the run() method is called.
              * @event begin
              * @static
-             */        
-            BEGIN_EVENT : "begin",                           
+             */
+            BEGIN_EVENT : "begin",
 
             //-------------------------------------------------------------------------
             // Test Tree-Related Methods
             //-------------------------------------------------------------------------
-    
+
             /**
              * Adds a test case to the test tree as a child of the specified node.
              * @param {TestNode} parentNode The node to add the test case to as a child.
@@ -8610,21 +8609,21 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @method _addTestCaseToTestTree
              */
            _addTestCaseToTestTree : function (parentNode, testCase){
-                
+
                 //add the test suite
                 var node = parentNode.appendChild(testCase),
                     prop,
                     testName;
-                
+
                 //iterate over the items in the test case
                 for (prop in testCase){
                     if ((prop.indexOf("test") === 0 || prop.indexOf(" ") > -1) && typeof testCase[prop] == "function"){
                         node.appendChild(prop);
                     }
                 }
-             
+
             },
-            
+
             /**
              * Adds a test suite to the test tree as a child of the specified node.
              * @param {TestNode} parentNode The node to add the test suite to as a child.
@@ -8635,20 +8634,20 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @method _addTestSuiteToTestTree
              */
             _addTestSuiteToTestTree : function (parentNode, testSuite) {
-                
+
                 //add the test suite
                 var node = parentNode.appendChild(testSuite);
-                
+
                 //iterate over the items in the master suite
                 for (var i=0; i < testSuite.items.length; i++){
                     if (testSuite.items[i] instanceof YUITest.TestSuite) {
                         this._addTestSuiteToTestTree(node, testSuite.items[i]);
                     } else if (testSuite.items[i] instanceof YUITest.TestCase) {
                         this._addTestCaseToTestTree(node, testSuite.items[i]);
-                    }                   
-                }            
+                    }
+                }
             },
-            
+
             /**
              * Builds the test tree based on items in the master suite. The tree is a hierarchical
              * representation of the test suites, test cases, and test functions. The resulting tree
@@ -8659,27 +8658,27 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @method _buildTestTree
              */
             _buildTestTree : function () {
-            
+
                 this._root = new TestNode(this.masterSuite);
                 //this._cur = this._root;
-                
+
                 //iterate over the items in the master suite
                 for (var i=0; i < this.masterSuite.items.length; i++){
                     if (this.masterSuite.items[i] instanceof YUITest.TestSuite) {
                         this._addTestSuiteToTestTree(this._root, this.masterSuite.items[i]);
                     } else if (this.masterSuite.items[i] instanceof YUITest.TestCase) {
                         this._addTestCaseToTestTree(this._root, this.masterSuite.items[i]);
-                    }                   
-                }            
-            
-            }, 
-        
+                    }
+                }
+
+            },
+
             //-------------------------------------------------------------------------
             // Private Methods
             //-------------------------------------------------------------------------
-            
+
             /**
-             * Handles the completion of a test object's tests. Tallies test results 
+             * Handles the completion of a test object's tests. Tallies test results
              * from one level up to the next.
              * @param {TestNode} node The TestNode representing the test object.
              * @return {Void}
@@ -8688,15 +8687,15 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              */
             _handleTestObjectComplete : function (node) {
                 var parentNode;
-                
+
                 if (typeof node.testObject == "object" && node !== null){
                     parentNode = node.parent;
-                
+
                     if (parentNode){
-                        parentNode.results.include(node.results); 
+                        parentNode.results.include(node.results);
                         parentNode.results[node.testObject.name] = node.results;
                     }
-                
+
                     if (node.testObject instanceof YUITest.TestSuite){
                         this._execNonTestMethod(node, "tearDown", false);
                         node.results.duration = (new Date()) - node._start;
@@ -8705,14 +8704,14 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                         this._execNonTestMethod(node, "destroy", false);
                         node.results.duration = (new Date()) - node._start;
                         this.fire({ type: this.TEST_CASE_COMPLETE_EVENT, testCase: node.testObject, results: node.results});
-                    }      
-                } 
-            },                
-            
+                    }
+                }
+            },
+
             //-------------------------------------------------------------------------
             // Navigation Methods
             //-------------------------------------------------------------------------
-            
+
             /**
              * Retrieves the next node in the test tree.
              * @return {TestNode} The next node in the test tree or null if the end is reached.
@@ -8721,37 +8720,37 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @method _next
              */
             _next : function () {
-            
+
                 if (this._cur === null){
                     this._cur = this._root;
                 } else if (this._cur.firstChild) {
                     this._cur = this._cur.firstChild;
                 } else if (this._cur.next) {
-                    this._cur = this._cur.next;            
+                    this._cur = this._cur.next;
                 } else {
                     while (this._cur && !this._cur.next && this._cur !== this._root){
                         this._handleTestObjectComplete(this._cur);
                         this._cur = this._cur.parent;
                     }
-                    
-                    this._handleTestObjectComplete(this._cur);               
-                        
+
+                    this._handleTestObjectComplete(this._cur);
+
                     if (this._cur == this._root){
                         this._cur.results.type = "report";
                         this._cur.results.timestamp = (new Date()).toLocaleString();
-                        this._cur.results.duration = (new Date()) - this._cur._start;   
+                        this._cur.results.duration = (new Date()) - this._cur._start;
                         this._lastResults = this._cur.results;
-                        this._running = false;                         
+                        this._running = false;
                         this.fire({ type: this.COMPLETE_EVENT, results: this._lastResults});
                         this._cur = null;
                     } else {
-                        this._cur = this._cur.next;                
+                        this._cur = this._cur.next;
                     }
                 }
-            
+
                 return this._cur;
             },
-            
+
             /**
              * Executes a non-test method (init, setUp, tearDown, destroy)
              * and traps an errors. If an error occurs, an error event is
@@ -8782,13 +8781,13 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                     } else {
                         event.testSuite = testSuite;
                     }
-                    
+
                     this.fire(event);
-                }  
+                }
 
                 return false;
             },
-            
+
             /**
              * Runs a test case or test suite, returning the results.
              * @param {YUITest.TestCase|YUITest.TestSuite} testObject The test case or test suite to run.
@@ -8798,23 +8797,23 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             _run : function () {
-            
+
                 //flag to indicate if the TestRunner should wait before continuing
                 var shouldWait = false;
-                
+
                 //get the next test node
                 var node = this._next();
-                
+
                 if (node !== null) {
-                
+
                     //set flag to say the testrunner is running
                     this._running = true;
-                    
+
                     //eliminate last results
-                    this._lastResult = null;                  
-                
+                    this._lastResult = null;
+
                     var testObject = node.testObject;
-                    
+
                     //figure out what to do
                     if (typeof testObject == "object" && testObject !== null){
                         if (testObject instanceof YUITest.TestSuite){
@@ -8824,7 +8823,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                         } else if (testObject instanceof YUITest.TestCase){
                             this.fire({ type: this.TEST_CASE_BEGIN_EVENT, testCase: testObject });
                             node._start = new Date();
-                            
+
                             //regular or async init
                             /*try {
                                 if (testObject["async:init"]){
@@ -8841,9 +8840,9 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                                 return;
                             }
                         }
-                        
+
                         //some environments don't support setTimeout
-                        if (typeof setTimeout != "undefined"){                    
+                        if (typeof setTimeout != "undefined"){
                             setTimeout(function(){
                                 YUITest.TestRunner._run();
                             }, 0);
@@ -8853,18 +8852,18 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                     } else {
                         this._runTest(node);
                     }
-    
+
                 }
             },
-            
+
             _resumeTest : function (segment) {
-            
+
                 //get relevant information
-                var node = this._cur;                
-                
+                var node = this._cur;
+
                 //we know there's no more waiting now
                 this._waiting = false;
-                
+
                 //if there's no node, it probably means a wait() was called after resume()
                 if (!node){
                     //TODO: Handle in some way?
@@ -8872,10 +8871,10 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                     //this.fire("error", { testCase: "(unknown)", test: "(unknown)", error: new Error("wait() called after resume()")} );
                     return;
                 }
-                
+
                 var testName = node.testObject;
                 var testCase = node.parent.testObject;
-            
+
                 //cancel other waits if available
                 if (testCase.__yui_wait){
                     clearTimeout(testCase.__yui_wait);
@@ -8886,21 +8885,21 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 var shouldFail = testName.indexOf("fail:") === 0 ||
                                     (testCase._should.fail || {})[testName];
                 var shouldError = (testCase._should.error || {})[testName];
-                
+
                 //variable to hold whether or not the test failed
                 var failed = false;
                 var error = null;
-                    
+
                 //try the test
                 try {
-                
+
                     //run the test
-                    segment.call(testCase, this._context);                    
-                
+                    segment.call(testCase, this._context);
+
                     //if the test hasn't already failed and doesn't have any asserts...
                     if(YUITest.Assert._getCount() == 0){
                         throw new YUITest.AssertionError("Test has no asserts.");
-                    }                                                        
+                    }
                     //if it should fail, and it got here, then it's a fail because it didn't
                      else if (shouldFail){
                         error = new YUITest.ShouldFail();
@@ -8909,15 +8908,15 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                         error = new YUITest.ShouldError();
                         failed = true;
                     }
-                               
+
                 } catch (thrown){
 
                     //cancel any pending waits, the test already failed
                     if (testCase.__yui_wait){
                         clearTimeout(testCase.__yui_wait);
                         delete testCase.__yui_wait;
-                    }                    
-                
+                    }
+
                     //figure out what type of error it was
                     if (thrown instanceof YUITest.AssertionError) {
                         if (!shouldFail){
@@ -8925,10 +8924,10 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                             failed = true;
                         }
                     } else if (thrown instanceof YUITest.Wait){
-                    
+
                         if (typeof thrown.segment == "function"){
                             if (typeof thrown.delay == "number"){
-                            
+
                                 //some environments don't support setTimeout
                                 if (typeof setTimeout != "undefined"){
                                     testCase.__yui_wait = setTimeout(function(){
@@ -8940,79 +8939,79 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                                 }
                             }
                         }
-                        
+
                         return;
-                    
+
                     } else {
                         //first check to see if it should error
-                        if (!shouldError) {                        
+                        if (!shouldError) {
                             error = new YUITest.UnexpectedError(thrown);
                             failed = true;
                         } else {
                             //check to see what type of data we have
                             if (typeof shouldError == "string"){
-                                
+
                                 //if it's a string, check the error message
                                 if (thrown.message != shouldError){
                                     error = new YUITest.UnexpectedError(thrown);
-                                    failed = true;                                    
+                                    failed = true;
                                 }
                             } else if (typeof shouldError == "function"){
-                            
+
                                 //if it's a function, see if the error is an instance of it
                                 if (!(thrown instanceof shouldError)){
                                     error = new YUITest.UnexpectedError(thrown);
                                     failed = true;
                                 }
-                            
+
                             } else if (typeof shouldError == "object" && shouldError !== null){
-                            
+
                                 //if it's an object, check the instance and message
-                                if (!(thrown instanceof shouldError.constructor) || 
+                                if (!(thrown instanceof shouldError.constructor) ||
                                         thrown.message != shouldError.message){
                                     error = new YUITest.UnexpectedError(thrown);
-                                    failed = true;                                    
+                                    failed = true;
                                 }
-                            
+
                             }
-                        
+
                         }
                     }
-                    
+
                 }
-                
+
                 //fire appropriate event
                 if (failed) {
                     this.fire({ type: this.TEST_FAIL_EVENT, testCase: testCase, testName: testName, error: error });
                 } else {
                     this.fire({ type: this.TEST_PASS_EVENT, testCase: testCase, testName: testName });
                 }
-                
+
                 //run the tear down
                 this._execNonTestMethod(node.parent, "tearDown", false);
-                
+
                 //reset the assert count
                 YUITest.Assert._reset();
-                
+
                 //calculate duration
                 var duration = (new Date()) - node._start;
-                
+
                 //update results
-                node.parent.results[testName] = { 
+                node.parent.results[testName] = {
                     result: failed ? "fail" : "pass",
                     message: error ? error.getMessage() : "Test passed",
                     type: "test",
                     name: testName,
                     duration: duration
                 };
-                
+
                 if (failed){
                     node.parent.results.failed++;
                 } else {
                     node.parent.results.passed++;
                 }
                 node.parent.results.total++;
-    
+
                 //set timeout not supported in all environments
                 if (typeof setTimeout != "undefined"){
                     setTimeout(function(){
@@ -9021,9 +9020,9 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 } else {
                     this._run();
                 }
-            
+
             },
-            
+
             /**
              * Handles an error as if it occurred within the currently executing
              * test. This is for mock methods that may be called asynchronously
@@ -9038,17 +9037,17 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @static
              */
             _handleError: function(error){
-            
+
                 if (this._waiting){
                     this._resumeTest(function(){
                         throw error;
                     });
                 } else {
                     throw error;
-                }           
-            
+                }
+
             },
-                    
+
             /**
              * Runs a single test based on the data provided in the node.
              * @param {TestNode} node The TestNode representing the test to run.
@@ -9058,59 +9057,59 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              * @name _runTest
              */
             _runTest : function (node) {
-            
+
                 //get relevant information
                 var testName = node.testObject,
                     testCase = node.parent.testObject,
                     test = testCase[testName],
-                
+
                     //get the "should" test cases
                     shouldIgnore = testName.indexOf("ignore:") === 0 ||
                                     !inGroups(testCase.groups, this._groups) ||
                                     (testCase._should.ignore || {})[testName];   //deprecated
-                
+
                 //figure out if the test should be ignored or not
                 if (shouldIgnore){
-                
+
                     //update results
-                    node.parent.results[testName] = { 
+                    node.parent.results[testName] = {
                         result: "ignore",
                         message: "Test ignored",
                         type: "test",
                         name: testName.indexOf("ignore:") === 0 ? testName.substring(7) : testName
                     };
-                    
+
                     node.parent.results.ignored++;
                     node.parent.results.total++;
-                
+
                     this.fire({ type: this.TEST_IGNORE_EVENT,  testCase: testCase, testName: testName });
-                    
+
                     //some environments don't support setTimeout
-                    if (typeof setTimeout != "undefined"){                    
+                    if (typeof setTimeout != "undefined"){
                         setTimeout(function(){
                             YUITest.TestRunner._run();
-                        }, 0);              
+                        }, 0);
                     } else {
                         this._run();
                     }
-    
+
                 } else {
-                
+
                     //mark the start time
                     node._start = new Date();
-                
+
                     //run the setup
                     this._execNonTestMethod(node.parent, "setUp", false);
-                    
+
                     //now call the body of the test
-                    this._resumeTest(test);                
+                    this._resumeTest(test);
                 }
-    
-            },            
+
+            },
 
             //-------------------------------------------------------------------------
             // Misc Methods
-            //-------------------------------------------------------------------------   
+            //-------------------------------------------------------------------------
 
             /**
              * Retrieves the name of the current result set.
@@ -9119,7 +9118,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              */
             getName: function(){
                 return this.masterSuite.name;
-            },         
+            },
 
             /**
              * The name assigned to the master suite of the TestRunner. This is the name
@@ -9130,12 +9129,12 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
              */
             setName: function(name){
                 this.masterSuite.name = name;
-            },            
-            
+            },
+
             //-------------------------------------------------------------------------
             // Public Methods
-            //-------------------------------------------------------------------------   
-        
+            //-------------------------------------------------------------------------
+
             /**
              * Adds a test suite or test case to the list of test objects to run.
              * @param testObject Either a TestCase or a TestSuite that should be run.
@@ -9147,7 +9146,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 this.masterSuite.add(testObject);
                 return this;
             },
-            
+
             /**
              * Removes all test objects from the runner.
              * @return {Void}
@@ -9157,7 +9156,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             clear : function () {
                 this.masterSuite = new YUITest.TestSuite("yuitests" + (new Date()).getTime());
             },
-            
+
             /**
              * Indicates if the TestRunner is waiting for a test to resume
              * @return {Boolean} True if the TestRunner is waiting, false if not.
@@ -9167,7 +9166,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             isWaiting: function() {
                 return this._waiting;
             },
-            
+
             /**
              * Indicates that the TestRunner is busy running tests and therefore can't
              * be stopped and results cannot be gathered.
@@ -9177,12 +9176,12 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             isRunning: function(){
                 return this._running;
             },
-            
+
             /**
              * Returns the last complete results set from the TestRunner. Null is returned
              * if the TestRunner is running or no tests have been run.
              * @param {Function} format (Optional) A test format to return the results in.
-             * @return {Object|String} Either the results object or, if a test format is 
+             * @return {Object|String} Either the results object or, if a test format is
              *      passed as the argument, a string representing the results in a specific
              *      format.
              * @method getResults
@@ -9190,15 +9189,15 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             getResults: function(format){
                 if (!this._running && this._lastResults){
                     if (typeof format == "function"){
-                        return format(this._lastResults);                    
+                        return format(this._lastResults);
                     } else {
                         return this._lastResults;
                     }
                 } else {
                     return null;
                 }
-            },            
-            
+            },
+
             /**
              * Returns the coverage report for the files that have been executed.
              * This returns only coverage information for files that have been
@@ -9212,15 +9211,15 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             getCoverage: function(format){
                 if (!this._running && typeof _yuitest_coverage == "object"){
                     if (typeof format == "function"){
-                        return format(_yuitest_coverage);                    
+                        return format(_yuitest_coverage);
                     } else {
                         return _yuitest_coverage;
                     }
                 } else {
                     return null;
-                }            
+                }
             },
-            
+
             /**
              * Used to continue processing when a method marked with
              * "async:" is executed. This should not be used in test
@@ -9235,7 +9234,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                 var names   = arguments,
                     data    = this._context,
                     that    = this;
-                    
+
                 return function(){
                     for (var i=0; i < arguments.length; i++){
                         data[names[i]] = arguments[i];
@@ -9243,7 +9242,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                     that._run();
                 };
             },
-            
+
             /**
              * Resumes the TestRunner after wait() was called.
              * @param {Function} segment The function to run as the rest
@@ -9259,7 +9258,7 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
                     throw new Error("resume() called without wait().");
                 }
             },
-        
+
             /**
              * Runs the test suite.
              * @param {Object|Boolean} options (Optional) Options for the runner:
@@ -9273,38 +9272,36 @@ YUITest.PageManager = YUITest.Util.mix(new YUITest.EventTarget(), {
             run : function (options) {
 
                 options = options || {};
-                
-                //pointer to runner to avoid scope issues 
+
+                //pointer to runner to avoid scope issues
                 var runner  = YUITest.TestRunner,
                     oldMode = options.oldMode;
-                
-                
+
+
                 //if there's only one suite on the masterSuite, move it up
                 if (!oldMode && this.masterSuite.items.length == 1 && this.masterSuite.items[0] instanceof YUITest.TestSuite){
                     this.masterSuite = this.masterSuite.items[0];
-                }                
-                
+                }
+
                 //determine if there are any groups to filter on
                 runner._groups = (options.groups instanceof Array) ? "," + options.groups.join(",") + "," : "";
-                
+
                 //initialize the runner
                 runner._buildTestTree();
                 runner._context = {};
                 runner._root._start = new Date();
-                
+
                 //fire the begin event
                 runner.fire(runner.BEGIN_EVENT);
-           
+
                 //begin the testing
                 runner._run();
-            }    
+            }
         });
-        
+
         return new TestRunner();
-        
+
     }();
-
-
 
 /**
  * Main CSSLint object.
@@ -9320,7 +9317,7 @@ var CSSLint = (function(){
     //-------------------------------------------------------------------------
     // Rule Management
     //-------------------------------------------------------------------------
-        
+
     /**
      * Adds a new rule to the engine.
      * @param {Object} rule The rule to add.
@@ -9330,7 +9327,7 @@ var CSSLint = (function(){
         rules.push(rule);
         rules[rule.id] = rule;
     };
-    
+
     /**
      * Clears all rule from the engine.
      * @method clearRules
@@ -9342,48 +9339,49 @@ var CSSLint = (function(){
     //-------------------------------------------------------------------------
     // Verification
     //-------------------------------------------------------------------------
-    
+
     /**
      * Starts the verification process for the given CSS text.
      * @param {String} text The CSS text to verify.
-     * @param {Object} options (Optional) List of rules to apply. If null, then
+     * @param {Object} ruleset (Optional) List of rules to apply. If null, then
      *      all rules are used.
      * @return {Object} Results of the verification.
      * @method verify
      */
-    api.verify = function(text, options){
-    
+    api.verify = function(text, ruleset){
+
         var i       = 0,
             len     = rules.length,
             reporter,
             lines,
-            parser = new parserlib.css.Parser({ starHack: true, ieFilters: true, 
+            parser = new parserlib.css.Parser({ starHack: true, ieFilters: true,
                                                 underscoreHack: true, strict: false });
 
         lines = text.split(/\n\r?/g);
         reporter = new Reporter(lines);
-        
-        if (!options){												
+
+        if (!ruleset){
             while (i < len){
                 rules[i++].init(parser, reporter);
             }
         } else {
-            for (i in options){
-                if(options.hasOwnProperty(i)){
+            ruleset.errors = 1;       //always report parsing errors
+            for (i in ruleset){
+                if(ruleset.hasOwnProperty(i)){
                     if (rules[i]){
                         rules[i].init(parser, reporter);
                     }
                 }
             }
         }
-        
+
         //capture most horrible error type
         try {
             parser.parse(text);
         } catch (ex) {
             reporter.error("Fatal error, cannot continue: " + ex.message, ex.line, ex.col);
         }
-    
+
         return {
             messages    : reporter.messages,
             stats       : reporter.stats
@@ -9394,12 +9392,10 @@ var CSSLint = (function(){
     //-------------------------------------------------------------------------
     // Publish the API
     //-------------------------------------------------------------------------
-    
+
     return api;
 
 })();
-
-
 
 /**
  * An instance of Report is used to report results of the
@@ -9416,14 +9412,14 @@ function Reporter(lines){
      * @type String[]
      */
     this.messages = [];
-    
+
     /**
      * List of statistics being reported.
      * @property stats
      * @type String[]
      */
-    this.stats = [];   
-    
+    this.stats = [];
+
     /**
      * Lines of code being reported on. Used to provide contextual information
      * for messages.
@@ -9437,7 +9433,7 @@ Reporter.prototype = {
 
     //restore constructor
     constructor: Reporter,
-    
+
     /**
      * Report an error.
      * @param {String} message The message to store.
@@ -9456,7 +9452,7 @@ Reporter.prototype = {
             rule    : rule
         });
     },
-    
+
     /**
      * Report an warning.
      * @param {String} message The message to store.
@@ -9475,7 +9471,7 @@ Reporter.prototype = {
             rule    : rule
         });
     },
-    
+
     /**
      * Report some informational text.
      * @param {String} message The message to store.
@@ -9494,7 +9490,7 @@ Reporter.prototype = {
             rule    : rule
         });
     },
-    
+
     /**
      * Report some rollup error information.
      * @param {String} message The message to store.
@@ -9509,7 +9505,7 @@ Reporter.prototype = {
             rule    : rule
         });
     },
-    
+
     /**
      * Report some rollup warning information.
      * @param {String} message The message to store.
@@ -9524,7 +9520,7 @@ Reporter.prototype = {
             rule    : rule
         });
     },
-    
+
     /**
      * Report a statistic.
      * @param {String} name The name of the stat to store.
@@ -9550,13 +9546,13 @@ Reporter.prototype = {
  */
 function mix(reciever, supplier){
     var prop;
-    
+
     for (prop in supplier){
         if (supplier.hasOwnProperty(prop)){
             receiver[prop] = supplier[prop];
         }
     }
-    
+
     return prop;
 }
 
@@ -9587,8 +9583,8 @@ CSSLint.addRule({
     id: "adjoining-classes",
     name: "Adjoining Classes",
     desc: "Don't use adjoining classes.",
-    browsers: "IE6, IE7",
-    
+    browsers: "IE6",
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
@@ -9599,26 +9595,26 @@ CSSLint.addRule({
                 modifier,
                 classCount,
                 i, j, k;
-                
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
-                for (j=0; j < selector.parts.length; j++){  
+                for (j=0; j < selector.parts.length; j++){
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
                         classCount = 0;
                         for (k=0; k < part.modifiers.length; k++){
                             modifier = part.modifiers[k];
                             if (modifier.type == "class"){
-                                classCount++;                                
+                                classCount++;
                             }
                             if (classCount > 1){
                                 reporter.warn("Don't use adjoining classes.", part.line, part.col, rule);
                             }
                         }
-                    }                    
+                    }
                 }
             }
-        });     
+        });
     }
 
 });
@@ -9632,38 +9628,38 @@ CSSLint.addRule({
     name: "Box Model",
     desc: "Don't use width or height when using padding or border.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             widthProperties = {
                 border: 1,
                 "border-left": 1,
-                "border-right": 1,              
+                "border-right": 1,
                 padding: 1,
                 "padding-left": 1,
-                "padding-right": 1           
+                "padding-right": 1
             },
             heightProperties = {
                 border: 1,
                 "border-bottom": 1,
-                "border-top": 1,                
+                "border-top": 1,
                 padding: 1,
                 "padding-bottom": 1,
-                "padding-top": 1               
+                "padding-top": 1
             },
             properties;
-            
-        parser.addListener("startrule", function(event){
-            properties = {                
+
+        parser.addListener("startrule", function(){
+            properties = {
             };
         });
-    
+
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase();
             
-            if (heightProperties[name] || widthProperties){
-                if (event.value != "0"){
+            if (heightProperties[name] || widthProperties[name]){
+                if (!/^0\S*$/.test(event.value) && !(name == "border" && event.value == "none")){
                     properties[name] = { line: name.line, col: name.col };
                 }
             } else {
@@ -9673,23 +9669,23 @@ CSSLint.addRule({
             }
             
         });
-        
-        parser.addListener("endrule", function(event){
+
+        parser.addListener("endrule", function(){
             var prop;
             if (properties["height"]){
                 for (prop in heightProperties){
                     if (heightProperties.hasOwnProperty(prop) && properties[prop]){
                         reporter.warn("Broken box model: using height with " + prop + ".", properties[prop].line, properties[prop].col, rule);
                     }
-                }            
+                }
             }
-            
+
             if (properties["width"]){
                 for (prop in widthProperties){
                     if (widthProperties.hasOwnProperty(prop) && properties[prop]){
                         reporter.warn("Broken box model: using width with " + prop + ".", properties[prop].line, properties[prop].col, rule);
                     }
-                }    
+                }
             }
 
         });
@@ -9699,7 +9695,7 @@ CSSLint.addRule({
 /*
  * Rule: Certain properties don't play well with certain display values. 
  * - float should not be used with inline-block
- * - height, width, margin, padding, float should not be used with inline
+ * - height, width, margin-top, margin-bottom, float should not be used with inline
  * - vertical-align should not be used with block
  * - margin, float should not be used with table-*
  */
@@ -9710,11 +9706,11 @@ CSSLint.addRule({
     name: "Display Property Grouping",
     desc: "Certain properties shouldn't be used with certain display property values.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-   
+
         var propertiesToCheck = {
                 display: 1,
                 "float": "none",
@@ -9724,61 +9720,54 @@ CSSLint.addRule({
                 "margin-left": 1,
                 "margin-right": 1,
                 "margin-bottom": 1,
-                "margin-top": 1,                
+                "margin-top": 1,
                 padding: 1,
                 "padding-left": 1,
                 "padding-right": 1,
                 "padding-bottom": 1,
-                "padding-top": 1,                
+                "padding-top": 1,
                 "vertical-align": 1
             },
             properties;
-    
-        parser.addListener("startrule", function(event){
-            properties = {};            
-        });     
+
+        parser.addListener("startrule", function(){
+            properties = {};
+        });
 
         parser.addListener("property", function(event){
-            var name = event.property;
-            
+            var name = event.property.text.toLowerCase();
+
             if (propertiesToCheck[name]){
-                properties[name] = { value: event.value.text, line: name.line, col: name.col };
-            }        
-        });     
-        
-        parser.addListener("endrule", function(event){
-        
+                properties[name] = { value: event.value.text, line: name.line, col: name.col };                    
+            }
+        });
+
+        parser.addListener("endrule", function(){
+
             var display = properties.display ? properties.display.value : null;
             if (display){
                 switch(display){
-             
+
                     case "inline":
-                        //height, width, margin, padding, float should not be used with inline
+                        //height, width, margin-top, margin-bottom, float should not be used with inline
                         reportProperty("height", display);
                         reportProperty("width", display);
                         reportProperty("margin", display);
-                        reportProperty("margin-left", display);
-                        reportProperty("margin-right", display);
                         reportProperty("margin-top", display);
-                        reportProperty("margin-bottom", display);
-                        reportProperty("padding", display);
-                        reportProperty("padding-left", display);
-                        reportProperty("padding-right", display);
-                        reportProperty("padding-top", display);
-                        reportProperty("padding-bottom", display);                
+                        reportProperty("margin-bottom", display);              
                         reportProperty("float", display);
                         break;
-                        
+
                     case "block":
                         //vertical-align should not be used with block
                         reportProperty("vertical-align", display);
                         break;
-                        
+
                     case "inline-block":
                         //float should not be used with inline-block
                         reportProperty("float", display);
                         break;
-                        
+
                     default:
                         //margin, float should not be used with table
                         if (display.indexOf("table-") == 0){
@@ -9787,22 +9776,22 @@ CSSLint.addRule({
                             reportProperty("margin-right", display);
                             reportProperty("margin-top", display);
                             reportProperty("margin-bottom", display);
-                            reportProperty("float", display);                        
+                            reportProperty("float", display);
                         }
-                        
-                        //otherwise do nothing            
+
+                        //otherwise do nothing
                 }
             }
           
-        });     
-        
-        
+        });
+
+
         function reportProperty(name, display){
             if (properties[name]){
                 if (!(typeof propertiesToCheck[name] == "string") || properties[name].value.toLowerCase() != propertiesToCheck[name]){
                     reporter.warn(name + " can't be used with display: " + display + ".", properties[name].line, properties[name].col, rule);
                 }
-            }            
+            }
         }
     }
 
@@ -9817,26 +9806,26 @@ CSSLint.addRule({
     name: "Empty Rules",
     desc: "Rules without any properties specified should be removed.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
-            count = 0;    
-        
-        parser.addListener("startrule", function(event){
+            count = 0;
+
+        parser.addListener("startrule", function(){
             count=0;
         });
-        
-        parser.addListener("property", function(event){
+
+        parser.addListener("property", function(){
             count++;
         });
-        
+
         parser.addListener("endrule", function(event){
             var selectors = event.selectors;
             if (count == 0){
                 reporter.warn("Rule is empty.", selectors[0].line, selectors[0].col, rule);
             }
-        });        
+        });
     }
 
 });
@@ -9850,11 +9839,11 @@ CSSLint.addRule({
     name: "Parsing Errors",
     desc: "This rule looks for recoverable syntax errors.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-    
+
         parser.addListener("error", function(event){
             reporter.error(event.message, event.line, event.col, rule);
         });
@@ -9873,27 +9862,27 @@ CSSLint.addRule({
     name: "Floats",
     desc: "This rule tests if the float property is used too many times",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
         var count = 0;
-    
+
         //count how many times "float" is used
         parser.addListener("property", function(event){
-            if (event.property.text.toLowerCase() == "float" && 
+            if (event.property.text.toLowerCase() == "float" &&
                     event.value.text.toLowerCase() != "none"){
                 count++;
             }
         });
-        
+
         //report the results
-        parser.addListener("endstylesheet", function(event){
+        parser.addListener("endstylesheet", function(){
             reporter.stat("floats", count);
             if (count >= 10){
-                reporter.rollupWarn("Too many floats (" + count + "), abstraction needed.", rule);
+                reporter.rollupWarn("Too many floats (" + count + "), you're probably using them for layout. Consider using a grid system instead.", rule);
             }
-        }); 
+        });
     }
 
 });
@@ -9907,22 +9896,22 @@ CSSLint.addRule({
     name: "Font Faces",
     desc: "Too many different web fonts in the same stylesheet.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             count = 0;
-    
-        
-        parser.addListener("startfontface", function(event){
+
+
+        parser.addListener("startfontface", function(){
             count++;
         });
 
-        parser.addListener("endstylesheet", function(event){
+        parser.addListener("endstylesheet", function(){
             if (count > 5){
                 reporter.rollupWarn("Too many @font-face declarations (" + count + ").", rule);
             }
-        });        
+        });
     }
 
 });
@@ -9937,27 +9926,26 @@ CSSLint.addRule({
     name: "Font Sizes",
     desc: "Checks the number of font-size declarations.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
-        var rule = this,    
+        var rule = this,
             count = 0;
-    
+
         //check for use of "font-size"
         parser.addListener("property", function(event){
-            var part = event.value.parts[0];
             if (event.property == "font-size"){
-                count++; 
+                count++;
             }
         });
-        
+
         //report the results
-        parser.addListener("endstylesheet", function(event){
+        parser.addListener("endstylesheet", function(){
             reporter.stat("font-sizes", count);
             if (count >= 10){
                 reporter.rollupWarn("Too many font-size declarations (" + count + "), abstraction needed.", rule);
             }
-        }); 
+        });
     }
 
 });
@@ -9971,13 +9959,13 @@ CSSLint.addRule({
     name: "Gradients",
     desc: "When using a vendor-prefixed gradient, make sure to use them all.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             gradients;
-            
-        parser.addListener("startrule", function(event){
+
+        parser.addListener("startrule", function(){
             gradients = {
                 moz: 0,
                 webkit: 0,
@@ -9985,37 +9973,37 @@ CSSLint.addRule({
                 o: 0
             };
         });
-            
+
         parser.addListener("property", function(event){
-            
+
             if (/\-(moz|ms|o|webkit)(?:\-(?:linear|radial))\-gradient/.test(event.value)){
                 gradients[RegExp.$1] = 1;
             }
-            
+
         });
-        
+
         parser.addListener("endrule", function(event){
             var missing = [];
-            
+
             if (!gradients.moz){
                 missing.push("Firefox 3.6+");
             }
-            
+
             if (!gradients.webkit){
                 missing.push("Webkit (Safari, Chrome)");
             }
-            
+
             if (!gradients.ms){
                 missing.push("Internet Explorer 10+");
             }
-            
+
             if (!gradients.o){
                 missing.push("Opera 11.1+");
             }
-                        
+
             if (missing.length && missing.length < 4){            
                 reporter.warn("Missing vendor-prefixed CSS gradients for " + missing.join(", ") + ".", event.selectors[0].line, event.selectors[0].col, rule); 
-            }            
+            }
 
         });
 
@@ -10032,7 +10020,7 @@ CSSLint.addRule({
     name: "IDs",
     desc: "Selectors should not contain IDs.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
@@ -10043,12 +10031,12 @@ CSSLint.addRule({
                 modifier,
                 idCount,
                 i, j, k;
-                
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
                 idCount = 0;
 
-                for (j=0; j < selector.parts.length; j++){  
+                for (j=0; j < selector.parts.length; j++){
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
                         for (k=0; k < part.modifiers.length; k++){
@@ -10057,17 +10045,17 @@ CSSLint.addRule({
                                 idCount++;
                             }
                         }
-                    }                    
+                    }
                 }
-                
-                if (idCount == 1){
-                    reporter.warn("Don't use IDs in selectors.", selector.line, selector.col, rule);            
-                } else if (idCount > 1){
-                    reporter.warn(idCount + " IDs in the selector, really?", selector.line, selector.col, rule);            
-                }
-            }            
 
-        });     
+                if (idCount == 1){
+                    reporter.warn("Don't use IDs in selectors.", selector.line, selector.col, rule);
+                } else if (idCount > 1){
+                    reporter.warn(idCount + " IDs in the selector, really?", selector.line, selector.col, rule);
+                }
+            }
+
+        });
     }
 
 });
@@ -10099,7 +10087,7 @@ CSSLint.addRule({
         });
 
         //report the results
-        parser.addListener("endstylesheet", function(event){
+        parser.addListener("endstylesheet", function(){
             reporter.stat("important", count);
             if (count >= 10){
                 reporter.rollupError("Too many !important declarations (" + count + "), be careful with rule specificity", rule);
@@ -10118,7 +10106,7 @@ CSSLint.addRule({
     name: "Overqualified Elements",
     desc: "Don't use classes or IDs with elements (a.foo or a#foo).",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
@@ -10128,11 +10116,11 @@ CSSLint.addRule({
                 part,
                 modifier,
                 i, j, k;
-                
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
 
-                for (j=0; j < selector.parts.length; j++){  
+                for (j=0; j < selector.parts.length; j++){
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
                         if (part.elementName){
@@ -10144,10 +10132,10 @@ CSSLint.addRule({
                             }
 
                         }
-                    }                    
+                    }
                 }
             }
-        });     
+        });
     }
 
 });
@@ -10161,31 +10149,30 @@ CSSLint.addRule({
     name: "Qualified Headings",
     desc: "Headings should not be qualified (namespaced).",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-    
+
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
                 selector,
                 part,
-                modifier,
-                i, j, k;
-                
+                i, j;
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
 
-                for (j=0; j < selector.parts.length; j++){  
+                for (j=0; j < selector.parts.length; j++){
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
                         if (part.elementName && /h[1-6]/.test(part.elementName.toString()) && j > 0){
                             reporter.warn("Heading (" + part.elementName + ") should not be qualified.", part.line, part.col, rule);
                         }
-                    }                    
+                    }
                 }
             }
-        });     
+        });
     }
 
 });
@@ -10199,21 +10186,21 @@ CSSLint.addRule({
     name: "Regex Selectors",
     desc: "Selectors that look like regular expressions are slow and should be avoided.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-        
+
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
                 selector,
                 part,
                 modifier,
                 i, j, k;
-                
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
-                for (j=0; j < selector.parts.length; j++){  
+                for (j=0; j < selector.parts.length; j++){
                     part = selector.parts[j];
                     if (part instanceof parserlib.css.SelectorPart){
                         for (k=0; k < part.modifiers.length; k++){
@@ -10221,14 +10208,14 @@ CSSLint.addRule({
                             if (modifier.type == "attribute"){
                                 if (/([\~\|\^\$\*]=)/.test(modifier)){
                                     reporter.warn("Attribute selectors with " + RegExp.$1 + " are slow!", modifier.line, modifier.col, rule);
-                                }                               
+                                }
                             }
 
                         }
-                    }                    
+                    }
                 }
             }
-        });     
+        });
     }
 
 });
@@ -10242,20 +10229,20 @@ CSSLint.addRule({
     name: "Rules Count",
     desc: "Track how many rules there are.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             count = 0;
-    
+
         //count each rule
-        parser.addListener("startrule", function(event){
+        parser.addListener("startrule", function(){
             count++;
         });
-        
-        parser.addListener("endstylesheet", function(event){
+
+        parser.addListener("endstylesheet", function(){
             reporter.stat("rule-count", count);
-        });        
+        });
     }
 
 });
@@ -10269,11 +10256,11 @@ CSSLint.addRule({
     name: "Unique Headings",
     desc: "Headings should be defined only once.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-    
+
         var headings =  {
                 h1: 0,
                 h2: 0,
@@ -10282,26 +10269,25 @@ CSSLint.addRule({
                 h5: 0,
                 h6: 0
             };
-    
+
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
                 selector,
                 part,
-                modifier,
-                i, j, k;
-                
+                i;
+
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
                 part = selector.parts[selector.parts.length-1];
 
-                if (part.elementName && /(h[1-6])/.test(part.elementName.toString())){                       
+                if (part.elementName && /(h[1-6])/.test(part.elementName.toString())){
                     headings[RegExp.$1]++;
                     if (headings[RegExp.$1] > 1) {
                         reporter.warn("Heading (" + part.elementName + ") has already been defined.", part.line, part.col, rule);
                     }
-                }         
+                }
             }
-        });     
+        });
     }
 
 });
@@ -10316,32 +10302,28 @@ CSSLint.addRule({
     name: "Vendor Prefix",
     desc: "When using a vendor-prefixed property, make sure to include the standard one.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             properties,
             num;
-            
-        parser.addListener("startrule", function(event){
+
+        parser.addListener("startrule", function(){
             properties = {};
             num=1;
         });
-            
+
         parser.addListener("property", function(event){
-            var name = event.property.text.toLowerCase(),
-                parts = event.value.parts,
-                i = 0, 
-                len = parts.length,
-                j;
-                
+            var name = event.property.text.toLowerCase();
+
             if (!properties[name]){
                 properties[name] = [];
-            }    
-            
-            properties[name].push({ name: event.property, value : event.value, pos:num++ });             
+            }
+
+            properties[name].push({ name: event.property, value : event.value, pos:num++ });
         });
-        
+
         parser.addListener("endrule", function(event){
             var prop,
                 i, len,
@@ -10349,13 +10331,13 @@ CSSLint.addRule({
                 needed,
                 actual,
                 needsStandard = [];
-            
+
             for (prop in properties){
                 if (/(\-(?:ms|moz|webkit|o)\-)/.test(prop)){
                     needsStandard.push({ actual: prop, needed: prop.substring(RegExp.$1.length)});
                 }
             }
-            
+
             for (i=0, len=needsStandard.length; i < len; i++){
                 needed = needsStandard[i].needed;
                 actual = needsStandard[i].actual;
@@ -10368,11 +10350,11 @@ CSSLint.addRule({
                 }
 
                 if (!properties[standard]){               
-                    reporter.warn("Missing standard property '" + standard + "' to go along with '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
+                    reporter.warn("Missing standard property '" + standard + "' to go along with '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule);
                 } else {
                     //make sure standard property is last
                     if (properties[standard][0].pos < properties[actual][0].pos){
-                        reporter.warn("Standard property '" + standard + "' should come after vendor-prefixed property '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule); 
+                        reporter.warn("Standard property '" + standard + "' should come after vendor-prefixed property '" + actual + "'.", event.selectors[0].line, event.selectors[0].col, rule);
                     }
                 }
             }
@@ -10393,14 +10375,14 @@ CSSLint.addRule({
     name: "Width 100%",
     desc: "Be careful when using width: 100% on elements.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
             width100,
             boxsizing;
-            
-        parser.addListener("startrule", function(event){
+
+        parser.addListener("startrule", function(){
             width100 = null;
             boxsizing = false;
         });
@@ -10408,17 +10390,17 @@ CSSLint.addRule({
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase(),
                 value = event.value;
-                
+
             if (name == "width" && value == "100%"){
                 width100 = event.property;
             } else if (name == "box-sizing" || /\-(?:webkit|ms|moz)\-box-sizing/.test(name)){  //means you know what you're doing
                 boxsizing = true;
             }
-        });        
+        });
         
-        parser.addListener("endrule", function(event){
+        parser.addListener("endrule", function(){
             if (width100 && !boxsizing){
-                reporter.warn("Elements with a width of 100% may not appear as you expect inside of other elements.", width100.line, width100.col, rule);            
+                reporter.warn("Elements with a width of 100% may not appear as you expect inside of other elements.", width100.line, width100.col, rule);
             }
         });
     }
@@ -10434,25 +10416,24 @@ CSSLint.addRule({
     name: "Zero Units",
     desc: "You don't need to specify units when a value is 0.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this;
-    
+
         //count how many times "float" is used
         parser.addListener("property", function(event){
             var parts = event.value.parts,
                 i = 0, 
-                len = parts.length,
-                j;
-                
+                len = parts.length;
+
             while(i < len){
                 if ((parts[i].units || parts[i].type == "percentage") && parts[i].value === 0){
                     reporter.warn("Values of 0 shouldn't have units specified.", parts[i].line, parts[i].col, rule);
                 }
                 i++;
             }
-            
+
         });
 
     }
