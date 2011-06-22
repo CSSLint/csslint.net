@@ -163,7 +163,7 @@ s,m,l,n = small(5px),medium(10px),large(20px),none(0px)
  * Cell takes precedence over table row and table
  * Table row takes precedence over table
  */
-.data{position:relative; zoom:1;vertical-align: top;text-align: left; /*border-right:solid 1px transparent;*//* border fixes a FF2 bug which causes the data table to overlay its borders*/}
+.data{ position:relative; zoom:1;vertical-align: top;text-align: left; /*border-right:solid 1px transparent;*//* border fixes a FF2 bug which causes the data table to overlay its borders*/}
 .data table{width:100%; }
 th, td{vertical-align:top;}
 /* horizontal alignment */
@@ -253,7 +253,7 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 .codeBox .inner{border:1px solid #cccccd;}
 .codeBox .hd{border-bottom:1px solid #cccccd;}
 /* errors in code view */
-.error{cursor:pointer;	background-color: #fdedea;}
+.error{	background-color: #fdedea;}
 .errors{ display:none; *border: 5px solid #000; /*border: 11px solid rgba(0,0,0,.5);*/ background-color:rgba(0,0,0,.5); -moz-border-radius: 20px; -webkit-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; font-family: Futura, "Gill Sans", Helvetica, sans-serif; font-size: 18px;  position:absolute;}
 .errors ul{-moz-border-radius: 11px;	-webkit-border-radius: 11px;	-o-border-radius: 11px;	border-radius: 11px;	background-color:#fff;	padding:11px;}
 .highlight .errors,.codeView td:hover .errors{display:block;}
@@ -279,6 +279,7 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 .resultsPage .resultsSummary,
 .resultsPage .resultsSummary{display:block;}
 
+#errorView { cursor: pointer; }
 
 
 /* styles for docs copied from github */
