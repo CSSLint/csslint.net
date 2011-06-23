@@ -5,6 +5,19 @@
             errorView,
             worker = null;
             
+            
+            
+        function htmlEscape(text){
+            var htmlEscapes = {
+                "<": "&lt;",
+                ">": "&gt;",
+                "&": "&amp;",
+                "\"": "&quot;"
+            };
+            return text.replace(/[<>"&]/g, function(c){
+                return htmlEscapes[c];
+            });
+        }
          
             
             
@@ -133,9 +146,9 @@
                 tr.insertCell(2);
                 tr.cells[2].innerHTML = typeof messages[i].col == "number" ? messages[i].col : "(rollup)";
                 tr.insertCell(3);
-                tr.cells[3].innerHTML = messages[i].rule.name;
+                tr.cells[3].innerHTML = htmlEscape(messages[i].rule.name);
                 tr.insertCell(4);
-                tr.cells[4].innerHTML = messages[i].message + "<pre>" + messages[i].evidence + "</pre>";
+                tr.cells[4].innerHTML = htmlEscape(messages[i].message) + "<pre>" + messages[i].evidence + "</pre>";
                 tr.insertCell(5);
                 tr.cells[5].innerHTML = messages[i].rule.browsers;
                 
