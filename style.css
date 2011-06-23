@@ -35,6 +35,10 @@ h6, .h6{font-size:108%; font-weight:normal; font-style: italic; color:#333;}
 .enumlist {padding-left: 20px;}
 .enumlist li {list-style: decimal outside; margin: 3px 0;}
 
+.optionsList li {
+    width: 250px;
+}
+
 /* **************** TEMPLATE ***************** */
 /* ====== Page Head, Body, and Foot ====== */
 body{_text-align:center;}/* IE5.5 */

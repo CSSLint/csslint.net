@@ -66,13 +66,23 @@
 		 * Lint: lints css 
 		 */
         function lintCSS(){
-			var css = $('#input').val();
+			var css = $('#input').val(),
+                rules = gatherRules();
+            errorLines = [];
             toggleView("loading");
             if (worker){
-                worker.postMessage(css);
+                worker.postMessage(JSON.stringify({ text: css, ruleset: rules }));
             } else {
-                outputResults(CSSLint.verify(css));
+                outputResults(CSSLint.verify(css, rules));
             }
+        }
+        
+        function gatherRules(){
+            var ruleset = {};
+            $("input:checked").each(function(index, checkbox){
+                ruleset[checkbox.name] = 1;
+            });
+            return ruleset;
         }
         
 

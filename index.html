@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-<title>CSS Lint</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <title>CSS Lint</title>
 
-<link type="text/css" rel="stylesheet" href="style.css" >
-<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>-->
-<script src="js/jquery-1.6.1.js"></script>
-<script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
-<script src="js/jquery.ba-hashchange.js"></script>
-<link rel="stylesheet" type="text/css" href="js/sunlight-1.14.419/themes/sunlight.default.css" >
-<script src="js/sunlight-1.14.419/sunlight-min.js"></script>
-<script src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
-<script src="js/csslint.js"></script>
-<script src="js/csslint-ui.js"></script>
+    <link rel="stylesheet" href="style.css" >
+    <script src="js/jquery-1.6.1.js"></script>
+    <script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
+    <script src="js/jquery.ba-hashchange.js"></script>
+    <link rel="stylesheet" href="js/sunlight-1.14.419/themes/sunlight.default.css">
+    <script src="js/sunlight-1.14.419/sunlight-min.js"></script>
+    <script src="js/sunlight-1.14.419/lang/sunlight.css-min.js"></script>
+    <script src="js/csslint.js"></script>
+    <script src="js/csslint-ui.js"></script>
 </head>
-
 <body>
-	<div class="head">
-		<div class="page">
-    	<div class="unit size1of2">
-      	<h1 class="logo">CSS <strong>LINT</strong></h1>
-      </div>
-    	<div class="unit size1of2 lastUnit">
-      	<div class="intro">
-      		<p>Will hurt your feelings<a href="http://www.jslint.com/">*</a></p>
-        	<p>(And help you code better)</p>
+    <div class="head">
+        <div class="page">
+            <div class="unit size1of2">
+                <h1 class="logo">CSS <strong>LINT</strong></h1>
+            </div>
+            <div class="unit size1of2 lastUnit">
+                <div class="intro">
+                    <p>Will hurt your feelings<a href="http://www.jslint.com/">*</a></p>
+                    <p>(And help you code better)</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-	</div>
-	<div class="body">
-  	<div class="page">
-        <div class="loadingMessage">
-            <div class="line">
-              <div class="unit size1of2">
-                <p class="summary">Doin' the lint thang... <img src="img/loading.gif" alt="Loading"></p>
-              </div>
-            </div>        
-        </div>
-    	<div class="resultsSummary">
-        <div class="line">
-          <div class="unit size1of2">
-            <p class="summary">CSS lint found <strong class="errorCount">0</strong> errors and <strong class="warningCount">0</strong> warnings. <span id="fix-it">How can you fix it? See the details below.</span></p>
-          </div>
-          <div class="unit size1of2 lastUnit">
-            <a class="bigButton" href="index.html" id="restart-btn">Restart</a>
-          </div>
-        </div>
-      </div>
-      <!-- form to submit css for linting -->
-      <form id="in">
-        <label for="input" class="summary">Your CSS goes here. The more, the better. Linting works best when we see the big picture, so give us everything you've got. </label>
-        <textarea id="input" name="css" class="css">
+    <div class="body">
+        <div class="page">
+            <div class="loadingMessage">
+                <div class="line">
+                    <div class="unit size1of2">
+                        <p class="summary">Doin' the lint thang... <img src="img/loading.gif" alt="Loading"></p>
+                    </div>
+                </div>        
+            </div>
+            <div class="resultsSummary">
+                <div class="line">
+                    <div class="unit size1of2">
+                        <p class="summary">CSS lint found <strong class="errorCount">0</strong> errors and <strong class="warningCount">0</strong> warnings. <span id="fix-it">How can you fix it? See the details below.</span></p>
+                    </div>
+                    <div class="unit size1of2 lastUnit">
+                        <a class="bigButton" href="index.html" id="restart-btn">Restart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- form to submit css for linting -->
+            <form id="in">
+                <label for="input" class="summary">Your CSS goes here. The more, the better. Linting works best when we see the big picture, so give us everything you've got. </label>
+                <textarea id="input" name="css" class="css">
 @charset "UTF-8"; 
 
 @import url("booya.css") print,screen;
@@ -107,390 +106,98 @@ li.last {
 
 #body
 {}
-			</textarea>
-        <button type="submit" class="bigButton right" disabled="disabled">Lint!</button>
-      </form>
-    </div>
-	</div>
-	<div class="foot">
-  	<div class="page">
-    
-    <div class="mod" id="errorViewWrapper">
-    	<div class="inner">
-      	<div class="bd">
-        	<div class="data results">
-    	<table id="errorView">
-      	<thead>
-          <tr class="codeHd">
-            <th scope="col" title="ascending by type"></th>
-            <!--<th scope="col">file</th>-->
-            <th scope="col">line </th>
-            <th scope="col">col</th>
-            <th scope="col">title</th>
-            <th scope="col">description</th>
-            <th scope="col">browser</th>
-          </tr>
-        </thead>
-        <tbody id="errors">  
-          <!--<tr>
-            <td><span class="text">warning</span><img title="warning" alt="warning" src="img/warn.png" ></td>
-            <td>style.css</td>
-            <td>1</td>
-           	<td>9</td>
-            <td>Duplication</td>
-            <td>Font-size:13px has been declared 412 times in your CSS.
-            	<pre>font-size:13px;</pre>
-            </td>
-            <td>All</td>
-          </tr>
-          <tr>
-            <td><span class="text">warning</span><img title="warning" alt="warning" src="img/warn.png" ></td>
-            <td>core.css</td>
-            <td>3</td>
-           	<td>5</td>
-            <td>Variation</td>
-            <td>The increment between font-size 15px bold and 16px is too small, choose one.
-            	<pre>font-size: 15px;
-font-weight: bold;</pre>
-            </td>
-            <td>All</td>
-          </tr>
-          <tr>
-            <td><span class="text">error</span><img title="error" alt="error" src="img/error.png" ></td>
-            <td>library.css</td>
-            <td>8</td>
-           	<td>3</td>
-            <td>Box Model Bug</td>
-            <td>Don't declare width and either padding or borders on the same element.
-            	<pre>padding: 1px; 
-width: 200px;</pre>
-            </td>
-            <td>FF, Safari, Opera, IE6</td>
-          </tr>
-          <tr>
-            <td><span class="text">error</span><img title="error" alt="error" src="img/error.png" ></td>
-            <td>core.css</td>
-            <td>2</td>
-           	<td>23</td>
-            <td>Invalid property</td>
-            <td>None is not a valid background-position.
-            	<pre>background-position:none;</pre>
-            </td>
-            <td>All</td>
-          </tr>-->
-        </tbody>
-      </table>
-		</div>
+                </textarea>
+                <ul class="inlineList optionsList">
+                    <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Don't use adjoining classes</label></li>
+                    <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box model</label></li>
+                    <li><label><input type="checkbox" name="display-property-grouping" checked>&nbsp;Use properties appropriate for <code>display</code></code></label></li>
+                    <li><label><input type="checkbox" name="empty-rules" checked>&nbsp;Disallow empty rules</label></li>
+                    <li><label><input type="checkbox" name="floats" checked>&nbsp;Don't use too many floats</label></li>
+                    <li><label><input type="checkbox" name="font-faces" checked>&nbsp;Don't use too many web fonts</label></li>
+                    <li><label><input type="checkbox" name="font-sizes" checked>&nbsp;Don't use too many font sizes</label></li>
+                    <li><label><input type="checkbox" name="gradients" checked>&nbsp;Include all gradient definitions</label></li>
+                    <li><label><input type="checkbox" name="ids" checked>&nbsp;Don't use IDs</label></li>
+                    <li><label><input type="checkbox" name="important" checked>&nbsp;Disallow <code>!important</code></label></li>
+                    <li><label><input type="checkbox" name="overqualified-elements" checked>&nbsp;Don't use overqualified elements</label></li>
+                    <li><label><input type="checkbox" name="qualified-headings" checked>&nbsp;Don't qualify headings</label></li>
+                    <li><label><input type="checkbox" name="regex-selectors" checked>&nbsp;Don't use selectors that look like regexs</label></li>
+                    <li><label><input type="checkbox" name="unique-headings" checked>&nbsp;Heading should only be defined once</label></li>
+                    <li><label><input type="checkbox" name="vendor-prefix" checked>&nbsp;Use vendor prefix properties correctly</label></li>
+                    <li><label><input type="checkbox" name="width-100" checked>&nbsp;Beware of <code>width: 100%</code></label></li>
+                    <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Don't use units for 0 values</label></li>
+                </ul> 
+                <button type="submit" class="bigButton right">Lint!</button>
+                               
+            </form>
         </div>
-        <!--<div class="ft">
-        	<ul class="inlineList actions">
-            <li><a href="#">export</a></li>
-          </ul>
-        </div>-->
-      </div>
     </div>
-        
-    	
-    
-    
-    <!-- example tables -->
-    <!--<div class="box codeBox">
-    	<div class="inner">
-      	<div class="hd codeHd">
-        	<div class="media man">
-          	<a class="img"><img src="img/file.png" ></a>
-            <div class="imgExt">
-            	<ul class="inlineList piped">
-                <li><a href="#">export</a></li>
-                <li><a href="#">export</a></li>
-                <li><a href="#">export</a></li>
-                <li><a href="#">export</a></li>
-                <li><a href="#">export</a></li>
-              </ul>
-            </div>
-            <div class="bd">
-            	<ul class="inlineList piped">
-                <li>export</li>
-                <li>export</li>
-                <li>export</li>
-                <li>export</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="bd">
-        	<div class="data codeView">
-            <table id="codeView">
-              <col class="lineNum" >
-              <col class="lineCode" >
-              <tbody>
-                <tr>
-                  <th scope="row">0</th>
-                  <td>/* ----- alert, warn, confirm, info (extend message) ----- */</td>
-                </tr> 
-                <tr>
-                  <th scope="row">0</th>
-                  <td>/* ----- long scroll causing line ----- *//* ----- alert, warn, confirm, info (extend message) ----- *//* ----- alert, warn, confirm, info (extend message) ----- */</td>
-                </tr>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>.alert{</td>
-                </tr> 
-                
-                <tr class="error">
-                  <th scope="row">2</th>
-                  <td>	background-position: none; 
-                  	<div class="errors">
-                    	<ul>
-                    		<li>line 16: “none” is not a valid background position</li>
-                    	</ul>
+    <div class="foot">
+        <div class="page">    
+            <div class="mod" id="errorViewWrapper">
+                <div class="inner">
+                    <div class="bd">
+                        <div class="data results">
+                            <table id="errorView">
+                                <thead>
+                                    <tr class="codeHd">
+                                        <th scope="col" title="ascending by type"></th>
+                                        <th scope="col">line </th>
+                                        <th scope="col">col</th>
+                                        <th scope="col">title</th>
+                                        <th scope="col">description</th>
+                                        <th scope="col">browser</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="errors"></tbody>          
+                            </table>
+                        </div>
                     </div>
-                  </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">3</th>
-                  <td>	background-color: #fdedea;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">4</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr class="highlight">
-                  <th scope="row">5</th>
-                  <td>.warn{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">6</th>
-                  <td>	border-color: #f8e38e; </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">7</th>
-                  <td>	background-color: #ffffdc;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">8</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">9</th>
-                  <td>.confirm{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">10</th>
-                  <td>	border-color: #9bebb3; </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">11</th>
-                  <td>	background-color: #edfff1;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">12</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">13</th>
-                  <td>.info{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">14</th>
-                  <td>	border-color: #bee6ff;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">15</th>
-                  <td>	background-color: #f5fcff;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">16</th>
-                  <td>	}</td>
-                </tr> 
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <h3>No scroll table</h3>
-    <div class="box codeBox">
-    	<div class="inner">
-      	<div class="hd codeHd">
-        	<div class="media man">
-          	<a class="img"><img src="img/file.png" ></a>
-            <div class="imgExt">
-            	<ul class="inlineList piped">
-                <li><a href="#">errors</a></li>
-                <li><a href="#">export</a></li>
-                <li><a href="#">priority</a></li>
-              </ul>
+                </div>
             </div>
-            <div class="bd">
-            	<ul class="inlineList piped">
-                <li>message.css</li>
-                <li>16 lines</li>
-                <li>3 errors</li>
-                <li>5 warnings</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="bd">
-        	<div class="data codeView dp-highlighter">
-            <table class="dp-c">
-              <col class="lineNum" >
-              <col class="lineCode" >
-              <tbody>
-                <tr>
-                  <th scope="row">0</th>
-                  <td>/* ----- alert, warn, confirm, info (extend message) ----- */</td>
-                </tr> 
-                <tr>
-                  <th scope="row">1</th>
-                  <td>.alert{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">2</th>
-                  <td>	border-color: #f2a199; </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">3</th>
-                  <td>	background-color: #fdedea;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">4</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">5</th>
-                  <td>.warn{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">6</th>
-                  <td>	border-color: #f8e38e; </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">7</th>
-                  <td>	background-color: #ffffdc;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">8</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">9</th>
-                  <td>.confirm{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">10</th>
-                  <td>	border-color: #9bebb3; </td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">11</th>
-                  <td>	background-color: #edfff1;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">12</th>
-                  <td>	}</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">13</th>
-                  <td>.info{</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">14</th>
-                  <td>	border-color: #bee6ff;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">15</th>
-                  <td>	background-color: #f5fcff;</td>
-                </tr> 
-                
-                <tr>
-                  <th scope="row">16</th>
-                  <td>	}</td>
-                </tr> 
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>-->
-    <!-- insert in this table -->
-    <div class="mod codeBox mtl" id="codeViewWrapper">
-    	<div class="inner">
-      	<div class="hd codeHd">
-        	<div class="media man">
-          	<a class="img fileType"><img src="img/paper16.png" ></a>
-            <!--<div class="imgExt">
-            	<ul class="inlineList piped">
-                <li><a href="#">errors</a></li>
-                <li><a href="#">export</a></li>
-                <li><a href="#">priority</a></li>
-              </ul>
-            </div>-->
-            <div class="bd">
-            	<ul class="inlineList piped">
-                <!--<li>message.css</li>-->
-                <li><span class="lineCount">0</span> lines</li>
-                <li><span class="errorCount">0</span> errors</li>
-                <li><span class="warningCount">0</span> warnings</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="bd">
-        	<div class="data codeView">
-            <table id="codeView">
-              <col class="lineNum" >
-              <col class="lineCode" >
-              <tbody id="tableBody">
-                 
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="output"></div>
-    <ul class="inlineList piped footList">
-    	<li><a href="http://www.nczonline.net/">Nicholas</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="about.html#settings">Settings</a></li>
-      <li><a href="about.html#contribute">Contribute</a></li>
-      <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
-      <li><a href="about.html#node">Node</a></li>
-      <li><a href="about.html#docs">Documentation</a></li>
-      <li><a href="http://www.stubbornella.org/">Nicole</a></li>
-    </ul>
+        
+        
     
     
-   </div>
-	</div>
+
+            <!-- insert in this table -->
+            <div class="mod codeBox mtl" id="codeViewWrapper">
+                <div class="inner">
+                    <div class="hd codeHd">
+                        <div class="media man">
+                            <a class="img fileType"><img src="img/paper16.png" ></a>
+
+                            <div class="bd">
+                                <ul class="inlineList piped">
+                                    <li><span class="lineCount">0</span> lines</li>
+                                    <li><span class="errorCount">0</span> errors</li>
+                                    <li><span class="warningCount">0</span> warnings</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bd">
+                        <div class="data codeView">
+                            <table id="codeView">
+                                <col class="lineNum">
+                                <col class="lineCode">
+                                <tbody id="tableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="output"></div>
+            <ul class="inlineList piped footList">
+                <li><a href="http://www.nczonline.net/">Nicholas</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="about.html#settings">Settings</a></li>
+                <li><a href="about.html#contribute">Contribute</a></li>
+                <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
+                <li><a href="about.html#node">Node</a></li>
+                <li><a href="about.html#docs">Documentation</a></li>
+                <li><a href="http://www.stubbornella.org/">Nicole</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
