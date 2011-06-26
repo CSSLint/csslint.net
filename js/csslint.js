@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-/* Build time: 23-June-2011 03:44:41 */
+/* Build time: 25-June-2011 07:20:29 */
 var CSSLint = (function(){
 /*!
 Parser-Lib
@@ -4757,7 +4757,7 @@ Tokens              :Tokens
  */
 
 var YUITest = {
-    version: "@VERSION@"
+    version: "0.3.0"
 };
 
 
@@ -9318,7 +9318,7 @@ var CSSLint = (function(){
     var rules   = [],
         api     = new parserlib.util.EventTarget();
         
-    api.version = "@VERSION@";
+    api.version = "0.3.0";
 
     //-------------------------------------------------------------------------
     // Rule Management
@@ -10293,6 +10293,38 @@ CSSLint.addRule({
     }
 
 });
+/*
+ * Rule: Don't use text-indent for image replacement if you need to support rtl. 
+ * 
+ */
+/*
+ * Should we be checking for rtl/ltr?
+ */
+//Commented out due to lack of tests
+/*CSSLint.addRule({
+
+    //rule information
+    id: "text-indent",
+    name: "Text Indent",
+    desc: "Checks for text indent less than -99px",
+    browsers: "All",
+    
+    //initialization
+    init: function(parser, reporter){
+        var rule = this;
+    
+        //check for use of "font-size"
+        parser.addListener("property", function(event){
+            var name = event.property,
+                value = event.value;
+
+            if (name == "text-indent" && value < -99){
+                reporter.warn("Negative text-indent doesn't work well with RTL. If you use text-indent for image replacement explicitly set text-direction for that item to ltr.", name.line, name.col, rule);
+            }
+        });
+    }
+
+});*/
 /*
  * Rule: Headings (h1-h6) should be defined only once.
  */
