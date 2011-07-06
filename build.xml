@@ -1,0 +1,17 @@
+<project name="csslint-ui" default="update-js">
+    
+    <!-- the directories containing the source files -->
+    <property name="js.dir" value="./js" />
+    
+    <!-- location of CSS Lint JS files (in csslint repo) -->
+    <property name="csslint.js" value="../csslint/release/csslint.js" />
+    <property name="csslint-worker.js" value="../csslint/release/csslint-worker.js" />
+    
+    
+    <!-- clean -->
+    <target name="update-js">
+        <copy file="${csslint.js}" todir="${js.dir}"/>
+        <copy file="${csslint-worker.js}" todir="${js.dir}"/>
+    </target>
+
+</project>

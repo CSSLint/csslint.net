@@ -164,6 +164,24 @@
             <p>Using <code>!important</code> overides any cascaded rule and may lead to specificity war. CSS Lint checks if you've used <code>!important</code>, and if so, displays a warning. If there's at least 10 <code>!important</code> declaration in your code CSSLint displays an error.</p>
             <p><strong>ID:</strong> <code>important</code></p>
             
+            <h3>Include all compatible vendor prefixes</h3>
+            <p>Most CSS3 properties have vendor-prefixed equivalents for multiple vendors, including Firefox (-moz), Safari/Chrome (-webkit), Opera (-o), and Internet Explorer (-ms). Including all compatible vendor prefixes will give a consistent appearance for a wider range of users.</p>
+            <p><strong>ID:</strong> <code>compatible-vendor-prefixes</code></p>
+            <h3>Avoid duplicate properties</h3>
+            <p>When you include the same property twice, it may be intentional (to provide a fallback) or unintentional (copy-paste error). If duplicate properties are found one after the other with different values, this is okay. For example:</p>
+
+<pre><code>.foo {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.5);
+}</code></pre>
+    
+            <p>However, if the properties either have the same value or are located at different spots in the rule, this results in a warning. For example:</p>
+<pre><code>.foo {
+    background: #fff;
+    color: #000;
+    background: rgba(255, 255, 255, 0.5);
+}</code></pre>
+            <p><strong>ID:</strong> <code>duplicate-properties</code></p>
 
             <h2 id="contribute">Contribute</h2>
             <p>Many people have expressed an interest in contributing to the CSS Lint project. We were waiting to have a solid plugable architecture and API before taking contributions. The exciting news is that we are now ready! There are several ways you can contribute:</p>
@@ -186,6 +204,13 @@ For Node.js:</p>
             <pre><code>csslint --rules=ids,important,import test.css</code></pre>
             <p>For Rhino:</p>
             <pre><code>java -jar rhino.jar csslint-rhino.js --rules=ids,important,import test.css</code></pre>      
+            <p>You can change the results output format by using the <code>--format</code> option. The available options are:</p>
+            <ul>
+                <li><code>text</code> - the default</li>
+                <li><code>lint-xml</code> - a language-agnostic variant of "JSLint XML" format (basically uses <code>&lt;lint/&gt;</code> instead of <code>&lt;jslint/&gt;</code>)</li>
+            </ul>
+            <p>Change the output format at any time via (also works with Rhino):</p>
+            <pre><code>csslint --format=lint-xml test.css</code></pre>                  
             <h2>Thanks</h2>
             <p>Many people encouraged me to build this tool. Deepest thank you to Chris Klaiber, Gonzalo Cordero, Douglas Crockford and JSLint, Rebecca Murphy, the guys at GitHub, and everyone at JSConf.</p>
     <!-- insert in this table -->
