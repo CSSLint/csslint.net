@@ -10,6 +10,8 @@
     
     <!-- clean -->
     <target name="update-js">
+        <delete file="${js.dir}/csslint.js/"/>
+        <delete file="${js.dir}/csslint-worker.js/"/>
         <copy file="${csslint.js}" todir="${js.dir}"/>
         <copy file="${csslint-worker.js}" todir="${js.dir}"/>
     </target>

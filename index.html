@@ -108,26 +108,28 @@ li.last {
 {}
                 </textarea>
                 <ul class="inlineList optionsList">
-                    <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Don't use adjoining classes</label></li>
+                    <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Disallow adjoining classes</label></li>
                     <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box model</label></li>
-                    <li><label><input type="checkbox" name="compatible-vendor-prefixes" checked>&nbsp;Use compatible vendor prefixes</label></li>
-                    <li><label><input type="checkbox" name="display-property-grouping" checked>&nbsp;Use properties appropriate for <code>display</code></label></li>
-                    <li><label><input type="checkbox" name="duplicate-properties" checked>&nbsp;Avoid duplicate properties</label></li>
+                    <li><label><input type="checkbox" name="compatible-vendor-prefixes" checked>&nbsp;Require compatible vendor prefixes</label></li>
+                    <li><label><input type="checkbox" name="display-property-grouping" checked>&nbsp;Require properties appropriate for <code>display</code></label></li>
+                    <li><label><input type="checkbox" name="duplicate-properties" checked>&nbsp;Disallow duplicate properties</label></li>
                     <li><label><input type="checkbox" name="empty-rules" checked>&nbsp;Disallow empty rules</label></li>
-                    <li><label><input type="checkbox" name="floats" checked>&nbsp;Don't use too many floats</label></li>
+                    <li><label><input type="checkbox" name="floats" checked>&nbsp;Disallow too many floats</label></li>
                     <li><label><input type="checkbox" name="font-faces" checked>&nbsp;Don't use too many web fonts</label></li>
                     <li><label><input type="checkbox" name="font-sizes" checked>&nbsp;Don't use too many font sizes</label></li>
-                    <li><label><input type="checkbox" name="gradients" checked>&nbsp;Include all gradient definitions</label></li>
-                    <li><label><input type="checkbox" name="ids" checked>&nbsp;Don't use IDs</label></li>
-                    <li><label><input type="checkbox" name="import" checked>&nbsp;Avoid <code>@import</code></label></li>
+                    <li><label><input type="checkbox" name="gradients" checked>&nbsp;Require all gradient definitions</label></li>
+                    <li><label><input type="checkbox" name="ids" checked>&nbsp;Disallow IDs in selectors</label></li>
+                    <li><label><input type="checkbox" name="import" checked>&nbsp;Disallow <code>@import</code></label></li>
                     <li><label><input type="checkbox" name="important" checked>&nbsp;Disallow <code>!important</code></label></li>
-                    <li><label><input type="checkbox" name="overqualified-elements" checked>&nbsp;Don't use overqualified elements</label></li>
-                    <li><label><input type="checkbox" name="qualified-headings" checked>&nbsp;Don't qualify headings</label></li>
-                    <li><label><input type="checkbox" name="regex-selectors" checked>&nbsp;Don't use selectors that look like regexs</label></li>
-                    <!--<li><label><input type="checkbox" name="text-indent" checked>&nbsp;Don't use negative <code>text-indent</code></label></li>-->
+                    <li><label><input type="checkbox" name="known-properties" checked>&nbsp;Require use of known properties</label></li>
+                    <li><label><input type="checkbox" name="overqualified-elements" checked>&nbsp;Disallow overqualified elements</label></li>
+                    <li><label><input type="checkbox" name="qualified-headings" checked>&nbsp;Disallow qualified headings</label></li>
+                    <li><label><input type="checkbox" name="regex-selectors" checked>&nbsp;Disallow selectors that look like regexs</label></li>
+                    <li><label><input type="checkbox" name="text-indent" checked>&nbsp;Disallow negative <code>text-indent</code></label></li>
                     <li><label><input type="checkbox" name="unique-headings" checked>&nbsp;Heading should only be defined once</label></li>
-                    <li><label><input type="checkbox" name="vendor-prefix" checked>&nbsp;Use vendor prefix properties correctly</label></li>
-                    <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Don't use units for 0 values</label></li>
+                    <li><label><input type="checkbox" name="universal-selector" checked>&nbsp;Disallow universal selector</label></li>
+                    <li><label><input type="checkbox" name="vendor-prefix" checked>&nbsp;Require standard property with vendor prefix</label></li>
+                    <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Disallow units for 0 values</label></li>
                 </ul> 
                 <button type="submit" class="bigButton right">Lint!</button>
                                

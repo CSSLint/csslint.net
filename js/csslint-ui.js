@@ -148,7 +148,7 @@
                 tr.insertCell(3);
                 tr.cells[3].innerHTML = htmlEscape(messages[i].rule.name);
                 tr.insertCell(4);
-                tr.cells[4].innerHTML = htmlEscape(messages[i].message) + "<pre>" + messages[i].evidence + "</pre>";
+                tr.cells[4].innerHTML = htmlEscape(messages[i].message) + (messages[i].evidence ? "<pre>" + messages[i].evidence + "</pre>" : "");
                 tr.insertCell(5);
                 tr.cells[5].innerHTML = messages[i].rule.browsers;
                 
