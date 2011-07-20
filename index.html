@@ -50,6 +50,7 @@
 
             <!-- form to submit css for linting -->
             <form id="in">
+                <div class="line">
                 <label for="input" class="summary">Your CSS goes here. The more, the better. Linting works best when we see the big picture, so give us everything you've got. </label>
                 <textarea id="input" name="css" class="css">
 @charset "UTF-8"; 
@@ -107,7 +108,8 @@ li.last {
 #body
 {}
                 </textarea>
-                <ul class="inlineList optionsList">
+
+                <!--<ul class="inlineList optionsList">
                     <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Disallow adjoining classes</label></li>
                     <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box model</label></li>
                     <li><label><input type="checkbox" name="compatible-vendor-prefixes" checked>&nbsp;Require compatible vendor prefixes</label></li>
@@ -130,8 +132,72 @@ li.last {
                     <li><label><input type="checkbox" name="universal-selector" checked>&nbsp;Disallow universal selector</label></li>
                     <li><label><input type="checkbox" name="vendor-prefix" checked>&nbsp;Require standard property with vendor prefix</label></li>
                     <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Disallow units for 0 values</label></li>
-                </ul> 
+                </ul>--> 
                 <button type="submit" class="bigButton right">Lint!</button>
+                </div>
+                <div>
+                    <h2>Options</h2>
+                    <div class="line">
+                        <div class="unit size1of3">
+                            <h3>Errors</h3>
+                            <ul class="optionsList">
+                                <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box model</label></li>
+                                <li><label><input type="checkbox" name="display-property-grouping" checked>&nbsp;Require properties appropriate for <code>display</code></label></li>
+                                <li><label><input type="checkbox" name="duplicate-properties" checked>&nbsp;Disallow duplicate properties</label></li>
+                                <li><label><input type="checkbox" name="empty-rules" checked>&nbsp;Disallow empty rules</label></li>
+                                <li><label><input type="checkbox" name="known-properties" checked>&nbsp;Require use of known properties</label></li>
+                            </ul>                        
+                        </div>
+                        <div class="unit size1of3">
+                            <h3>Compatibility</h3>
+                            <ul class="optionsList">
+                                <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Disallow adjoining classes</label></li>
+                                <li><label><input type="checkbox" name="compatible-vendor-prefixes" checked>&nbsp;Require compatible vendor prefixes</label></li>
+                                <li><label><input type="checkbox" name="gradients" checked>&nbsp;Require all gradient definitions</label></li>
+                                <li><label><input type="checkbox" name="text-indent" checked>&nbsp;Disallow negative <code>text-indent</code></label></li>
+                                <li><label><input type="checkbox" name="vendor-prefix" checked>&nbsp;Require standard property with vendor prefix</label></li>
+                            </ul>                        
+                        </div>
+                        <div class="unit size1of3 lastUnit">
+                            <h3>Performance</h3>
+                            <ul class="optionsList">
+                                <li><label><input type="checkbox" name="font-faces" checked>&nbsp;Don't use too many web fonts</label></li>
+                                <li><label><input type="checkbox" name="import" checked>&nbsp;Disallow <code>@import</code></label></li>
+                                <li><label><input type="checkbox" name="regex-selectors" checked>&nbsp;Disallow selectors that look like regexs</label></li>
+                                <li><label><input type="checkbox" name="universal-selector" checked>&nbsp;Disallow universal selector</label></li>
+                                <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Disallow units for 0 values</label></li>
+                            </ul>                        
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="unit size1of3">
+                            <h3>Maintainability</h3>
+                            <ul class="optionsList">
+                                <li><label><input type="checkbox" name="floats" checked>&nbsp;Disallow too many floats</label></li>
+                                <li><label><input type="checkbox" name="font-sizes" checked>&nbsp;Don't use too many font sizes</label></li>
+                                <li><label><input type="checkbox" name="ids" checked>&nbsp;Disallow IDs in selectors</label></li>
+                                <li><label><input type="checkbox" name="important" checked>&nbsp;Disallow <code>!important</code></label></li>
+                            </ul>                        
+                        </div>
+                        <div class="unit size1of3 lastUnit">
+                            <h3>OO-CSS</h3>
+                            <ul class="optionsList">
+                                <li><label><input type="checkbox" name="overqualified-elements" checked>&nbsp;Disallow overqualified elements</label></li>
+                                <li><label><input type="checkbox" name="qualified-headings" checked>&nbsp;Disallow qualified headings</label></li>
+                                <li><label><input type="checkbox" name="unique-headings" checked>&nbsp;Heading should only be defined once</label></li>
+                            </ul>                        
+                        </div>
+                    </div>
+
+
+               
+
+
+
+
+
+                </div>
+
                                
             </form>
         </div>
