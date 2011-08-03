@@ -38,6 +38,15 @@
         }    
 
 		$('#in button').removeAttr('disabled');
+		
+		/* 
+		 * set up options menu 
+		 */
+		
+		$('#showOptions').click(function() {
+			$('#options').toggleClass("open");
+			return false;
+		});
 	/*
 	 * Views
 	 */
