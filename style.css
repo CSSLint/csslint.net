@@ -356,7 +356,7 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 .highlight .vi{color:#008080;}
 .highlight .il{color:#099;}
 
-hr{border: none;border-top: 1px solid #a8e9f9;border-bottom: 1px solid #fff;}
+hr{border: none;border-top: 1px solid #e2e2e2;border-bottom: 1px solid #fff;}
 .textEquiv{text-indent: -8889px;display:block;position:absolute; left: -100px;}
 /* ------ drop down button ------ */
 .btn .btnDrop{background-color: #32c6db;border-radius:20px; border-top-right-radius:0;padding:20px;clear:both;display:none; overflow:hidden;*overflow:visible; *zoom:1;}

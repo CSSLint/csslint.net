@@ -37,7 +37,7 @@
             }
         }    
 
-		$('#in button').removeAttr('disabled');
+		//$('#in button').removeAttr('disabled');
 		
 		/* 
 		 * set up options menu 
@@ -68,7 +68,7 @@
 		/*
 		 * Form: Sumbit css to be linted and highlighted 
 		 */
-		$('#in').submit(function() {
+		$('#lint').click(function() {
 			var css,
 					results,
 					myCssLength,
