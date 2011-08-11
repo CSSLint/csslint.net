@@ -383,3 +383,58 @@ font-family:Futura, "Gill Sans", Helvetica, sans-serif;	font-size: 48px;margin:0
 
 
 .btn h2, .btn .h2,.btn h3, .btn .h3{color: #414141;}
+
+/* */
+
+.lint-btn {
+    border: 0;
+    background-color: #34CFE5;
+    padding: 11px 44px;
+    *padding: 12px 44px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    color: #fff;
+    font-family: Futura, "Gill Sans", Helvetica, sans-serif;
+    font-size: 48px;
+    margin: 0;
+    cursor: pointer;
+    display: inline-block;
+    display: -moz-inline-box;
+}
+
+.options-block .arrow {
+    display: -moz-inline-box;
+    display: inline-block;
+    font-size: 1px;
+    border: 7px solid transparent;
+    *border-color: #34CFE5;
+    border-left-color: #fff;
+    height: 0;
+    width: 0;
+    color: transparent;
+}
+
+.options-block-open .arrow {
+    border-top-color: #fff;
+    border-left-color: transparent;
+    margin-right: 5px;
+}
+
+.options-block a {
+    color: #000;
+}
+
+.options-block a:hover {
+    color: #34CFE5;
+    text-decoration: none;
+}
+
+.options-panel,
+.options-block .summary {
+    display: none;
+}
+
+.options-block-open .summary,
+.options-panel-open {
+    display: block;
+}
