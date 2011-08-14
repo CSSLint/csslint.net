@@ -5,7 +5,7 @@
     <title>About</title>
     <link type="text/css" rel="stylesheet" href="style.css" >
     <style type="text/css">
-        pre{background-color:#FFFFE2;}
+        pre{background-color:#FFFFE2; padding:10px;}
     </style>
 </head>
 <body>
@@ -37,19 +37,19 @@
         </div>
     </div>
     <div class="foot">
-        <div class="page">
+        <div class="page" style="width: 600px;">
             <h2 id="docs">The CSS Lint Rules</h2>
 
             <h3>Parsing errors should be fixed</h3>
-
+						
             <p>By default, CSS Lint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSS Lint, the most important issues to fix.</p>
 
-            <h3>Don't use adjoining classes</h3>
-
+            <h3  class="mbn"><strong title="id">adjoining-classes</strong> Don't use adjoining classes</h3>
+						
             <p>Adjoining classes look like <code>.foo.bar</code>. While technically allowed in CSS, these aren't handled properly by Internet Explorer 6 and earlier.</p>
-            <p><strong>ID:</strong> <code>adjoining-classes</code></p>
+            
 
-            <h3>Remove empty rules</h3>
+            <h3><strong title="id">empty-rules</strong> Remove empty rules</h3>
 
             <p>Any rule that doesn't contain any properties, such as:</p>
 
@@ -60,7 +60,7 @@
 
 
             <p>A lot of times, empty rules appear as a result of refactoring without further cleanup. Eliminating empty rules results in smaller file sizes and less style information for the browser to deal with.</p>
-            <p><strong>ID:</strong> <code>empty-rules</code></p>
+           
 
             <h3>Use correct properties for a display</h3>
 
