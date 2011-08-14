@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="foot">
-        <div class="page" style="width: 600px;">
+        <div class="page docs">
             <h2 id="docs">The CSS Lint Rules</h2>
 
             <h3>Parsing errors should be fixed</h3>
@@ -62,7 +62,7 @@
             <p>A lot of times, empty rules appear as a result of refactoring without further cleanup. Eliminating empty rules results in smaller file sizes and less style information for the browser to deal with.</p>
            
 
-            <h3>Use correct properties for a display</h3>
+            <h3><strong title="id">display-property-grouping</strong>Use correct properties for a display</h3>
 
             <p>Even though you can define any group of properties together in a CSS rule, some of them will be ignored due to the <code>display</code> of the element. This leads to extra cruft in the CSS file. The list of properties that CSS Lint checks for are:</p>
 
@@ -76,7 +76,6 @@
             <li>
             <code>display: table-*</code> should not use <code>margin</code> (and all variants) or <code>float</code>.</li>
             </ul><p>Removed the ignored or problematic properties decreases file size and improves performance.</p>
-            <p><strong>ID:</strong> <code>display-property-grouping</code></p>
 
             <h3>Don't use too many floats</h3>
 
