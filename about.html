@@ -44,7 +44,7 @@
 						
             <p>By default, CSS Lint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSS Lint, the most important issues to fix.</p>
 
-            <h3  class="mbn"><strong title="id">adjoining-classes</strong> Don't use adjoining classes</h3>
+            <h3 class="mbn"><strong title="id">adjoining-classes</strong> Don't use adjoining classes</h3>
 						
             <p>Adjoining classes look like <code>.foo.bar</code>. While technically allowed in CSS, these aren't handled properly by Internet Explorer 6 and earlier.</p>
             
@@ -77,27 +77,27 @@
             <code>display: table-*</code> should not use <code>margin</code> (and all variants) or <code>float</code>.</li>
             </ul><p>Removed the ignored or problematic properties decreases file size and improves performance.</p>
 
-            <h3>Don't use too many floats</h3>
+            <h3><strong title="id">floats</strong> Don't use too many floats</h3>
 
             <p>Using <code>float</code> for layout isn't a great idea, but sometimes you have to. CSS Lint simply checks to see if you've used <code>float</code> more than 10 times, and if so, displays a warning. Using this many floats usually means you need some sort of abstraction to achieve the layout.</p>
-            <p><strong>ID:</strong> <code>floats</code></p>
+            
 
-            <h3>Don't use too many web fonts</h3>
+            <h3><strong title="id">font-faces</strong> Don't use too many web fonts</h3>
 
             <p>Web fonts are growing in popularity and use of <code>@font-face</code> is on the rise. However, using web fonts comes with performance implications as font files can be quite large and some browsers block rendering while downloading them. For this reason, CSS Lint will warn you when there are more than five web fonts in a style sheet.</p>
-            <p><strong>ID:</strong> <code>font-faces</code></p>
+            
 
-            <h3>Don't use too may font-size declarations</h3>
+            <h3><strong title="id">font-sizes</strong> Don't use too may font-size declarations</h3>
 
             <p>A site is typically made up of a finite number of font treatments, including font size. If you have 10 or more font sizes specified, you probably want to refactor into a standard set of font size classes that can be used in markup.</p>
-            <p><strong>ID:</strong> <code>font-sizes</code></p>
+            
 
-            <h3>Don't use IDs in selectors</h3>
+            <h3><strong title="id">ids</strong> Don't use IDs in selectors</h3>
 
             <p>IDs shouldn't be used in selectors because these rules are too tightly coupled with the HTML and have no possibility of reuse. It's much preferred to use classes in selectors and then apply a class to an element in the page.</p>
-            <p><strong>ID:</strong> <code>ids</code></p>
+            
 
-            <h3>Don't qualify headings</h3>
+            <h3><strong title="id">qualified-headings</strong> Don't qualify headings</h3>
 
             <p>Heading elements (<code>h1</code>-<code>h6</code>) should be defined as top-level styles and not scoped to particular areas of the page. For example, this is an example of an overqualified heading:</p>
 
@@ -110,23 +110,23 @@
 
 
             <p>Heading elements should have a consistent appearance across a site.</p>
-            <p><strong>ID:</strong> <code>qualified-headings</code></p>
+            
 
-            <h3>Heading styles should only be defined once</h3>
+            <h3><strong title="id">unique-headings</strong> Heading styles should only be defined once</h3>
 
             <p>Heading elements (<code>h1</code>-<code>h6</code>) should have exactly one rule on a site. CSS Lint warns if it finds more than one.</p>
-            <p><strong>ID:</strong> <code>unique-headings</code></p>
+            
 
             <!--<h3>Be careful using width: 100%</h3>
 
             <p>Using <code>width: 100%</code> on an element whose parent element has padding will result in the child stretching outside of the parent's bounding box. It's generally not a good idea to use <code>width: 100%</code>. Instead, use <code>width: auto</code> or <code>display: block</code>.</p>-->
 
-            <h3>Zero values don't need units</h3>
+            <h3><strong title="id">zero-units</strong> Zero values don't need units</h3>
 
             <p>An easy way to save bytes in CSS is not include units when a value is 0. For instance, <code>0px</code> and <code>0</code> are the exact same measurement, so leave off the units and save!</p>
-            <p><strong>ID:</strong> <code>zero-units</code></p>
+            
 
-            <h3>Vendor prefixed properties should also have the standard</h3>
+            <h3><strong title="id">vendor-prefix</strong> Vendor prefixed properties should also have the standard</h3>
 
             <p>When using vendor-prefixed properties such as <code>-moz-border-radius</code>, make sure to also include the standard property. The standard property should preferably come after the vendor-prefixed one, such as:</p>
 
@@ -137,36 +137,34 @@
 <span class="p">}</span>
             </pre>
             </div>
-            <p><strong>ID:</strong> <code>vendor-prefix</code></p>
+            
 
-            <h3>CSS gradients require all browser prefixes</h3>
+            <h3><strong title="id">gradients</strong> CSS gradients require all browser prefixes</h3>
 
             <p>Right now, there is no standard CSS gradient implementation, which means using CSS gradients in a cross-browser way requires using many different vendor-prefixed versions. CSS Lint warns when a rule with a CSS gradient doesn't have gradients for all supporting browsers. </p>
-            <p><strong>ID:</strong> <code>gradients</code></p>
+            
 
-            <h3>Avoid selectors that look like regular expressions</h3>
+            <h3><strong title="id">regex-selectors</strong> Avoid selectors that look like regular expressions</h3>
 
             <p>CSS3 adds complex attribute selectors such as <code>~=</code> that are slow. When using attribute selectors, don't use the complex equality operators to avoid performance penalties.</p>
-            <p><strong>ID:</strong> <code>regex-selectors</code></p>
+            
 
-            <h3>Beware of broken box models</h3>
+            <h3><strong title="id">box-model</strong> Beware of broken box models</h3>
 
             <p>Borders and padding add space outside of an element's content. Setting <code>width</code> or <code>height</code> along with borders and padding is usually a mistake because you won't get the visual result you're looking for. CSS Lint warns when a rule uses <code>width</code> or <code>height</code> in addition to padding and/or border.</p>
-            <p><strong>ID:</strong> <code>box-model</code></p>
+            
 
-            <h3>Don't use @import</h3>
+            <h3><strong title="id">import</strong>Don't use @import</h3>
 
             <p>The <code>@import</code> directive prevents some browsers from downloading resources in parallel (see: <a href="http://www.stevesouders.com/blog/2009/04/09/dont-use-import/">Don't use @import</a>)</p>
-            <p><strong>ID:</strong> <code>import</code></p>
             
-            <h3>Don't use !important</h3>
+            <h3><strong title="id">important</strong> Don't use !important</h3>
             <p>Using <code>!important</code> overides any cascaded rule and may lead to specificity war. CSS Lint checks if you've used <code>!important</code>, and if so, displays a warning. If there's at least 10 <code>!important</code> declaration in your code CSSLint displays an error.</p>
-            <p><strong>ID:</strong> <code>important</code></p>
             
-            <h3>Include all compatible vendor prefixes</h3>
+            <h3><strong title="id">compatible-vendor-prefixes</strong> Include all compatible vendor prefixes</h3>
             <p>Most CSS3 properties have vendor-prefixed equivalents for multiple vendors, including Firefox (-moz), Safari/Chrome (-webkit), Opera (-o), and Internet Explorer (-ms). Including all compatible vendor prefixes will give a consistent appearance for a wider range of users.</p>
-            <p><strong>ID:</strong> <code>compatible-vendor-prefixes</code></p>
-            <h3>Avoid duplicate properties</h3>
+            
+            <h3><strong title="id">duplicate-properties</strong> Avoid duplicate properties</h3>
             <p>When you include the same property twice, it may be intentional (to provide a fallback) or unintentional (copy-paste error). If duplicate properties are found one after the other with different values, this is okay. For example:</p>
 
 <pre><code>.foo {
@@ -180,7 +178,6 @@
     color: #000;
     background: rgba(255, 255, 255, 0.5);
 }</code></pre>
-            <p><strong>ID:</strong> <code>duplicate-properties</code></p>
 
             <h2 id="contribute">Contribute</h2>
             <p>Many people have expressed an interest in contributing to the CSS Lint project. We were waiting to have a solid plugable architecture and API before taking contributions. The exciting news is that we are now ready! There are several ways you can contribute:</p>
