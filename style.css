@@ -252,7 +252,7 @@ textarea{box-shadow: inset 0 1px 0 #c3c3c3;	border:1px solid gray;	border-color:
 .footList a{color: #666666;}
 
 /* ------ code view table ------ */
-.codeView{overflow-x:auto;	width:100%;}
+.codeView{overflow-x:auto;	width:100%; max-width: 956px;}
 .codeView table{font-family:"Courier New", Courier, monospace;	white-space:nowrap;}
 .codeView th{border-right:1px solid #cccccd;}
 .codeView th, .codeView td{padding:3px 5px;}
