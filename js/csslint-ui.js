@@ -3,6 +3,7 @@
  
  		var errorLines = [],
             errorView,
+            options,
             worker = null;
             
             
@@ -39,12 +40,34 @@
 
 		//$('#in button').removeAttr('disabled');
 		
+        //auto-fill checkboxes from localStorage
+        if (window.localStorage){
+            
+            if (localStorage.getItem("options")){
+                options = $.parseJSON(localStorage.getItem("options"));
+                $("input[type=checkbox]").each(function(index, checkbox){
+                    checkbox.checked = options[checkbox.name] == 1;
+                });                
+            }
+            
+            if (localStorage.getItem("open")){
+                $('#options').toggleClass("open");
+            }
+
+        }
+        
+        
 		/* 
 		 * set up options menu 
 		 */
 		
 		$('#showOptions').click(function() {
 			$('#options').toggleClass("open");
+            
+            if (window.localStorage){
+                localStorage.setItem("open", $('#options').hasClass("open") ? "1" : "");
+            }
+
 			return false;
 		});
 	/*
@@ -101,9 +124,16 @@
         
         function gatherRules(){
             var ruleset = {};
+            
             $("input:checked").each(function(index, checkbox){
-                ruleset[checkbox.name] = 1;
+                ruleset[checkbox.name] = 1;                
             });
+            
+            //store in localStorage for later usage
+            if (window.localStorage){
+                localStorage.setItem("options", $.toJSON(ruleset));
+            }
+            
             return ruleset;
         }
         
