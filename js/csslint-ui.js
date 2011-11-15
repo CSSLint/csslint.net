@@ -3,9 +3,9 @@
  
  		var errorLines = [],
             errorView,
+            options,
+            rulesArray,
             worker = null;
-            
-            
             
         function htmlEscape(text){
             var htmlEscapes = {
@@ -38,15 +38,64 @@
         }    
 
 		//$('#in button').removeAttr('disabled');
-		
+        
+        //if there's a hash, auto-fill checkboxes from it
+        if (location.hash){
+        
+            $("input[type=checkbox]").prop("checked", false);
+        
+            $.each(location.hash.substring("warnings=".length+1).split(","), function(i, value){
+                $("input[name=" + value + "]").prop("checked", true);
+            });
+            
+        
+            //always be open when a hash is present
+            $('#options').toggleClass("open");
+        
+        } else if (window.localStorage){ //otherwise, pull from localStorage
+            
+            if (localStorage.getItem("rules")){
+                options = $.parseJSON(localStorage.getItem("rules"));
+                $("input[type=checkbox]").each(function(index, checkbox){
+                    checkbox.checked = options[checkbox.name] == 1;
+                });                
+            }
+            
+            if (localStorage.getItem("open")){
+                $('#options').toggleClass("open");
+            }
+
+        }
+        
+        //when a checkbox change, update the hash
+        $("input[type=checkbox]").live("click", updateHash);
+        
 		/* 
 		 * set up options menu 
 		 */
 		
 		$('#showOptions').click(function() {
 			$('#options').toggleClass("open");
+            
+            if (window.localStorage){
+                localStorage.setItem("open", $('#options').hasClass("open") ? "1" : "");
+            }
+
 			return false;
 		});
+        
+        
+        function updateHash(){
+            var ruleset = gatherRules(),
+                rules = [];
+                
+            $.each(ruleset, function(key, value){
+                rules.push(key);
+            });
+            
+            location.hash = "warnings=" + rules.join(",");
+        }
+        
 	/*
 	 * Views
 	 */
@@ -101,9 +150,16 @@
         
         function gatherRules(){
             var ruleset = {};
+            
             $("input:checked").each(function(index, checkbox){
-                ruleset[checkbox.name] = 1;
+                ruleset[checkbox.name] = 1;                
             });
+            
+            //store in localStorage for later usage
+            if (window.localStorage){
+                localStorage.setItem("rules", $.toJSON(ruleset));
+            }
+            
             return ruleset;
         }
         

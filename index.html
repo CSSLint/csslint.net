@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="style.css" >
     <script src="js/jquery-1.6.1.js"></script>
+    <script src="js/jquery.json-2.3.min.js"></script>
     <script src="js/DataTables-1.7.6/media/js/jquery.dataTables.js"></script>
     <script src="js/jquery.ba-hashchange.js"></script>
     <link rel="stylesheet" href="js/sunlight-1.14.419/themes/sunlight.default.css">
@@ -62,12 +63,12 @@
                   </ul>
                 	<div class="btnDrop">
                   	
-                    <p class="summary mvm pvn">Options: Expert users may want to test their own special set of rules. You can pick and choose which errors and warnings to test for below.</p>
+                    <p class="summary mvm pvn">You can pick and choose which errors and warnings to test for below.</p>
                   	<div class="line">
                           <div class="unit size1of3">
                               <h3>Errors</h3>
                               <ul class="optionsList">
-                                  <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box model</label></li>
+                                  <li><label><input type="checkbox" name="box-model" checked>&nbsp;Beware of broken box sizing</label></li>
                                   <li><label><input type="checkbox" name="display-property-grouping" checked>&nbsp;Require properties appropriate for <code>display</code></label></li>
                                   <li><label><input type="checkbox" name="duplicate-properties" checked>&nbsp;Disallow duplicate properties</label></li>
                                   <li><label><input type="checkbox" name="empty-rules" checked>&nbsp;Disallow empty rules</label></li>
@@ -78,6 +79,7 @@
                               <h3>Compatibility</h3>
                               <ul class="optionsList">
                                   <li><label><input type="checkbox" name="adjoining-classes" checked>&nbsp;Disallow adjoining classes</label></li>
+                                  <li><label><input type="checkbox" name="box-sizing" checked>&nbsp;Disallow <code>box-sizing</code></label></li>
                                   <li><label><input type="checkbox" name="compatible-vendor-prefixes" checked>&nbsp;Require compatible vendor prefixes</label></li>
                                   <li><label><input type="checkbox" name="gradients" checked>&nbsp;Require all gradient definitions</label></li>
                                   <li><label><input type="checkbox" name="text-indent" checked>&nbsp;Disallow negative <code>text-indent</code></label></li>
@@ -93,6 +95,7 @@
                                   <li><label><input type="checkbox" name="universal-selector" checked>&nbsp;Disallow universal selector</label></li>
                                   <li><label><input type="checkbox" name="zero-units" checked>&nbsp;Disallow units for 0 values</label></li>
                                   <li><label><input type="checkbox" name="overqualified-elements" checked>&nbsp;Disallow overqualified elements</label></li>
+                                  <li><label><input type="checkbox" name="shorthand" checked>&nbsp;Require shorthand properties</label></li>
                               </ul>                        
                           </div>
                       </div>
@@ -106,6 +109,12 @@
                                   <li><label><input type="checkbox" name="important" checked>&nbsp;Disallow <code>!important</code></label></li>
                               </ul>                        
                           </div>
+                          <div class="unit size1of3">
+                              <h3>Accessibility</h3>
+                              <ul class="optionsList">
+                                  <li><label><input type="checkbox" name="outline-none" checked>&nbsp;Disallow <code>outline:none</code></label></li>
+                              </ul>                        
+                          </div>
                           <div class="unit size1of3 lastUnit">
                               <h3>OOCSS</h3>
                               <ul class="optionsList">
@@ -114,7 +123,7 @@
                               </ul>                        
                           </div>
                       </div>
-                      <a class="right" href="about.html#docs">Learn More About the Rules</a>
+                      <a class="right" href="https://github.com/stubbornella/csslint/wiki/Rules">Learn More About the Rules</a>
                   </div>
                 </div>
                                 
@@ -126,11 +135,12 @@
         <div class="page"> 
         	<ul class="inlineList piped footList">
                 
-                <li><a href="about.html">About</a></li>
-                <li><a href="about.html#contribute">Contribute</a></li>
+                <li><a href="https://github.com/stubbornella/csslint/wiki/About">About</a></li>
+                <li><a href="https://github.com/stubbornella/csslint/wiki/Developer-Guide">Contribute</a></li>
                 <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
-                <li><a href="about.html#node">Node</a></li>
-                <li><a href="about.html#docs">Documentation</a></li>
+                <li><a href="https://github.com/stubbornella/csslint/wiki/Command-line-interface">Node/Rhino CLI</a></li>
+                <li><a href="https://github.com/stubbornella/csslint/wiki">Documentation</a></li>
+                <li><a href="http://groups.google.com/group/css-lint">Mailing List</a></li>
             </ul>   
             <div class="mod" id="errorViewWrapper">
                 <div class="inner">
@@ -193,5 +203,18 @@
             </ul>
         </div>
     </div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25221469-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>    
 </body>
 </html>
