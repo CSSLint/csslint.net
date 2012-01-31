@@ -19,8 +19,7 @@
             });
         }
          
-            
-            
+                        
         if (typeof Worker != "undefined"){
         
             //if being run locally, some browsers barf, so double-check
@@ -40,7 +39,7 @@
 		//$('#in button').removeAttr('disabled');
         
         //if there's a hash, auto-fill checkboxes from it
-        if (location.hash){
+        if (location.hash && location.hash != "results"){
         
             $("input[type=checkbox]").prop("checked", false);
         
@@ -112,7 +111,7 @@
                     break;
 				default: $('html').addClass('');
 			}			
-		}
+		}        
 		
 		/*
 		 * Form: Sumbit css to be linted and highlighted 
@@ -174,6 +173,9 @@
                 fragment = document.createDocumentFragment(),
                 tr, td,
                 type;
+                
+            //for back button support
+            location.hash = "results";
             
             if (errorView){
                 errorView.fnClearTable();
@@ -296,18 +298,13 @@
 
 	 $(function(){
 
-  // Hash changed
+        // Hash changed
 		$(window).hashchange( function(){
-			//get #hash
-			var curr = window.location.hash.substring(1);
-			if(curr){
-				//highlight current row
-				$('.highlight').removeClass('highlight');
-				$('.' + curr).addClass('highlight');
-			};
-		})
-		// Trigger the event (on page load).
-		$(window).hashchange();
+			var hash = location.hash.substring(1);
+            if (hash != "results") {
+                toggleView('');
+            }
+        });
 	});
 	 
 	 /* 
