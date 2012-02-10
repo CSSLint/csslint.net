@@ -126,7 +126,8 @@
 		});
         
         $("#restart-btn").click(function(){
-            toggleView('');
+            //toggleView('');
+            history.back();
             return false;
         });
         
