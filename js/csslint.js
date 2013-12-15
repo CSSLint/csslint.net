@@ -1,6 +1,6 @@
 /*!
 CSSLint
-Copyright (c) 2011 Nicole Sullivan and Nicholas C. Zakas. All rights reserved.
+Copyright (c) 2013 Nicole Sullivan and Nicholas C. Zakas. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-/* Build time: 17-January-2013 10:55:01 */
+/* Build: v0.10.0 15-August-2013 01:07:22 */
+var exports = exports || {};
 var CSSLint = (function(){
 /*!
 Parser-Lib
@@ -46,7 +47,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-/* Version v0.2.2, Build time: 17-January-2013 10:26:34 */
+/* Version v0.2.3, Build time: 19-June-2013 11:16:15 */
 var parserlib = {};
 (function(){
 
@@ -65,7 +66,7 @@ function EventTarget(){
      * @property _listeners
      * @private
      */
-    this._listeners = {};    
+    this._listeners = {};
 }
 
 EventTarget.prototype = {
@@ -87,14 +88,14 @@ EventTarget.prototype = {
 
         this._listeners[type].push(listener);
     },
-    
+
     /**
      * Fires an event based on the passed-in object.
      * @param {Object|String} event An object with at least a 'type' attribute
      *      or a string indicating the event name.
      * @return {void}
      * @method fire
-     */    
+     */
     fire: function(event){
         if (typeof event == "string"){
             event = { type: event };
@@ -102,19 +103,19 @@ EventTarget.prototype = {
         if (typeof event.target != "undefined"){
             event.target = this;
         }
-        
+
         if (typeof event.type == "undefined"){
             throw new Error("Event object missing 'type' property.");
         }
-        
+
         if (this._listeners[event.type]){
-        
+
             //create a copy of the array and use that so listeners can't chane
             var listeners = this._listeners[event.type].concat();
             for (var i=0, len=listeners.length; i < len; i++){
                 listeners[i].call(this, event);
             }
-        }            
+        }
     },
 
     /**
@@ -133,9 +134,9 @@ EventTarget.prototype = {
                     break;
                 }
             }
-            
-            
-        }            
+
+
+        }
     }
 };
 /**
@@ -499,7 +500,7 @@ SyntaxUnit.prototype = {
 
     //restore constructor
     constructor: SyntaxUnit,
-    
+
     /**
      * Returns the text representation of the unit.
      * @return {String} The text representation of the unit.
@@ -508,7 +509,7 @@ SyntaxUnit.prototype = {
     valueOf: function(){
         return this.toString();
     },
-    
+
     /**
      * Returns the text representation of the unit.
      * @return {String} The text representation of the unit.
@@ -526,7 +527,7 @@ SyntaxUnit.prototype = {
  * @class TokenStreamBase
  * @namespace parserlib.util
  * @constructor
- * @param {String|StringReader} input The text to tokenize or a reader from 
+ * @param {String|StringReader} input The text to tokenize or a reader from
  *      which to read the input.
  */
 function TokenStreamBase(input, tokenData){
@@ -538,15 +539,15 @@ function TokenStreamBase(input, tokenData){
      * @private
      */
     this._reader = input ? new StringReader(input.toString()) : null;
-    
+
     /**
      * Token object for the last consumed token.
      * @type Token
      * @property _token
      * @private
      */
-    this._token = null;    
-    
+    this._token = null;
+
     /**
      * The array of token information.
      * @type Array
@@ -554,7 +555,7 @@ function TokenStreamBase(input, tokenData){
      * @private
      */
     this._tokenData = tokenData;
-    
+
     /**
      * Lookahead token buffer.
      * @type Array
@@ -562,7 +563,7 @@ function TokenStreamBase(input, tokenData){
      * @private
      */
     this._lt = [];
-    
+
     /**
      * Lookahead token buffer index.
      * @type int
@@ -570,7 +571,7 @@ function TokenStreamBase(input, tokenData){
      * @private
      */
     this._ltIndex = 0;
-    
+
     this._ltIndexCache = [];
 }
 
@@ -590,7 +591,7 @@ TokenStreamBase.createTokenData = function(tokens){
         tokenData     = tokens.concat([]),
         i            = 0,
         len            = tokenData.length+1;
-    
+
     tokenData.UNKNOWN = -1;
     tokenData.unshift({name:"EOF"});
 
@@ -601,27 +602,27 @@ TokenStreamBase.createTokenData = function(tokens){
             typeMap[tokenData[i].text] = i;
         }
     }
-    
+
     tokenData.name = function(tt){
         return nameMap[tt];
     };
-    
+
     tokenData.type = function(c){
         return typeMap[c];
     };
-    
+
     return tokenData;
 };
 
 TokenStreamBase.prototype = {
 
     //restore constructor
-    constructor: TokenStreamBase,    
-    
+    constructor: TokenStreamBase,
+
     //-------------------------------------------------------------------------
     // Matching methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * Determines if the next token matches the given token type.
      * If so, that token is consumed; if not, the token is placed
@@ -637,27 +638,27 @@ TokenStreamBase.prototype = {
      * @method match
      */
     match: function(tokenTypes, channel){
-    
+
         //always convert to an array, makes things easier
         if (!(tokenTypes instanceof Array)){
             tokenTypes = [tokenTypes];
         }
-                
+
         var tt  = this.get(channel),
             i   = 0,
             len = tokenTypes.length;
-            
+
         while(i < len){
             if (tt == tokenTypes[i++]){
                 return true;
             }
         }
-        
+
         //no match found, put the token back
         this.unget();
         return false;
-    },    
-    
+    },
+
     /**
      * Determines if the next token matches the given token type.
      * If so, that token is consumed; if not, an error is thrown.
@@ -668,7 +669,7 @@ TokenStreamBase.prototype = {
      *      provided, reads from the default (unnamed) channel.
      * @return {void}
      * @method mustMatch
-     */    
+     */
     mustMatch: function(tokenTypes, channel){
 
         var token;
@@ -678,17 +679,17 @@ TokenStreamBase.prototype = {
             tokenTypes = [tokenTypes];
         }
 
-        if (!this.match.apply(this, arguments)){    
+        if (!this.match.apply(this, arguments)){
             token = this.LT(1);
-            throw new SyntaxError("Expected " + this._tokenData[tokenTypes[0]].name + 
+            throw new SyntaxError("Expected " + this._tokenData[tokenTypes[0]].name +
                 " at line " + token.startLine + ", col " + token.startCol + ".", token.startLine, token.startCol);
         }
     },
-    
+
     //-------------------------------------------------------------------------
     // Consuming methods
     //-------------------------------------------------------------------------
-    
+
     /**
      * Keeps reading from the token stream until either one of the specified
      * token types is found or until the end of the input is reached.
@@ -701,21 +702,21 @@ TokenStreamBase.prototype = {
      * @method advance
      */
     advance: function(tokenTypes, channel){
-        
+
         while(this.LA(0) !== 0 && !this.match(tokenTypes, channel)){
             this.get();
         }
 
-        return this.LA(0);    
+        return this.LA(0);
     },
-    
+
     /**
-     * Consumes the next token from the token stream. 
+     * Consumes the next token from the token stream.
      * @return {int} The token type of the token that was just consumed.
      * @method get
-     */      
+     */
     get: function(channel){
-    
+
         var tokenInfo   = this._tokenData,
             reader      = this._reader,
             value,
@@ -724,14 +725,14 @@ TokenStreamBase.prototype = {
             found       = false,
             token,
             info;
-            
+
         //check the lookahead buffer first
-        if (this._lt.length && this._ltIndex >= 0 && this._ltIndex < this._lt.length){  
-                           
+        if (this._lt.length && this._ltIndex >= 0 && this._ltIndex < this._lt.length){
+
             i++;
             this._token = this._lt[this._ltIndex++];
             info = tokenInfo[this._token.type];
-            
+
             //obey channels logic
             while((info.channel !== undefined && channel !== info.channel) &&
                     this._ltIndex < this._lt.length){
@@ -739,7 +740,7 @@ TokenStreamBase.prototype = {
                 info = tokenInfo[this._token.type];
                 i++;
             }
-            
+
             //here be dragons
             if ((info.channel === undefined || channel === info.channel) &&
                     this._ltIndex <= this._lt.length){
@@ -747,45 +748,45 @@ TokenStreamBase.prototype = {
                 return this._token.type;
             }
         }
-        
+
         //call token retriever method
         token = this._getToken();
 
         //if it should be hidden, don't save a token
         if (token.type > -1 && !tokenInfo[token.type].hide){
-                     
+
             //apply token channel
             token.channel = tokenInfo[token.type].channel;
-         
+
             //save for later
             this._token = token;
             this._lt.push(token);
 
             //save space that will be moved (must be done before array is truncated)
-            this._ltIndexCache.push(this._lt.length - this._ltIndex + i);  
-        
+            this._ltIndexCache.push(this._lt.length - this._ltIndex + i);
+
             //keep the buffer under 5 items
             if (this._lt.length > 5){
-                this._lt.shift();                
+                this._lt.shift();
             }
-            
+
             //also keep the shift buffer under 5 items
             if (this._ltIndexCache.length > 5){
                 this._ltIndexCache.shift();
             }
-                
+
             //update lookahead index
             this._ltIndex = this._lt.length;
         }
-            
+
         /*
          * Skip to the next token if:
          * 1. The token type is marked as hidden.
          * 2. The token type has a channel specified and it isn't the current channel.
          */
         info = tokenInfo[token.type];
-        if (info && 
-                (info.hide || 
+        if (info &&
+                (info.hide ||
                 (info.channel !== undefined && channel !== info.channel))){
             return this.get(channel);
         } else {
@@ -793,7 +794,7 @@ TokenStreamBase.prototype = {
             return token.type;
         }
     },
-    
+
     /**
      * Looks ahead a certain number of tokens and returns the token type at
      * that position. This will throw an error if you lookahead past the
@@ -812,34 +813,34 @@ TokenStreamBase.prototype = {
             if (index > 5){
                 throw new Error("Too much lookahead.");
             }
-        
+
             //get all those tokens
             while(total){
-                tt = this.get();   
-                total--;                            
+                tt = this.get();
+                total--;
             }
-            
+
             //unget all those tokens
             while(total < index){
                 this.unget();
                 total++;
             }
         } else if (index < 0){
-        
+
             if(this._lt[this._ltIndex+index]){
                 tt = this._lt[this._ltIndex+index].type;
             } else {
                 throw new Error("Too much lookbehind.");
             }
-        
+
         } else {
             tt = this._token.type;
         }
-        
+
         return tt;
-    
+
     },
-    
+
     /**
      * Looks ahead a certain number of tokens and returns the token at
      * that position. This will throw an error if you lookahead past the
@@ -849,18 +850,18 @@ TokenStreamBase.prototype = {
      *      current token, 1 for the next, -1 for the previous, etc.
      * @return {Object} The token of the token in the given position.
      * @method LA
-     */    
+     */
     LT: function(index){
-    
+
         //lookahead first to prime the token buffer
         this.LA(index);
-        
+
         //now find the token, subtract one because _ltIndex is already at the next index
-        return this._lt[this._ltIndex+index-1];    
+        return this._lt[this._ltIndex+index-1];
     },
-    
+
     /**
-     * Returns the token type for the next token in the stream without 
+     * Returns the token type for the next token in the stream without
      * consuming it.
      * @return {int} The token type of the next token in the stream.
      * @method peek
@@ -868,7 +869,7 @@ TokenStreamBase.prototype = {
     peek: function(){
         return this.LA(1);
     },
-    
+
     /**
      * Returns the actual token object for the last consumed token.
      * @return {Token} The token object for the last consumed token.
@@ -877,7 +878,7 @@ TokenStreamBase.prototype = {
     token: function(){
         return this._token;
     },
-    
+
     /**
      * Returns the name of the token for the given token type.
      * @param {int} tokenType The type of token to get the name of.
@@ -892,22 +893,22 @@ TokenStreamBase.prototype = {
             return this._tokenData[tokenType].name;
         }
     },
-    
+
     /**
      * Returns the token type value for the given token name.
      * @param {String} tokenName The name of the token whose value should be returned.
      * @return {int} The token type value for the given token name or -1
      *      for an unknown token.
      * @method tokenName
-     */    
+     */
     tokenType: function(tokenName){
         return this._tokenData[tokenName] || -1;
     },
-    
+
     /**
      * Returns the last consumed token to the token stream.
      * @method unget
-     */      
+     */
     unget: function(){
         //if (this._ltIndex > -1){
         if (this._ltIndexCache.length){
@@ -956,7 +957,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-/* Version v0.2.2, Build time: 17-January-2013 10:26:34 */
+/* Version v0.2.3, Build time: 19-June-2013 11:16:15 */
 (function(){
 var EventTarget = parserlib.util.EventTarget,
 TokenStreamBase = parserlib.util.TokenStreamBase,
@@ -1143,12 +1144,12 @@ var Colors = {
  * @class Combinator
  * @extends parserlib.util.SyntaxUnit
  * @constructor
- * @param {String} text The text representation of the unit. 
+ * @param {String} text The text representation of the unit.
  * @param {int} line The line of text on which the unit resides.
  * @param {int} col The column of text on which the unit resides.
  */
 function Combinator(text, line, col){
-    
+
     SyntaxUnit.call(this, text, line, col, Parser.COMBINATOR_TYPE);
 
     /**
@@ -1157,7 +1158,7 @@ function Combinator(text, line, col){
      * @property type
      */
     this.type = "unknown";
-    
+
     //pretty simple
     if (/^\s+$/.test(text)){
         this.type = "descendant";
@@ -1186,7 +1187,7 @@ Combinator.prototype.constructor = Combinator;
  * @param {SyntaxUnit} value The value of the feature or null if none.
  */
 function MediaFeature(name, value){
-    
+
     SyntaxUnit.call(this, "(" + name + (value !== null ? ":" + value : "") + ")", name.startLine, name.startCol, Parser.MEDIA_FEATURE_TYPE);
 
     /**
@@ -1222,8 +1223,8 @@ MediaFeature.prototype.constructor = MediaFeature;
  * @param {int} col The column of text on which the unit resides.
  */
 function MediaQuery(modifier, mediaType, features, line, col){
-    
-    SyntaxUnit.call(this, (modifier ? modifier + " ": "") + (mediaType ? mediaType : "") + (mediaType && features.length > 0 ? " and " : "") + features.join(" and "), line, col, Parser.MEDIA_QUERY_TYPE); 
+
+    SyntaxUnit.call(this, (modifier ? modifier + " ": "") + (mediaType ? mediaType : "") + (mediaType && features.length > 0 ? " and " : "") + features.join(" and "), line, col, Parser.MEDIA_QUERY_TYPE);
 
     /**
      * The media modifier ("not" or "only")
@@ -1237,8 +1238,8 @@ function MediaQuery(modifier, mediaType, features, line, col){
      * @type String
      * @property mediaType
      */
-    this.mediaType = mediaType;    
-    
+    this.mediaType = mediaType;
+
     /**
      * The parts that make up the selector.
      * @type Array
@@ -1296,10 +1297,10 @@ Parser.prototype = function(){
     var proto = new EventTarget(),  //new prototype
         prop,
         additions =  {
-        
+
             //restore constructor
             constructor: Parser,
-                        
+
             //instance constants - yuck
             DEFAULT_TYPE : 0,
             COMBINATOR_TYPE : 1,
@@ -1310,14 +1311,14 @@ Parser.prototype = function(){
             PROPERTY_VALUE_PART_TYPE : 6,
             SELECTOR_TYPE : 7,
             SELECTOR_PART_TYPE : 8,
-            SELECTOR_SUB_PART_TYPE : 9,            
-        
+            SELECTOR_SUB_PART_TYPE : 9,
+
             //-----------------------------------------------------------------
             // Grammar
             //-----------------------------------------------------------------
-        
+
             _stylesheet: function(){
-            
+
                 /*
                  * stylesheet
                  *  : [ CHARSET_SYM S* STRING S* ';' ]?
@@ -1325,19 +1326,19 @@ Parser.prototype = function(){
                  *    [ namespace [S|CDO|CDC]* ]*
                  *    [ [ ruleset | media | page | font_face | keyframes ] [S|CDO|CDC]* ]*
                  *  ;
-                 */ 
-               
+                 */
+
                 var tokenStream = this._tokenStream,
                     charset     = null,
                     count,
                     token,
                     tt;
-                    
+
                 this.fire("startstylesheet");
-            
+
                 //try to read character set
                 this._charset();
-                
+
                 this._skipCruft();
 
                 //try to read imports - may be more than one
@@ -1345,42 +1346,46 @@ Parser.prototype = function(){
                     this._import();
                     this._skipCruft();
                 }
-                
+
                 //try to read namespaces - may be more than one
                 while (tokenStream.peek() == Tokens.NAMESPACE_SYM){
                     this._namespace();
                     this._skipCruft();
                 }
-                
+
                 //get the next token
                 tt = tokenStream.peek();
-                
+
                 //try to read the rest
                 while(tt > Tokens.EOF){
-                
+
                     try {
-                
+
                         switch(tt){
                             case Tokens.MEDIA_SYM:
                                 this._media();
                                 this._skipCruft();
                                 break;
                             case Tokens.PAGE_SYM:
-                                this._page(); 
+                                this._page();
                                 this._skipCruft();
-                                break;                   
+                                break;
                             case Tokens.FONT_FACE_SYM:
-                                this._font_face(); 
+                                this._font_face();
                                 this._skipCruft();
-                                break;  
+                                break;
                             case Tokens.KEYFRAMES_SYM:
-                                this._keyframes(); 
+                                this._keyframes();
                                 this._skipCruft();
-                                break;                                
+                                break;
+                            case Tokens.VIEWPORT_SYM:
+                                this._viewport();
+                                this._skipCruft();
+                                break;
                             case Tokens.UNKNOWN_SYM:  //unknown @ rule
                                 tokenStream.get();
                                 if (!this.options.strict){
-                                
+
                                     //fire error event
                                     this.fire({
                                         type:       "error",
@@ -1388,30 +1393,30 @@ Parser.prototype = function(){
                                         message:    "Unknown @ rule: " + tokenStream.LT(0).value + ".",
                                         line:       tokenStream.LT(0).startLine,
                                         col:        tokenStream.LT(0).startCol
-                                    });                          
-                                    
+                                    });
+
                                     //skip braces
                                     count=0;
                                     while (tokenStream.advance([Tokens.LBRACE, Tokens.RBRACE]) == Tokens.LBRACE){
                                         count++;    //keep track of nesting depth
                                     }
-                                    
+
                                     while(count){
                                         tokenStream.advance([Tokens.RBRACE]);
                                         count--;
                                     }
-                                    
+
                                 } else {
                                     //not a syntax error, rethrow it
                                     throw new SyntaxError("Unknown @ rule.", tokenStream.LT(0).startLine, tokenStream.LT(0).startCol);
-                                }                                
+                                }
                                 break;
                             case Tokens.S:
                                 this._readWhitespace();
                                 break;
-                            default:                            
+                            default:
                                 if(!this._ruleset()){
-                                
+
                                     //error handling for known issues
                                     switch(tt){
                                         case Tokens.CHARSET_SYM:
@@ -1430,7 +1435,7 @@ Parser.prototype = function(){
                                             tokenStream.get();  //get the last token
                                             this._unexpectedToken(tokenStream.token());
                                     }
-                                
+
                                 }
                         }
                     } catch(ex) {
@@ -1441,84 +1446,84 @@ Parser.prototype = function(){
                                 message:    ex.message,
                                 line:       ex.line,
                                 col:        ex.col
-                            });                     
+                            });
                         } else {
                             throw ex;
                         }
                     }
-                    
+
                     tt = tokenStream.peek();
                 }
-                
+
                 if (tt != Tokens.EOF){
                     this._unexpectedToken(tokenStream.token());
                 }
-            
+
                 this.fire("endstylesheet");
             },
-            
+
             _charset: function(emit){
                 var tokenStream = this._tokenStream,
                     charset,
                     token,
                     line,
                     col;
-                    
+
                 if (tokenStream.match(Tokens.CHARSET_SYM)){
                     line = tokenStream.token().startLine;
                     col = tokenStream.token().startCol;
-                
+
                     this._readWhitespace();
                     tokenStream.mustMatch(Tokens.STRING);
-                    
+
                     token = tokenStream.token();
                     charset = token.value;
-                    
+
                     this._readWhitespace();
                     tokenStream.mustMatch(Tokens.SEMICOLON);
-                    
+
                     if (emit !== false){
-                        this.fire({ 
+                        this.fire({
                             type:   "charset",
                             charset:charset,
                             line:   line,
                             col:    col
                         });
                     }
-                }            
+                }
             },
-            
+
             _import: function(emit){
                 /*
                  * import
                  *   : IMPORT_SYM S*
                  *    [STRING|URI] S* media_query_list? ';' S*
-                 */    
-            
+                 */
+
                 var tokenStream = this._tokenStream,
                     tt,
                     uri,
                     importToken,
                     mediaList   = [];
-                
+
                 //read import symbol
                 tokenStream.mustMatch(Tokens.IMPORT_SYM);
                 importToken = tokenStream.token();
                 this._readWhitespace();
-                
+
                 tokenStream.mustMatch([Tokens.STRING, Tokens.URI]);
-                
+
                 //grab the URI value
-                uri = tokenStream.token().value.replace(/(?:url\()?["']([^"']+)["']\)?/, "$1");                
+                uri = tokenStream.token().value.replace(/(?:url\()?["']([^"']+)["']\)?/, "$1");
 
                 this._readWhitespace();
-                
+
                 mediaList = this._media_query_list();
-                
+
                 //must end with a semicolon
                 tokenStream.mustMatch(Tokens.SEMICOLON);
                 this._readWhitespace();
-                
+
                 if (emit !== false){
                     this.fire({
                         type:   "import",
@@ -1528,47 +1533,47 @@ Parser.prototype = function(){
                         col:    importToken.startCol
                     });
                 }
-        
+
             },
-            
+
             _namespace: function(emit){
                 /*
                  * namespace
                  *   : NAMESPACE_SYM S* [namespace_prefix S*]? [STRING|URI] S* ';' S*
-                 */    
-            
+                 */
+
                 var tokenStream = this._tokenStream,
                     line,
                     col,
                     prefix,
                     uri;
-                
+
                 //read import symbol
                 tokenStream.mustMatch(Tokens.NAMESPACE_SYM);
                 line = tokenStream.token().startLine;
                 col = tokenStream.token().startCol;
                 this._readWhitespace();
-                
+
                 //it's a namespace prefix - no _namespace_prefix() method because it's just an IDENT
                 if (tokenStream.match(Tokens.IDENT)){
                     prefix = tokenStream.token().value;
                     this._readWhitespace();
                 }
-                
+
                 tokenStream.mustMatch([Tokens.STRING, Tokens.URI]);
                 /*if (!tokenStream.match(Tokens.STRING)){
                     tokenStream.mustMatch(Tokens.URI);
                 }*/
-                
+
                 //grab the URI value
-                uri = tokenStream.token().value.replace(/(?:url\()?["']([^"']+)["']\)?/, "$1");                
+                uri = tokenStream.token().value.replace(/(?:url\()?["']([^"']+)["']\)?/, "$1");
 
                 this._readWhitespace();
 
                 //must end with a semicolon
                 tokenStream.mustMatch(Tokens.SEMICOLON);
                 this._readWhitespace();
-                
+
                 if (emit !== false){
                     this.fire({
                         type:   "namespace",
@@ -1578,9 +1583,9 @@ Parser.prototype = function(){
                         col:    col
                     });
                 }
-        
-            },            
-                       
+
+            },
+
             _media: function(){
                 /*
                  * media
@@ -1591,45 +1596,47 @@ Parser.prototype = function(){
                     line,
                     col,
                     mediaList;//       = [];
-                
+
                 //look for @media
                 tokenStream.mustMatch(Tokens.MEDIA_SYM);
                 line = tokenStream.token().startLine;
                 col = tokenStream.token().startCol;
-                
-                this._readWhitespace();               
+
+                this._readWhitespace();
 
                 mediaList = this._media_query_list();
 
                 tokenStream.mustMatch(Tokens.LBRACE);
                 this._readWhitespace();
-                
+
                 this.fire({
                     type:   "startmedia",
                     media:  mediaList,
                     line:   line,
                     col:    col
                 });
-                
+
                 while(true) {
                     if (tokenStream.peek() == Tokens.PAGE_SYM){
                         this._page();
+                    } else   if (tokenStream.peek() == Tokens.FONT_FACE_SYM){
+                        this._font_face();
                     } else if (!this._ruleset()){
                         break;
-                    }                
+                    }
                 }
-                
+
                 tokenStream.mustMatch(Tokens.RBRACE);
                 this._readWhitespace();
-        
+
                 this.fire({
                     type:   "endmedia",
                     media:  mediaList,
                     line:   line,
                     col:    col
                 });
-            },                           
-        
+            },
+
 
             //CSS3 Media Queries
             _media_query_list: function(){
@@ -1640,26 +1647,26 @@ Parser.prototype = function(){
                  */
                 var tokenStream = this._tokenStream,
                     mediaList   = [];
-                
-                
+
+
                 this._readWhitespace();
-                
+
                 if (tokenStream.peek() == Tokens.IDENT || tokenStream.peek() == Tokens.LPAREN){
                     mediaList.push(this._media_query());
                 }
-                
+
                 while(tokenStream.match(Tokens.COMMA)){
                     this._readWhitespace();
                     mediaList.push(this._media_query());
                 }
-                
+
                 return mediaList;
             },
-            
+
             /*
              * Note: "expression" in the grammar maps to the _media_expression
              * method.
-             
+
              */
             _media_query: function(){
                 /*
@@ -1673,10 +1680,10 @@ Parser.prototype = function(){
                     ident       = null,
                     token       = null,
                     expressions = [];
-                    
+
                 if (tokenStream.match(Tokens.IDENT)){
                     ident = tokenStream.token().value.toLowerCase();
-                    
+
                     //since there's no custom tokens for these, need to manually check
                     if (ident != "only" && ident != "not"){
                         tokenStream.unget();
@@ -1685,9 +1692,9 @@ Parser.prototype = function(){
                         token = tokenStream.token();
                     }
                 }
-                                
+
                 this._readWhitespace();
-                
+
                 if (tokenStream.peek() == Tokens.IDENT){
                     type = this._media_type();
                     if (token === null){
@@ -1698,17 +1705,17 @@ Parser.prototype = function(){
                         token = tokenStream.LT(1);
                     }
                     expressions.push(this._media_expression());
-                }                               
-                
+                }
+
                 if (type === null && expressions.length === 0){
                     return null;
-                } else {                
+                } else {
                     this._readWhitespace();
                     while (tokenStream.match(Tokens.IDENT)){
                         if (tokenStream.token().value.toLowerCase() != "and"){
                             this._unexpectedToken(tokenStream.token());
                         }
-                        
+
                         this._readWhitespace();
                         expressions.push(this._media_expression());
                     }
@@ -1724,7 +1731,7 @@ Parser.prototype = function(){
                  *   : IDENT
                  *   ;
                  */
-                return this._media_feature();           
+                return this._media_feature();
             },
 
             /**
@@ -1745,22 +1752,22 @@ Parser.prototype = function(){
                     feature     = null,
                     token,
                     expression  = null;
-                
+
                 tokenStream.mustMatch(Tokens.LPAREN);
-                
+
                 feature = this._media_feature();
                 this._readWhitespace();
-                
+
                 if (tokenStream.match(Tokens.COLON)){
                     this._readWhitespace();
                     token = tokenStream.LT(1);
                     expression = this._expression();
                 }
-                
+
                 tokenStream.mustMatch(Tokens.RPAREN);
                 this._readWhitespace();
 
-                return new MediaFeature(feature, (expression ? new SyntaxUnit(expression, token.startLine, token.startCol) : null));            
+                return new MediaFeature(feature, (expression ? new SyntaxUnit(expression, token.startLine, token.startCol) : null));
             },
 
             //CSS3 Media Queries
@@ -1771,33 +1778,33 @@ Parser.prototype = function(){
                  *   ;
                  */
                 var tokenStream = this._tokenStream;
-                    
+
                 tokenStream.mustMatch(Tokens.IDENT);
-                
-                return SyntaxUnit.fromToken(tokenStream.token());            
+
+                return SyntaxUnit.fromToken(tokenStream.token());
             },
-            
+
             //CSS3 Paged Media
             _page: function(){
                 /*
                  * page:
-                 *    PAGE_SYM S* IDENT? pseudo_page? S* 
+                 *    PAGE_SYM S* IDENT? pseudo_page? S*
                  *    '{' S* [ declaration | margin ]? [ ';' S* [ declaration | margin ]? ]* '}' S*
                  *    ;
-                 */            
+                 */
                 var tokenStream = this._tokenStream,
                     line,
                     col,
                     identifier  = null,
                     pseudoPage  = null;
-                
+
                 //look for @page
                 tokenStream.mustMatch(Tokens.PAGE_SYM);
                 line = tokenStream.token().startLine;
                 col = tokenStream.token().startCol;
-                
+
                 this._readWhitespace();
-                
+
                 if (tokenStream.match(Tokens.IDENT)){
                     identifier = tokenStream.token().value;
 
@@ -1805,35 +1812,35 @@ Parser.prototype = function(){
                     if (identifier.toLowerCase() === "auto"){
                         this._unexpectedToken(tokenStream.token());
                     }
-                }                
-                
+                }
+
                 //see if there's a colon upcoming
                 if (tokenStream.peek() == Tokens.COLON){
                     pseudoPage = this._pseudo_page();
                 }
-            
+
                 this._readWhitespace();
-                
+
                 this.fire({
                     type:   "startpage",
                     id:     identifier,
                     pseudo: pseudoPage,
                     line:   line,
                     col:    col
-                });                   
+                });
 
-                this._readDeclarations(true, true);                
-                
+                this._readDeclarations(true, true);
+
                 this.fire({
                     type:   "endpage",
                     id:     identifier,
                     pseudo: pseudoPage,
                     line:   line,
                     col:    col
-                });             
-            
+                });
+
             },
-            
+
             //CSS3 Paged Media
             _margin: function(){
                 /*
@@ -1849,14 +1856,14 @@ Parser.prototype = function(){
                 if (marginSym){
                     line = tokenStream.token().startLine;
                     col = tokenStream.token().startCol;
-                
+
                     this.fire({
                         type: "startpagemargin",
                         margin: marginSym,
                         line:   line,
                         col:    col
-                    });    
-                    
+                    });
+
                     this._readDeclarations(true);
 
                     this.fire({
@@ -1864,7 +1871,7 @@ Parser.prototype = function(){
                         margin: marginSym,
                         line:   line,
                         col:    col
-                    });    
+                    });
                     return true;
                 } else {
                     return false;
@@ -1873,17 +1880,17 @@ Parser.prototype = function(){
 
             //CSS3 Paged Media
             _margin_sym: function(){
-            
+
                 /*
                  * margin_sym :
-                 *    TOPLEFTCORNER_SYM | 
-                 *    TOPLEFT_SYM | 
-                 *    TOPCENTER_SYM | 
-                 *    TOPRIGHT_SYM | 
+                 *    TOPLEFTCORNER_SYM |
+                 *    TOPLEFT_SYM |
+                 *    TOPCENTER_SYM |
+                 *    TOPRIGHT_SYM |
                  *    TOPRIGHTCORNER_SYM |
-                 *    BOTTOMLEFTCORNER_SYM | 
-                 *    BOTTOMLEFT_SYM | 
-                 *    BOTTOMCENTER_SYM | 
+                 *    BOTTOMLEFTCORNER_SYM |
+                 *    BOTTOMLEFT_SYM |
+                 *    BOTTOMCENTER_SYM |
                  *    BOTTOMRIGHT_SYM |
                  *    BOTTOMRIGHTCORNER_SYM |
                  *    LEFTTOP_SYM |
@@ -1891,145 +1898,178 @@ Parser.prototype = function(){
                  *    LEFTBOTTOM_SYM |
                  *    RIGHTTOP_SYM |
                  *    RIGHTMIDDLE_SYM |
-                 *    RIGHTBOTTOM_SYM 
+                 *    RIGHTBOTTOM_SYM
                  *    ;
                  */
-            
+
                 var tokenStream = this._tokenStream;
-            
+
                 if(tokenStream.match([Tokens.TOPLEFTCORNER_SYM, Tokens.TOPLEFT_SYM,
                         Tokens.TOPCENTER_SYM, Tokens.TOPRIGHT_SYM, Tokens.TOPRIGHTCORNER_SYM,
-                        Tokens.BOTTOMLEFTCORNER_SYM, Tokens.BOTTOMLEFT_SYM, 
+                        Tokens.BOTTOMLEFTCORNER_SYM, Tokens.BOTTOMLEFT_SYM,
                         Tokens.BOTTOMCENTER_SYM, Tokens.BOTTOMRIGHT_SYM,
-                        Tokens.BOTTOMRIGHTCORNER_SYM, Tokens.LEFTTOP_SYM, 
+                        Tokens.BOTTOMRIGHTCORNER_SYM, Tokens.LEFTTOP_SYM,
                         Tokens.LEFTMIDDLE_SYM, Tokens.LEFTBOTTOM_SYM, Tokens.RIGHTTOP_SYM,
                         Tokens.RIGHTMIDDLE_SYM, Tokens.RIGHTBOTTOM_SYM]))
                 {
-                    return SyntaxUnit.fromToken(tokenStream.token());                
+                    return SyntaxUnit.fromToken(tokenStream.token());
                 } else {
                     return null;
                 }
-            
+
             },
-            
+
             _pseudo_page: function(){
                 /*
                  * pseudo_page
                  *   : ':' IDENT
-                 *   ;    
+                 *   ;
                  */
-        
+
                 var tokenStream = this._tokenStream;
-                
+
                 tokenStream.mustMatch(Tokens.COLON);
                 tokenStream.mustMatch(Tokens.IDENT);
-                
+
                 //TODO: CSS3 Paged Media says only "left", "center", and "right" are allowed
-                
+
                 return tokenStream.token().value;
             },
-            
+
             _font_face: function(){
                 /*
                  * font_face
-                 *   : FONT_FACE_SYM S* 
+                 *   : FONT_FACE_SYM S*
                  *     '{' S* declaration [ ';' S* declaration ]* '}' S*
                  *   ;
-                 */     
+                 */
                 var tokenStream = this._tokenStream,
                     line,
                     col;
-                
+
                 //look for @page
                 tokenStream.mustMatch(Tokens.FONT_FACE_SYM);
                 line = tokenStream.token().startLine;
                 col = tokenStream.token().startCol;
-                
+
                 this._readWhitespace();
 
                 this.fire({
                     type:   "startfontface",
                     line:   line,
                     col:    col
-                });                    
-                
+                });
+
                 this._readDeclarations(true);
-                
+
                 this.fire({
                     type:   "endfontface",
                     line:   line,
                     col:    col
-                });              
+                });
+            },
+
+            _viewport: function(){
+                /*
+                 * viewport
+                 *   : VIEWPORT_SYM S*
+                 *     '{' S* declaration? [ ';' S* declaration? ]* '}' S*
+                 *   ;
+                 */
+                 var tokenStream = this._tokenStream,
+                    line,
+                    col;
+
+                    tokenStream.mustMatch(Tokens.VIEWPORT_SYM);
+                    line = tokenStream.token().startLine;
+                    col = tokenStream.token().startCol;
+
+                    this._readWhitespace();
+
+                    this.fire({
+                        type:   "startviewport",
+                        line:   line,
+                        col:    col
+                    });
+
+                    this._readDeclarations(true);
+
+                    this.fire({
+                        type:   "endviewport",
+                        line:   line,
+                        col:    col
+                    });
+
             },
 
             _operator: function(inFunction){
-            
+
                 /*
                  * operator (outside function)
                  *  : '/' S* | ',' S* | /( empty )/
                  * operator (inside function)
                  *  : '/' S* | '+' S* | '*' S* | '-' S* /( empty )/
                  *  ;
-                 */    
-                 
+                 */
+
                 var tokenStream = this._tokenStream,
                     token       = null;
-                
+
                 if (tokenStream.match([Tokens.SLASH, Tokens.COMMA]) ||
                     (inFunction && tokenStream.match([Tokens.PLUS, Tokens.STAR, Tokens.MINUS]))){
                     token =  tokenStream.token();
                     this._readWhitespace();
-                } 
+                }
                 return token ? PropertyValuePart.fromToken(token) : null;
-                
+
             },
-            
+
             _combinator: function(){
-            
+
                 /*
                  * combinator
                  *  : PLUS S* | GREATER S* | TILDE S* | S+
                  *  ;
-                 */    
-                 
+                 */
+
                 var tokenStream = this._tokenStream,
                     value       = null,
                     token;
-                
-                if(tokenStream.match([Tokens.PLUS, Tokens.GREATER, Tokens.TILDE])){                
+
+                if(tokenStream.match([Tokens.PLUS, Tokens.GREATER, Tokens.TILDE])){
                     token = tokenStream.token();
                     value = new Combinator(token.value, token.startLine, token.startCol);
                     this._readWhitespace();
                 }
-                
+
                 return value;
             },
-            
+
             _unary_operator: function(){
-            
+
                 /*
                  * unary_operator
                  *  : '-' | '+'
                  *  ;
                  */
-                 
+
                 var tokenStream = this._tokenStream;
-                
+
                 if (tokenStream.match([Tokens.MINUS, Tokens.PLUS])){
                     return tokenStream.token().value;
                 } else {
                     return null;
-                }         
+                }
             },
-            
+
             _property: function(){
-            
+
                 /*
                  * property
                  *   : IDENT S*
-                 *   ;        
+                 *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     value       = null,
                     hack        = null,
@@ -2037,7 +2077,7 @@ Parser.prototype = function(){
                     token,
                     line,
                     col;
-                    
+
                 //check for star hack - throws error if not allowed
                 if (tokenStream.peek() == Tokens.STAR && this.options.starHack){
                     tokenStream.get();
@@ -2046,33 +2086,33 @@ Parser.prototype = function(){
                     line = token.startLine;
                     col = token.startCol;
                 }
-                
+
                 if(tokenStream.match(Tokens.IDENT)){
                     token = tokenStream.token();
                     tokenValue = token.value;
-                    
+
                     //check for underscore hack - no error if not allowed because it's valid CSS syntax
                     if (tokenValue.charAt(0) == "_" && this.options.underscoreHack){
                         hack = "_";
                         tokenValue = tokenValue.substring(1);
                     }
-                    
+
                     value = new PropertyName(tokenValue, hack, (line||token.startLine), (col||token.startCol));
                     this._readWhitespace();
                 }
-                
+
                 return value;
             },
-        
+
             //Augmented with CSS3 Selectors
             _ruleset: function(){
                 /*
                  * ruleset
                  *   : selectors_group
                  *     '{' S* declaration? [ ';' S* declaration? ]* '}' S*
-                 *   ;    
-                 */    
-                 
+                 *   ;
+                 */
+
                 var tokenStream = this._tokenStream,
                     tt,
                     selectors;
@@ -2086,7 +2126,7 @@ Parser.prototype = function(){
                     selectors = this._selectors_group();
                 } catch (ex){
                     if (ex instanceof SyntaxError && !this.options.strict){
-                    
+
                         //fire error event
                         this.fire({
                             type:       "error",
@@ -2094,8 +2134,8 @@ Parser.prototype = function(){
                             message:    ex.message,
                             line:       ex.line,
                             col:        ex.col
-                        });                          
-                        
+                        });
+
                         //skip over everything until closing brace
                         tt = tokenStream.advance([Tokens.RBRACE]);
                         if (tt == Tokens.RBRACE){
@@ -2103,57 +2143,57 @@ Parser.prototype = function(){
                         } else {
                             //otherwise, rethrow the error because it wasn't handled properly
                             throw ex;
-                        }                        
-                        
+                        }
+
                     } else {
                         //not a syntax error, rethrow it
                         throw ex;
-                    }                
-                
+                    }
+
                     //trigger parser to continue
                     return true;
                 }
-                
+
                 //if it got here, all selectors parsed
-                if (selectors){ 
-                                    
+                if (selectors){
+
                     this.fire({
                         type:       "startrule",
                         selectors:  selectors,
                         line:       selectors[0].line,
                         col:        selectors[0].col
-                    });                
-                    
-                    this._readDeclarations(true);                
-                    
+                    });
+
+                    this._readDeclarations(true);
+
                     this.fire({
                         type:       "endrule",
                         selectors:  selectors,
                         line:       selectors[0].line,
                         col:        selectors[0].col
-                    });  
-                    
+                    });
+
                 }
-                
+
                 return selectors;
-                
+
             },
 
             //CSS3 Selectors
             _selectors_group: function(){
-            
-                /*            
+
+                /*
                  * selectors_group
                  *   : selector [ COMMA S* selector ]*
                  *   ;
-                 */           
+                 */
                 var tokenStream = this._tokenStream,
                     selectors   = [],
                     selector;
-                    
+
                 selector = this._selector();
                 if (selector !== null){
-                
+
                     selectors.push(selector);
                     while(tokenStream.match(Tokens.COMMA)){
                         this._readWhitespace();
@@ -2168,83 +2208,83 @@ Parser.prototype = function(){
 
                 return selectors.length ? selectors : null;
             },
-                
+
             //CSS3 Selectors
             _selector: function(){
                 /*
                  * selector
                  *   : simple_selector_sequence [ combinator simple_selector_sequence ]*
-                 *   ;    
+                 *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     selector    = [],
                     nextSelector = null,
                     combinator  = null,
                     ws          = null;
-                
+
                 //if there's no simple selector, then there's no selector
                 nextSelector = this._simple_selector_sequence();
                 if (nextSelector === null){
                     return null;
                 }
-                
+
                 selector.push(nextSelector);
-                
+
                 do {
-                    
+
                     //look for a combinator
                     combinator = this._combinator();
-                    
+
                     if (combinator !== null){
                         selector.push(combinator);
                         nextSelector = this._simple_selector_sequence();
-                        
+
                         //there must be a next selector
                         if (nextSelector === null){
                             this._unexpectedToken(tokenStream.LT(1));
                         } else {
-                        
+
                             //nextSelector is an instance of SelectorPart
                             selector.push(nextSelector);
                         }
                     } else {
-                        
+
                         //if there's not whitespace, we're done
-                        if (this._readWhitespace()){           
-        
+                        if (this._readWhitespace()){
+
                             //add whitespace separator
                             ws = new Combinator(tokenStream.token().value, tokenStream.token().startLine, tokenStream.token().startCol);
-                            
+
                             //combinator is not required
                             combinator = this._combinator();
-                            
+
                             //selector is required if there's a combinator
                             nextSelector = this._simple_selector_sequence();
-                            if (nextSelector === null){                        
+                            if (nextSelector === null){
                                 if (combinator !== null){
                                     this._unexpectedToken(tokenStream.LT(1));
                                 }
                             } else {
-                                
+
                                 if (combinator !== null){
                                     selector.push(combinator);
                                 } else {
                                     selector.push(ws);
                                 }
-                                
+
                                 selector.push(nextSelector);
-                            }     
+                            }
                         } else {
                             break;
-                        }               
-                    
+                        }
+
                     }
                 } while(true);
-                
+
                 return new Selector(selector, selector[0].line, selector[0].col);
             },
-            
+
             //CSS3 Selectors
             _simple_selector_sequence: function(){
                 /*
@@ -2254,13 +2294,13 @@ Parser.prototype = function(){
                  *   | [ HASH | class | attrib | pseudo | negation ]+
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
-                
+
                     //parts of a simple selector
                     elementName = null,
                     modifiers   = [],
-                    
+
                     //complete selector text
                     selectorText= "",
 
@@ -2283,35 +2323,35 @@ Parser.prototype = function(){
                     found       = false,
                     line,
                     col;
-                    
-                    
+
+
                 //get starting line and column for the selector
                 line = tokenStream.LT(1).startLine;
                 col = tokenStream.LT(1).startCol;
-                                        
+
                 elementName = this._type_selector();
                 if (!elementName){
                     elementName = this._universal();
                 }
-                
+
                 if (elementName !== null){
                     selectorText += elementName;
-                }                
-                
+                }
+
                 while(true){
 
                     //whitespace means we're done
                     if (tokenStream.peek() === Tokens.S){
                         break;
                     }
-                
+
                     //check for each component
                     while(i < len && component === null){
                         component = components[i++].call(this);
                     }
-        
+
                     if (component === null){
-                    
+
                         //we don't have a selector
                         if (selectorText === ""){
                             return null;
@@ -2321,17 +2361,17 @@ Parser.prototype = function(){
                     } else {
                         i = 0;
                         modifiers.push(component);
-                        selectorText += component.toString(); 
+                        selectorText += component.toString();
                         component = null;
                     }
                 }
 
-                 
+
                 return selectorText !== "" ?
                         new SelectorPart(elementName, modifiers, selectorText, line, col) :
                         null;
-            },            
-            
+            },
+
             //CSS3 Selectors
             _type_selector: function(){
                 /*
@@ -2339,12 +2379,12 @@ Parser.prototype = function(){
                  *   : [ namespace_prefix ]? element_name
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     ns          = this._namespace_prefix(),
                     elementName = this._element_name();
-                    
-                if (!elementName){                    
+
+                if (!elementName){
                     /*
                      * Need to back out the namespace that was read due to both
                      * type_selector and universal reading namespace_prefix
@@ -2357,9 +2397,9 @@ Parser.prototype = function(){
                             tokenStream.unget();
                         }
                     }
-                
+
                     return null;
-                } else {     
+                } else {
                     if (ns){
                         elementName.text = ns + elementName.text;
                         elementName.col -= ns.length;
@@ -2367,97 +2407,97 @@ Parser.prototype = function(){
                     return elementName;
                 }
             },
-            
+
             //CSS3 Selectors
             _class: function(){
                 /*
                  * class
                  *   : '.' IDENT
                  *   ;
-                 */    
-                 
+                 */
+
                 var tokenStream = this._tokenStream,
                     token;
-                
+
                 if (tokenStream.match(Tokens.DOT)){
-                    tokenStream.mustMatch(Tokens.IDENT);    
+                    tokenStream.mustMatch(Tokens.IDENT);
                     token = tokenStream.token();
-                    return new SelectorSubPart("." + token.value, "class", token.startLine, token.startCol - 1);        
+                    return new SelectorSubPart("." + token.value, "class", token.startLine, token.startCol - 1);
                 } else {
                     return null;
                 }
-        
+
             },
-            
+
             //CSS3 Selectors
             _element_name: function(){
                 /*
                  * element_name
                  *   : IDENT
                  *   ;
-                 */    
-                
+                 */
+
                 var tokenStream = this._tokenStream,
                     token;
-                
+
                 if (tokenStream.match(Tokens.IDENT)){
                     token = tokenStream.token();
-                    return new SelectorSubPart(token.value, "elementName", token.startLine, token.startCol);        
-                
+                    return new SelectorSubPart(token.value, "elementName", token.startLine, token.startCol);
+
                 } else {
                     return null;
                 }
             },
-            
+
             //CSS3 Selectors
             _namespace_prefix: function(){
-                /*            
+                /*
                  * namespace_prefix
                  *   : [ IDENT | '*' ]? '|'
                  *   ;
                  */
                 var tokenStream = this._tokenStream,
                     value       = "";
-                    
+
                 //verify that this is a namespace prefix
                 if (tokenStream.LA(1) === Tokens.PIPE || tokenStream.LA(2) === Tokens.PIPE){
-                        
+
                     if(tokenStream.match([Tokens.IDENT, Tokens.STAR])){
                         value += tokenStream.token().value;
                     }
-                    
+
                     tokenStream.mustMatch(Tokens.PIPE);
                     value += "|";
-                    
+
                 }
-                
-                return value.length ? value : null;                
+
+                return value.length ? value : null;
             },
-            
+
             //CSS3 Selectors
             _universal: function(){
                 /*
                  * universal
                  *   : [ namespace_prefix ]? '*'
-                 *   ;            
+                 *   ;
                  */
                 var tokenStream = this._tokenStream,
                     value       = "",
                     ns;
-                    
+
                 ns = this._namespace_prefix();
                 if(ns){
                     value += ns;
                 }
-                
+
                 if(tokenStream.match(Tokens.STAR)){
                     value += "*";
                 }
-                
+
                 return value.length ? value : null;
-                
+
            },
-            
+
             //CSS3 Selectors
             _attrib: function(){
                 /*
@@ -2470,69 +2510,69 @@ Parser.prototype = function(){
                  *             INCLUDES |
                  *             DASHMATCH ] S* [ IDENT | STRING ] S*
                  *         ]? ']'
-                 *   ;    
+                 *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     value       = null,
                     ns,
                     token;
-                
+
                 if (tokenStream.match(Tokens.LBRACKET)){
                     token = tokenStream.token();
                     value = token.value;
                     value += this._readWhitespace();
-                    
+
                     ns = this._namespace_prefix();
-                    
+
                     if (ns){
                         value += ns;
                     }
-                                        
+
                     tokenStream.mustMatch(Tokens.IDENT);
-                    value += tokenStream.token().value;                    
+                    value += tokenStream.token().value;
                     value += this._readWhitespace();
-                    
+
                     if(tokenStream.match([Tokens.PREFIXMATCH, Tokens.SUFFIXMATCH, Tokens.SUBSTRINGMATCH,
                             Tokens.EQUALS, Tokens.INCLUDES, Tokens.DASHMATCH])){
-                    
-                        value += tokenStream.token().value;                    
+
+                        value += tokenStream.token().value;
                         value += this._readWhitespace();
-                        
+
                         tokenStream.mustMatch([Tokens.IDENT, Tokens.STRING]);
-                        value += tokenStream.token().value;                    
+                        value += tokenStream.token().value;
                         value += this._readWhitespace();
                     }
-                    
+
                     tokenStream.mustMatch(Tokens.RBRACKET);
-                                        
+
                     return new SelectorSubPart(value + "]", "attribute", token.startLine, token.startCol);
                 } else {
                     return null;
                 }
             },
-            
+
             //CSS3 Selectors
             _pseudo: function(){
-            
+
                 /*
                  * pseudo
                  *   : ':' ':'? [ IDENT | functional_pseudo ]
-                 *   ;    
-                 */   
-            
+                 *   ;
+                 */
+
                 var tokenStream = this._tokenStream,
                     pseudo      = null,
                     colons      = ":",
                     line,
                     col;
-                
+
                 if (tokenStream.match(Tokens.COLON)){
-                
+
                     if (tokenStream.match(Tokens.COLON)){
                         colons += ":";
                     }
-                
+
                     if (tokenStream.match(Tokens.IDENT)){
                         pseudo = tokenStream.token().value;
                         line = tokenStream.token().startLine;
@@ -2542,26 +2582,26 @@ Parser.prototype = function(){
                         col = tokenStream.LT(1).startCol - colons.length;
                         pseudo = this._functional_pseudo();
                     }
-                    
+
                     if (pseudo){
                         pseudo = new SelectorSubPart(colons + pseudo, "pseudo", line, col);
                     }
                 }
-        
+
                 return pseudo;
             },
-            
+
             //CSS3 Selectors
             _functional_pseudo: function(){
                 /*
                  * functional_pseudo
                  *   : FUNCTION S* expression ')'
                  *   ;
-                */            
-                
+                */
+
                 var tokenStream = this._tokenStream,
                     value = null;
-                
+
                 if(tokenStream.match(Tokens.FUNCTION)){
                     value = tokenStream.token().value;
                     value += this._readWhitespace();
@@ -2569,10 +2609,10 @@ Parser.prototype = function(){
                     tokenStream.mustMatch(Tokens.RPAREN);
                     value += ")";
                 }
-                
+
                 return value;
             },
-            
+
             //CSS3 Selectors
             _expression: function(){
                 /*
@@ -2580,26 +2620,26 @@ Parser.prototype = function(){
                  *   : [ [ PLUS | '-' | DIMENSION | NUMBER | STRING | IDENT ] S* ]+
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     value       = "";
-                    
+
                 while(tokenStream.match([Tokens.PLUS, Tokens.MINUS, Tokens.DIMENSION,
                         Tokens.NUMBER, Tokens.STRING, Tokens.IDENT, Tokens.LENGTH,
                         Tokens.FREQ, Tokens.ANGLE, Tokens.TIME,
                         Tokens.RESOLUTION, Tokens.SLASH])){
-                    
+
                     value += tokenStream.token().value;
-                    value += this._readWhitespace();                        
+                    value += this._readWhitespace();
                 }
-                
+
                 return value.length ? value : null;
-                
+
             },
 
             //CSS3 Selectors
             _negation: function(){
-                /*            
+                /*
                  * negation
                  *   : NOT S* negation_arg S* ')'
                  *   ;
@@ -2611,7 +2651,7 @@ Parser.prototype = function(){
                     value       = "",
                     arg,
                     subpart     = null;
-                    
+
                 if (tokenStream.match(Tokens.NOT)){
                     value = tokenStream.token().value;
                     line = tokenStream.token().startLine;
@@ -2622,22 +2662,22 @@ Parser.prototype = function(){
                     value += this._readWhitespace();
                     tokenStream.match(Tokens.RPAREN);
                     value += tokenStream.token().value;
-                    
+
                     subpart = new SelectorSubPart(value, "not", line, col);
                     subpart.args.push(arg);
                 }
-                
+
                 return subpart;
             },
-            
+
             //CSS3 Selectors
-            _negation_arg: function(){            
+            _negation_arg: function(){
                 /*
                  * negation_arg
                  *   : type_selector | universal | HASH | class | attrib | pseudo
-                 *   ;            
-                 */           
-                 
+                 *   ;
+                 */
+
                 var tokenStream = this._tokenStream,
                     args        = [
                         this._type_selector,
@@ -2645,11 +2685,11 @@ Parser.prototype = function(){
                         function(){
                             return tokenStream.match(Tokens.HASH) ?
                                     new SelectorSubPart(tokenStream.token().value, "id", tokenStream.token().startLine, tokenStream.token().startCol) :
-                                    null;                        
+                                    null;
                         },
                         this._class,
                         this._attrib,
-                        this._pseudo                    
+                        this._pseudo
                     ],
                     arg         = null,
                     i           = 0,
@@ -2658,40 +2698,40 @@ Parser.prototype = function(){
                     line,
                     col,
                     part;
-                    
+
                 line = tokenStream.LT(1).startLine;
                 col = tokenStream.LT(1).startCol;
-                
+
                 while(i < len && arg === null){
-                    
+
                     arg = args[i].call(this);
                     i++;
                 }
-                
+
                 //must be a negation arg
                 if (arg === null){
                     this._unexpectedToken(tokenStream.LT(1));
                 }
- 
+
                 //it's an element name
                 if (arg.type == "elementName"){
                     part = new SelectorPart(arg, [], arg.toString(), line, col);
                 } else {
                     part = new SelectorPart(null, [arg], arg.toString(), line, col);
                 }
-                
-                return part;                
+
+                return part;
             },
-            
+
             _declaration: function(){
-            
+
                 /*
                  * declaration
                  *   : property ':' S* expr prio?
                  *   | /( empty )/
-                 *   ;     
-                 */    
-            
+                 *   ;
+                 */
+
                 var tokenStream = this._tokenStream,
                     property    = null,
                     expr        = null,
@@ -2699,22 +2739,22 @@ Parser.prototype = function(){
                     error       = null,
                     invalid     = null,
                     propertyName= "";
-                
+
                 property = this._property();
                 if (property !== null){
 
                     tokenStream.mustMatch(Tokens.COLON);
                     this._readWhitespace();
-                    
+
                     expr = this._expr();
-                    
+
                     //if there's no parts for the value, it's an error
                     if (!expr || expr.length === 0){
                         this._unexpectedToken(tokenStream.LT(1));
                     }
-                    
+
                     prio = this._prio();
-                    
+
                     /*
                      * If hacks should be allowed, then only check the root
                      * property. If hacks should not be allowed, treat
@@ -2723,16 +2763,16 @@ Parser.prototype = function(){
                     propertyName = property.toString();
                     if (this.options.starHack && property.hack == "*" ||
                             this.options.underscoreHack && property.hack == "_") {
-                         
+
                         propertyName = property.text;
                     }
-                    
+
                     try {
                         this._validateProperty(propertyName, expr);
                     } catch (ex) {
                         invalid = ex;
                     }
-                    
+
                     this.fire({
                         type:       "property",
                         property:   property,
@@ -2741,46 +2781,46 @@ Parser.prototype = function(){
                         line:       property.line,
                         col:        property.col,
                         invalid:    invalid
-                    });                      
-                    
+                    });
+
                     return true;
                 } else {
                     return false;
                 }
             },
-            
+
             _prio: function(){
                 /*
                  * prio
                  *   : IMPORTANT_SYM S*
-                 *   ;    
+                 *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     result      = tokenStream.match(Tokens.IMPORTANT_SYM);
-                    
+
                 this._readWhitespace();
                 return result;
             },
-            
+
             _expr: function(inFunction){
                 /*
                  * expr
                  *   : term [ operator term ]*
                  *   ;
                  */
-        
+
                 var tokenStream = this._tokenStream,
                     values      = [],
-					//valueParts	= [],
+                    //valueParts    = [],
                     value       = null,
                     operator    = null;
-                    
+
                 value = this._term();
                 if (value !== null){
-                
+
                     values.push(value);
-                    
+
                     do {
                         operator = this._operator(inFunction);
 
@@ -2789,12 +2829,12 @@ Parser.prototype = function(){
                             values.push(operator);
                         } /*else {
                             //if there's not an operator, you have a full value
-							values.push(new PropertyValue(valueParts, valueParts[0].line, valueParts[0].col));
-							valueParts = [];
-						}*/
-                        
+                            values.push(new PropertyValue(valueParts, valueParts[0].line, valueParts[0].col));
+                            valueParts = [];
+                        }*/
+
                         value = this._term();
-                        
+
                         if (value === null){
                             break;
                         } else {
@@ -2802,17 +2842,17 @@ Parser.prototype = function(){
                         }
                     } while(true);
                 }
-				
-				//cleanup
+
+                //cleanup
                 /*if (valueParts.length){
                     values.push(new PropertyValue(valueParts, valueParts[0].line, valueParts[0].col));
                 }*/
-        
+
                 return values.length > 0 ? new PropertyValue(values, values[0].line, values[0].col) : null;
             },
-            
-            _term: function(){                       
-            
+
+            _term: function(){
+
                 /*
                  * term
                  *   : unary_operator?
@@ -2820,36 +2860,36 @@ Parser.prototype = function(){
                  *       TIME S* | FREQ S* | function | ie_function ]
                  *   | STRING S* | IDENT S* | URI S* | UNICODERANGE S* | hexcolor
                  *   ;
-                 */    
-        
+                 */
+
                 var tokenStream = this._tokenStream,
                     unary       = null,
                     value       = null,
                     token,
                     line,
                     col;
-                    
+
                 //returns the operator or null
                 unary = this._unary_operator();
                 if (unary !== null){
                     line = tokenStream.token().startLine;
                     col = tokenStream.token().startCol;
-                }                
-               
+                }
+
                 //exception for IE filters
                 if (tokenStream.peek() == Tokens.IE_FUNCTION && this.options.ieFilters){
-                
+
                     value = this._ie_function();
                     if (unary === null){
                         line = tokenStream.token().startLine;
                         col = tokenStream.token().startCol;
                     }
-                
+
                 //see if there's a simple match
                 } else if (tokenStream.match([Tokens.NUMBER, Tokens.PERCENTAGE, Tokens.LENGTH,
                         Tokens.ANGLE, Tokens.TIME,
                         Tokens.FREQ, Tokens.STRING, Tokens.IDENT, Tokens.URI, Tokens.UNICODE_RANGE])){
-                 
+
                     value = tokenStream.token().value;
                     if (unary === null){
                         line = tokenStream.token().startLine;
@@ -2857,20 +2897,20 @@ Parser.prototype = function(){
                     }
                     this._readWhitespace();
                 } else {
-                
+
                     //see if it's a color
                     token = this._hexcolor();
                     if (token === null){
-                    
+
                         //if there's no unary, get the start of the next token for line/col info
                         if (unary === null){
                             line = tokenStream.LT(1).startLine;
                             col = tokenStream.LT(1).startCol;
-                        }                    
-                    
+                        }
+
                         //has to be a function
                         if (value === null){
-                            
+
                             /*
                              * This checks for alpha(opacity=0) style of IE
                              * functions. IE_FUNCTION only presents progid: style.
@@ -2886,61 +2926,61 @@ Parser.prototype = function(){
                             return null;
                             //throw new Error("Expected identifier at line " + tokenStream.token().startLine + ", character " +  tokenStream.token().startCol + ".");
                         }*/
-                    
+
                     } else {
                         value = token.value;
                         if (unary === null){
                             line = token.startLine;
                             col = token.startCol;
-                        }                    
+                        }
                     }
-                
-                }                
-                
+
+                }
+
                 return value !== null ?
                         new PropertyValuePart(unary !== null ? unary + value : value, line, col) :
                         null;
-        
+
             },
-            
+
             _function: function(){
-            
+
                 /*
                  * function
                  *   : FUNCTION S* expr ')' S*
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     functionText = null,
                     expr        = null,
                     lt;
-                    
+
                 if (tokenStream.match(Tokens.FUNCTION)){
                     functionText = tokenStream.token().value;
                     this._readWhitespace();
                     expr = this._expr(true);
                     functionText += expr;
-                    
+
                     //START: Horrible hack in case it's an IE filter
                     if (this.options.ieFilters && tokenStream.peek() == Tokens.EQUALS){
                         do {
-                        
+
                             if (this._readWhitespace()){
                                 functionText += tokenStream.token().value;
                             }
-                            
+
                             //might be second time in the loop
                             if (tokenStream.LA(0) == Tokens.COMMA){
                                 functionText += tokenStream.token().value;
                             }
-                        
+
                             tokenStream.match(Tokens.IDENT);
                             functionText += tokenStream.token().value;
-                            
+
                             tokenStream.match(Tokens.EQUALS);
                             functionText += tokenStream.token().value;
-                            
+
                             //functionText += this._term();
                             lt = tokenStream.peek();
                             while(lt != Tokens.COMMA && lt != Tokens.S && lt != Tokens.RPAREN){
@@ -2952,49 +2992,49 @@ Parser.prototype = function(){
                     }
 
                     //END: Horrible Hack
-                    
-                    tokenStream.match(Tokens.RPAREN);    
+
+                    tokenStream.match(Tokens.RPAREN);
                     functionText += ")";
                     this._readWhitespace();
-                }                
-                
+                }
+
                 return functionText;
-            }, 
-            
+            },
+
             _ie_function: function(){
-            
+
                 /* (My own extension)
                  * ie_function
                  *   : IE_FUNCTION S* IDENT '=' term [S* ','? IDENT '=' term]+ ')' S*
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     functionText = null,
                     expr        = null,
                     lt;
-                    
+
                 //IE function can begin like a regular function, too
                 if (tokenStream.match([Tokens.IE_FUNCTION, Tokens.FUNCTION])){
                     functionText = tokenStream.token().value;
-                    
+
                     do {
-                    
+
                         if (this._readWhitespace()){
                             functionText += tokenStream.token().value;
                         }
-                        
+
                         //might be second time in the loop
                         if (tokenStream.LA(0) == Tokens.COMMA){
                             functionText += tokenStream.token().value;
                         }
-                    
+
                         tokenStream.match(Tokens.IDENT);
                         functionText += tokenStream.token().value;
-                        
+
                         tokenStream.match(Tokens.EQUALS);
                         functionText += tokenStream.token().value;
-                        
+
                         //functionText += this._term();
                         lt = tokenStream.peek();
                         while(lt != Tokens.COMMA && lt != Tokens.S && lt != Tokens.RPAREN){
@@ -3002,16 +3042,16 @@ Parser.prototype = function(){
                             functionText += tokenStream.token().value;
                             lt = tokenStream.peek();
                         }
-                    } while(tokenStream.match([Tokens.COMMA, Tokens.S]));                    
-                    
-                    tokenStream.match(Tokens.RPAREN);    
+                    } while(tokenStream.match([Tokens.COMMA, Tokens.S]));
+
+                    tokenStream.match(Tokens.RPAREN);
                     functionText += ")";
                     this._readWhitespace();
-                }                
-                
+                }
+
                 return functionText;
-            }, 
-            
+            },
+
             _hexcolor: function(){
                 /*
                  * There is a constraint on the color that it must
@@ -3022,15 +3062,15 @@ Parser.prototype = function(){
                  *   : HASH S*
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     token = null,
                     color;
-                    
+
                 if(tokenStream.match(Tokens.HASH)){
-                
+
                     //need to do some validation here
-                    
+
                     token = tokenStream.token();
                     color = token.value;
                     if (!/#[a-f0-9]{3,6}/i.test(color)){
@@ -3038,16 +3078,16 @@ Parser.prototype = function(){
                     }
                     this._readWhitespace();
                 }
-                
+
                 return token;
             },
-            
+
             //-----------------------------------------------------------------
             // Animations methods
             //-----------------------------------------------------------------
-            
+
             _keyframes: function(){
-            
+
                 /*
                  * keyframes:
                  *   : KEYFRAMES_SYM S* keyframe_name S* '{' S* keyframe_rule* '}' {
@@ -3057,53 +3097,53 @@ Parser.prototype = function(){
                     token,
                     tt,
                     name,
-                    prefix = "";            
-                    
+                    prefix = "";
+
                 tokenStream.mustMatch(Tokens.KEYFRAMES_SYM);
                 token = tokenStream.token();
                 if (/^@\-([^\-]+)\-/.test(token.value)) {
                     prefix = RegExp.$1;
                 }
-                
+
                 this._readWhitespace();
                 name = this._keyframe_name();
-                
+
                 this._readWhitespace();
                 tokenStream.mustMatch(Tokens.LBRACE);
-                    
+
                 this.fire({
                     type:   "startkeyframes",
                     name:   name,
                     prefix: prefix,
                     line:   token.startLine,
                     col:    token.startCol
-                });                
-                
+                });
+
                 this._readWhitespace();
                 tt = tokenStream.peek();
-                
+
                 //check for key
                 while(tt == Tokens.IDENT || tt == Tokens.PERCENTAGE) {
                     this._keyframe_rule();
                     this._readWhitespace();
                     tt = tokenStream.peek();
-                }           
-                
+                }
+
                 this.fire({
                     type:   "endkeyframes",
                     name:   name,
                     prefix: prefix,
                     line:   token.startLine,
                     col:    token.startCol
-                });                      
-                    
+                });
+
                 this._readWhitespace();
-                tokenStream.mustMatch(Tokens.RBRACE);                    
-                
+                tokenStream.mustMatch(Tokens.RBRACE);
+
             },
-            
+
             _keyframe_name: function(){
-            
+
                 /*
                  * keyframe_name:
                  *   : IDENT
@@ -3114,41 +3154,41 @@ Parser.prototype = function(){
                     token;
 
                 tokenStream.mustMatch([Tokens.IDENT, Tokens.STRING]);
-                return SyntaxUnit.fromToken(tokenStream.token());            
+                return SyntaxUnit.fromToken(tokenStream.token());
             },
-            
+
             _keyframe_rule: function(){
-            
+
                 /*
                  * keyframe_rule:
-                 *   : key_list S* 
+                 *   : key_list S*
                  *     '{' S* declaration [ ';' S* declaration ]* '}' S*
                  *   ;
                  */
                 var tokenStream = this._tokenStream,
                     token,
                     keyList = this._key_list();
-                                    
+
                 this.fire({
                     type:   "startkeyframerule",
                     keys:   keyList,
                     line:   keyList[0].line,
                     col:    keyList[0].col
-                });                
-                
-                this._readDeclarations(true);                
-                
+                });
+
+                this._readDeclarations(true);
+
                 this.fire({
                     type:   "endkeyframerule",
                     keys:   keyList,
                     line:   keyList[0].line,
                     col:    keyList[0].col
-                });  
-                
+                });
+
             },
-            
+
             _key_list: function(){
-            
+
                 /*
                  * key_list:
                  *   : key [ S* ',' S* key]*
@@ -3158,12 +3198,12 @@ Parser.prototype = function(){
                     token,
                     key,
                     keyList = [];
-                    
+
                 //must be least one key
                 keyList.push(this._key());
-                    
+
                 this._readWhitespace();
-                    
+
                 while(tokenStream.match(Tokens.COMMA)){
                     this._readWhitespace();
                     keyList.push(this._key());
@@ -3172,7 +3212,7 @@ Parser.prototype = function(){
 
                 return keyList;
             },
-                        
+
             _key: function(){
                 /*
                  * There is a restriction that IDENT can be only "from" or "to".
@@ -3182,30 +3222,30 @@ Parser.prototype = function(){
                  *   | IDENT
                  *   ;
                  */
-                 
+
                 var tokenStream = this._tokenStream,
                     token;
-                    
+
                 if (tokenStream.match(Tokens.PERCENTAGE)){
                     return SyntaxUnit.fromToken(tokenStream.token());
                 } else if (tokenStream.match(Tokens.IDENT)){
-                    token = tokenStream.token();                    
-                    
+                    token = tokenStream.token();
+
                     if (/from|to/i.test(token.value)){
                         return SyntaxUnit.fromToken(token);
                     }
-                    
+
                     tokenStream.unget();
                 }
-                
+
                 //if it gets here, there wasn't a valid token, so time to explode
                 this._unexpectedToken(tokenStream.LT(1));
             },
-            
+
             //-----------------------------------------------------------------
             // Helper methods
             //-----------------------------------------------------------------
-            
+
             /**
              * Not part of CSS grammar, but useful for skipping over
              * combination of white space and HTML-style comments.
@@ -3238,25 +3278,25 @@ Parser.prototype = function(){
                  * or
                  * S* '{' S* [ declaration | margin ]? [ ';' S* [ declaration | margin ]? ]* '}' S*
                  * Note that this is how it is described in CSS3 Paged Media, but is actually incorrect.
-                 * A semicolon is only necessary following a delcaration is there's another declaration
-                 * or margin afterwards. 
+                 * A semicolon is only necessary following a declaration is there's another declaration
+                 * or margin afterwards.
                  */
                 var tokenStream = this._tokenStream,
                     tt;
-                       
+
 
                 this._readWhitespace();
-                
+
                 if (checkStart){
-                    tokenStream.mustMatch(Tokens.LBRACE);            
+                    tokenStream.mustMatch(Tokens.LBRACE);
                 }
-                
+
                 this._readWhitespace();
 
                 try {
-                    
+
                     while(true){
-                    
+
                         if (tokenStream.match(Tokens.SEMICOLON) || (readMargins && this._margin())){
                             //noop
                         } else if (this._declaration()){
@@ -3266,19 +3306,19 @@ Parser.prototype = function(){
                         } else {
                             break;
                         }
-                    
+
                         //if ((!this._margin() && !this._declaration()) || !tokenStream.match(Tokens.SEMICOLON)){
                         //    break;
                         //}
                         this._readWhitespace();
                     }
-                    
+
                     tokenStream.mustMatch(Tokens.RBRACE);
                     this._readWhitespace();
-                    
+
                 } catch (ex) {
                     if (ex instanceof SyntaxError && !this.options.strict){
-                    
+
                         //fire error event
                         this.fire({
                             type:       "error",
@@ -3286,27 +3326,27 @@ Parser.prototype = function(){
                             message:    ex.message,
                             line:       ex.line,
                             col:        ex.col
-                        });                          
-                        
+                        });
+
                         //see if there's another declaration
                         tt = tokenStream.advance([Tokens.SEMICOLON, Tokens.RBRACE]);
                         if (tt == Tokens.SEMICOLON){
                             //if there's a semicolon, then there might be another declaration
-                            this._readDeclarations(false, readMargins);                            
+                            this._readDeclarations(false, readMargins);
                         } else if (tt != Tokens.RBRACE){
                             //if there's a right brace, the rule is finished so don't do anything
                             //otherwise, rethrow the error because it wasn't handled properly
                             throw ex;
-                        }                        
-                        
+                        }
+
                     } else {
                         //not a syntax error, rethrow it
                         throw ex;
                     }
-                }    
-            
-            },      
-            
+                }
+
+            },
+
             /**
              * In some cases, you can end up with two white space tokens in a
              * row. Instead of making a change in every function that looks for
@@ -3317,17 +3357,17 @@ Parser.prototype = function(){
              * @private
              */
             _readWhitespace: function(){
-            
+
                 var tokenStream = this._tokenStream,
                     ws = "";
-                    
+
                 while(tokenStream.match(Tokens.S)){
                     ws += tokenStream.token().value;
                 }
-                
+
                 return ws;
             },
-          
+
 
             /**
              * Throws an error when an unexpected token is found.
@@ -3339,7 +3379,7 @@ Parser.prototype = function(){
             _unexpectedToken: function(token){
                 throw new SyntaxError("Unexpected token '" + token.value + "' at line " + token.startLine + ", col " + token.startCol + ".", token.startLine, token.startCol);
             },
-            
+
             /**
              * Helper method used for parsing subparts of a style sheet.
              * @return {void}
@@ -3349,64 +3389,64 @@ Parser.prototype = function(){
             _verifyEnd: function(){
                 if (this._tokenStream.LA(1) != Tokens.EOF){
                     this._unexpectedToken(this._tokenStream.LT(1));
-                }            
+                }
             },
-            
+
             //-----------------------------------------------------------------
             // Validation methods
             //-----------------------------------------------------------------
             _validateProperty: function(property, value){
                 Validation.validate(property, value);
             },
-            
+
             //-----------------------------------------------------------------
             // Parsing methods
             //-----------------------------------------------------------------
-            
-            parse: function(input){    
+
+            parse: function(input){
                 this._tokenStream = new TokenStream(input, Tokens);
                 this._stylesheet();
             },
-            
+
             parseStyleSheet: function(input){
                 //just passthrough
                 return this.parse(input);
             },
-            
+
             parseMediaQuery: function(input){
                 this._tokenStream = new TokenStream(input, Tokens);
                 var result = this._media_query();
-                
+
                 //if there's anything more, then it's an invalid selector
                 this._verifyEnd();
-                
+
                 //otherwise return result
-                return result;            
+                return result;
             },
-            
+
             /**
              * Parses a property value (everything after the semicolon).
              * @return {parserlib.css.PropertyValue} The property value.
              * @throws parserlib.util.SyntaxError If an unexpected token is found.
              * @method parserPropertyValue
-             */             
+             */
             parsePropertyValue: function(input){
-            
+
                 this._tokenStream = new TokenStream(input, Tokens);
                 this._readWhitespace();
-                
+
                 var result = this._expr();
-                
+
                 //okay to have a trailing white space
                 this._readWhitespace();
-                
+
                 //if there's anything more, then it's an invalid selector
                 this._verifyEnd();
-                
+
                 //otherwise return result
                 return result;
             },
-            
+
             /**
              * Parses a complete CSS rule, including selectors and
              * properties.
@@ -3416,22 +3456,22 @@ Parser.prototype = function(){
              */
             parseRule: function(input){
                 this._tokenStream = new TokenStream(input, Tokens);
-                
+
                 //skip any leading white space
                 this._readWhitespace();
-                
+
                 var result = this._ruleset();
-                
+
                 //skip any trailing white space
                 this._readWhitespace();
 
                 //if there's anything more, then it's an invalid selector
                 this._verifyEnd();
-                
+
                 //otherwise return result
-                return result;            
+                return result;
             },
-            
+
             /**
              * Parses a single CSS selector (no comma)
              * @param {String} input The text to parse as a CSS selector.
@@ -3440,29 +3480,29 @@ Parser.prototype = function(){
              * @method parseSelector
              */
             parseSelector: function(input){
-            
+
                 this._tokenStream = new TokenStream(input, Tokens);
-                
+
                 //skip any leading white space
                 this._readWhitespace();
-                
+
                 var result = this._selector();
-                
+
                 //skip any trailing white space
                 this._readWhitespace();
 
                 //if there's anything more, then it's an invalid selector
                 this._verifyEnd();
-                
+
                 //otherwise return result
                 return result;
             },
 
             /**
-             * Parses an HTML style attribute: a set of CSS declarations 
+             * Parses an HTML style attribute: a set of CSS declarations
              * separated by semicolons.
              * @param {String} input The text to parse as a style attribute
-             * @return {void} 
+             * @return {void}
              * @method parseStyleAttribute
              */
             parseStyleAttribute: function(input){
@@ -3471,14 +3511,14 @@ Parser.prototype = function(){
                 this._readDeclarations();
             }
         };
-        
+
     //copy over onto prototype
     for (prop in additions){
         if (additions.hasOwnProperty(prop)){
             proto[prop] = additions[prop];
         }
-    }   
-    
+    }
+
     return proto;
 }();
 
@@ -3489,6 +3529,7 @@ nth
          ['-'|'+']? INTEGER | {O}{D}{D} | {E}{V}{E}{N} ] S*
   ;
 */
+
 /*global Validation, ValidationTypes, ValidationError*/
 var Properties = {
 
@@ -3503,7 +3544,7 @@ var Properties = {
     "animation-name"                : { multi: "none | <ident>", comma: true },
     "animation-play-state"          : { multi: "running | paused", comma: true },
     "animation-timing-function"     : 1,
-    
+
     //vendor prefixed
     "-moz-animation-delay"               : { multi: "<time>", comma: true },
     "-moz-animation-direction"           : { multi: "normal | alternate", comma: true },
@@ -3511,28 +3552,28 @@ var Properties = {
     "-moz-animation-iteration-count"     : { multi: "<number> | infinite", comma: true },
     "-moz-animation-name"                : { multi: "none | <ident>", comma: true },
     "-moz-animation-play-state"          : { multi: "running | paused", comma: true },
-    
+
     "-ms-animation-delay"               : { multi: "<time>", comma: true },
     "-ms-animation-direction"           : { multi: "normal | alternate", comma: true },
     "-ms-animation-duration"            : { multi: "<time>", comma: true },
     "-ms-animation-iteration-count"     : { multi: "<number> | infinite", comma: true },
     "-ms-animation-name"                : { multi: "none | <ident>", comma: true },
     "-ms-animation-play-state"          : { multi: "running | paused", comma: true },
-    
+
     "-webkit-animation-delay"               : { multi: "<time>", comma: true },
     "-webkit-animation-direction"           : { multi: "normal | alternate", comma: true },
     "-webkit-animation-duration"            : { multi: "<time>", comma: true },
     "-webkit-animation-iteration-count"     : { multi: "<number> | infinite", comma: true },
     "-webkit-animation-name"                : { multi: "none | <ident>", comma: true },
     "-webkit-animation-play-state"          : { multi: "running | paused", comma: true },
-    
+
     "-o-animation-delay"               : { multi: "<time>", comma: true },
     "-o-animation-direction"           : { multi: "normal | alternate", comma: true },
     "-o-animation-duration"            : { multi: "<time>", comma: true },
     "-o-animation-iteration-count"     : { multi: "<number> | infinite", comma: true },
     "-o-animation-name"                : { multi: "none | <ident>", comma: true },
-    "-o-animation-play-state"          : { multi: "running | paused", comma: true },        
-    
+    "-o-animation-play-state"          : { multi: "running | paused", comma: true },
+
     "appearance"                    : "icon | window | desktop | workspace | document | tooltip | dialog | button | push-button | hyperlink | radio-button | checkbox | menu-item | tab | menu | menubar | pull-down-menu | pop-up-menu | list-menu | radio-group | checkbox-group | outline-tree | range | field | combo-box | signature | password | normal | none | inherit",
     "azimuth"                       : function (expression) {
         var simple      = "<angle> | leftwards | rightwards | inherit",
@@ -3540,13 +3581,13 @@ var Properties = {
             behind      = false,
             valid       = false,
             part;
-        
+
         if (!ValidationTypes.isAny(expression, simple)) {
             if (ValidationTypes.isAny(expression, "behind")) {
                 behind = true;
                 valid = true;
             }
-            
+
             if (ValidationTypes.isAny(expression, direction)) {
                 valid = true;
                 if (!behind) {
@@ -3554,7 +3595,7 @@ var Properties = {
                 }
             }
         }
-        
+
         if (expression.hasNext()) {
             part = expression.next();
             if (valid) {
@@ -3562,9 +3603,9 @@ var Properties = {
             } else {
                 throw new ValidationError("Expected (<'azimuth'>) but found '" + part + "'.", part.line, part.col);
             }
-        }        
+        }
     },
-    
+
     //B
     "backface-visibility"           : "visible | hidden",
     "background"                    : 1,
@@ -3586,7 +3627,7 @@ var Properties = {
     "bookmark-target"               : "none | <uri> | <attr>",
     "border"                        : "<border-width> || <border-style> || <color>",
     "border-bottom"                 : "<border-width> || <border-style> || <color>",
-    "border-bottom-color"           : "<color>",
+    "border-bottom-color"           : "<color> | inherit",
     "border-bottom-left-radius"     :  "<x-one-radius>",
     "border-bottom-right-radius"    :  "<x-one-radius>",
     "border-bottom-style"           : "<border-style>",
@@ -3597,19 +3638,19 @@ var Properties = {
     "border-image-outset"           : { multi: "<length> | <number>", max: 4 },
     "border-image-repeat"           : { multi: "stretch | repeat | round", max: 2 },
     "border-image-slice"            : function(expression) {
-        
+
         var valid   = false,
             numeric = "<number> | <percentage>",
             fill    = false,
             count   = 0,
             max     = 4,
             part;
-        
+
         if (ValidationTypes.isAny(expression, "fill")) {
             fill = true;
             valid = true;
         }
-        
+
         while (expression.hasNext() && count < max) {
             valid = ValidationTypes.isAny(expression, numeric);
             if (!valid) {
@@ -3617,14 +3658,14 @@ var Properties = {
             }
             count++;
         }
-        
-        
+
+
         if (!fill) {
             ValidationTypes.isAny(expression, "fill");
         } else {
             valid = true;
         }
-        
+
         if (expression.hasNext()) {
             part = expression.next();
             if (valid) {
@@ -3632,7 +3673,7 @@ var Properties = {
             } else {
                 throw new ValidationError("Expected ([<number> | <percentage>]{1,4} && fill?) but found '" + part + "'.", part.line, part.col);
             }
-        }         
+        }
     },
     "border-image-source"           : "<image> | none",
     "border-image-width"            : { multi: "<length> | <percentage> | <number> | auto", max: 4 },
@@ -3641,9 +3682,9 @@ var Properties = {
     "border-left-style"             : "<border-style>",
     "border-left-width"             : "<border-width>",
     "border-radius"                 : function(expression) {
-        
+
         var valid   = false,
-            numeric = "<length> | <percentage>",
+            simple = "<length> | <percentage> | inherit",
             slash   = false,
             fill    = false,
             count   = 0,
@@ -3651,9 +3692,9 @@ var Properties = {
             part;
 
         while (expression.hasNext() && count < max) {
-            valid = ValidationTypes.isAny(expression, numeric);
+            valid = ValidationTypes.isAny(expression, simple);
             if (!valid) {
-            
+
                 if (expression.peek() == "/" && count > 0 && !slash) {
                     slash = true;
                     max = count + 5;
@@ -3664,7 +3705,7 @@ var Properties = {
             }
             count++;
         }
-        
+
         if (expression.hasNext()) {
             part = expression.next();
             if (valid) {
@@ -3672,7 +3713,7 @@ var Properties = {
             } else {
                 throw new ValidationError("Expected (<'border-radius'>) but found '" + part + "'.", part.line, part.col);
             }
-        }         
+        }
     },
     "border-right"                  : "<border-width> || <border-style> || <color>",
     "border-right-color"            : "<color> | inherit",
@@ -3687,7 +3728,7 @@ var Properties = {
     "border-top-style"              : "<border-style>",
     "border-top-width"              : "<border-width>",
     "border-width"                  : { multi: "<border-width>", max: 4 },
-    "bottom"                        : "<margin-width> | inherit", 
+    "bottom"                        : "<margin-width> | inherit",
     "box-align"                     : "start | end | center | baseline | stretch",        //http://www.w3.org/TR/2009/WD-css3-flexbox-20090723/
     "box-decoration-break"          : "slice |clone",
     "box-direction"                 : "normal | reverse | inherit",
@@ -3702,19 +3743,19 @@ var Properties = {
             part;
 
         if (!ValidationTypes.isAny(expression, "none")) {
-            Validation.multiProperty("<shadow>", expression, true, Infinity);                       
+            Validation.multiProperty("<shadow>", expression, true, Infinity);
         } else {
             if (expression.hasNext()) {
                 part = expression.next();
                 throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
-            }   
+            }
         }
     },
     "box-sizing"                    : "content-box | border-box | inherit",
     "break-after"                   : "auto | always | avoid | left | right | page | column | avoid-page | avoid-column",
     "break-before"                  : "auto | always | avoid | left | right | page | column | avoid-page | avoid-column",
     "break-inside"                  : "auto | avoid | avoid-page | avoid-column",
-    
+
     //C
     "caption-side"                  : "top | bottom | inherit",
     "clear"                         : "none | right | left | both | inherit",
@@ -3739,10 +3780,10 @@ var Properties = {
     "cue-after"                     : 1,
     "cue-before"                    : 1,
     "cursor"                        : 1,
-    
+
     //D
     "direction"                     : "ltr | rtl | inherit",
-    "display"                       : "inline | block | list-item | inline-block | table | inline-table | table-row-group | table-header-group | table-footer-group | table-row | table-column-group | table-column | table-cell | table-caption | box | inline-box | grid | inline-grid | none | inherit | -moz-box | -moz-inline-block | -moz-inline-box | -moz-inline-grid | -moz-inline-stack | -moz-inline-table | -moz-grid | -moz-grid-group | -moz-grid-line | -moz-groupbox | -moz-deck | -moz-popup | -moz-stack | -moz-marker",
+    "display"                       : "inline | block | list-item | inline-block | table | inline-table | table-row-group | table-header-group | table-footer-group | table-row | table-column-group | table-column | table-cell | table-caption | box | inline-box | grid | inline-grid | none | inherit | -moz-box | -moz-inline-block | -moz-inline-box | -moz-inline-grid | -moz-inline-stack | -moz-inline-table | -moz-grid | -moz-grid-group | -moz-grid-line | -moz-groupbox | -moz-deck | -moz-popup | -moz-stack | -moz-marker | -webkit-box | -webkit-inline-box",
     "dominant-baseline"             : 1,
     "drop-initial-after-adjust"     : "central | middle | after-edge | text-after-edge | ideographic | alphabetic | mathematical | <percentage> | <length>",
     "drop-initial-after-align"      : "baseline | use-script | before-edge | text-before-edge | after-edge | text-after-edge | central | middle | ideographic | alphabetic | hanging | mathematical",
@@ -3750,16 +3791,16 @@ var Properties = {
     "drop-initial-before-align"     : "caps-height | baseline | use-script | before-edge | text-before-edge | after-edge | text-after-edge | central | middle | ideographic | alphabetic | hanging | mathematical",
     "drop-initial-size"             : "auto | line | <length> | <percentage>",
     "drop-initial-value"            : "initial | <integer>",
-    
+
     //E
     "elevation"                     : "<angle> | below | level | above | higher | lower | inherit",
     "empty-cells"                   : "show | hide | inherit",
-    
+
     //F
     "filter"                        : 1,
     "fit"                           : "fill | hidden | meet | slice",
     "fit-position"                  : 1,
-    "float"                         : "left | right | none | inherit",    
+    "float"                         : "left | right | none | inherit",
     "float-offset"                  : 1,
     "font"                          : 1,
     "font-family"                   : 1,
@@ -3769,7 +3810,7 @@ var Properties = {
     "font-style"                    : "normal | italic | oblique | inherit",
     "font-variant"                  : "normal | small-caps | inherit",
     "font-weight"                   : "normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | inherit",
-    
+
     //G
     "grid-cell-stacking"            : "columns | rows | layer",
     "grid-column"                   : 1,
@@ -3784,7 +3825,7 @@ var Properties = {
     "grid-row-align"                : "start | end | center | stretch",
     "grid-row-span"                 : "<integer>",
     "grid-row-sizing"               : 1,
-    
+
     //H
     "hanging-punctuation"           : 1,
     "height"                        : "<margin-width> | inherit",
@@ -3794,14 +3835,14 @@ var Properties = {
     "hyphenate-lines"               : "no-limit | <integer>",
     "hyphenate-resource"            : 1,
     "hyphens"                       : "none | manual | auto",
-    
+
     //I
     "icon"                          : 1,
     "image-orientation"             : "angle | auto",
     "image-rendering"               : 1,
     "image-resolution"              : 1,
     "inline-box-align"              : "initial | last | <integer>",
-    
+
     //L
     "left"                          : "<margin-width> | inherit",
     "letter-spacing"                : "<length> | normal | inherit",
@@ -3815,7 +3856,7 @@ var Properties = {
     "list-style-image"              : "<uri> | none | inherit",
     "list-style-position"           : "inside | outside | inherit",
     "list-style-type"               : "disc | circle | square | decimal | decimal-leading-zero | lower-roman | upper-roman | lower-greek | lower-latin | upper-latin | armenian | georgian | lower-alpha | upper-alpha | none | inherit",
-    
+
     //M
     "margin"                        : { multi: "<margin-width> | inherit", max: 4 },
     "margin-bottom"                 : "<margin-width> | inherit",
@@ -3835,14 +3876,14 @@ var Properties = {
     "min-height"                    : "<length> | <percentage> | inherit",
     "min-width"                     : "<length> | <percentage> | inherit",
     "move-to"                       : 1,
-    
+
     //N
     "nav-down"                      : 1,
     "nav-index"                     : 1,
     "nav-left"                      : 1,
     "nav-right"                     : 1,
     "nav-up"                        : 1,
-    
+
     //O
     "opacity"                       : "<number> | inherit",
     "orphans"                       : "<integer> | inherit",
@@ -3855,7 +3896,7 @@ var Properties = {
     "overflow-style"                : 1,
     "overflow-x"                    : 1,
     "overflow-y"                    : 1,
-    
+
     //P
     "padding"                       : { multi: "<padding-width> | inherit", max: 4 },
     "padding-bottom"                : "<padding-width> | inherit",
@@ -3880,10 +3921,10 @@ var Properties = {
     "position"                      : "static | relative | absolute | fixed | inherit",
     "presentation-level"            : 1,
     "punctuation-trim"              : 1,
-    
+
     //Q
     "quotes"                        : 1,
-    
+
     //R
     "rendering-intent"              : 1,
     "resize"                        : 1,
@@ -3898,7 +3939,7 @@ var Properties = {
     "ruby-overhang"                 : 1,
     "ruby-position"                 : 1,
     "ruby-span"                     : 1,
-    
+
     //S
     "size"                          : 1,
     "speak"                         : "normal | none | spell-out | inherit",
@@ -3909,7 +3950,7 @@ var Properties = {
     "src"                           : 1,
     "stress"                        : 1,
     "string-set"                    : 1,
-    
+
     "table-layout"                  : "auto | fixed | inherit",
     "tab-size"                      : "<integer> | <length>",
     "target"                        : 1,
@@ -3938,12 +3979,12 @@ var Properties = {
     "transition-duration"           : 1,
     "transition-property"           : 1,
     "transition-timing-function"    : 1,
-    
+
     //U
     "unicode-bidi"                  : "normal | embed | bidi-override | inherit",
     "user-modify"                   : "read-only | read-write | write-only | inherit",
     "user-select"                   : "none | text | toggle | element | elements | all | inherit",
-    
+
     //V
     "vertical-align"                : "auto | use-script | baseline | sub | super | top | text-top | central | middle | bottom | text-bottom | <percentage> | <length>",
     "visibility"                    : "visible | hidden | collapse | inherit",
@@ -3956,7 +3997,7 @@ var Properties = {
     "voice-stress"                  : 1,
     "voice-volume"                  : 1,
     "volume"                        : 1,
-    
+
     //W
     "white-space"                   : "normal | pre | nowrap | pre-wrap | pre-line | inherit | -pre-wrap | -o-pre-wrap | -moz-pre-wrap | -hp-pre-wrap", //http://perishablepress.com/wrapping-content/
     "white-space-collapse"          : 1,
@@ -3965,11 +4006,12 @@ var Properties = {
     "word-break"                    : "normal | keep-all | break-all",
     "word-spacing"                  : "<length> | normal | inherit",
     "word-wrap"                     : 1,
-    
+
     //Z
     "z-index"                       : "<integer> | auto | inherit",
     "zoom"                          : "<number> | <percentage> | normal"
 };
+
 /*global SyntaxUnit, Parser*/
 /**
  * Represents a selector combinator (whitespace, +, >).
@@ -3977,13 +4019,13 @@ var Properties = {
  * @class PropertyName
  * @extends parserlib.util.SyntaxUnit
  * @constructor
- * @param {String} text The text representation of the unit. 
+ * @param {String} text The text representation of the unit.
  * @param {String} hack The type of IE hack applied ("*", "_", or null).
  * @param {int} line The line of text on which the unit resides.
  * @param {int} col The column of text on which the unit resides.
  */
 function PropertyName(text, hack, line, col){
-    
+
     SyntaxUnit.call(this, text, line, col, Parser.PROPERTY_NAME_TYPE);
 
     /**
@@ -4017,14 +4059,14 @@ PropertyName.prototype.toString = function(){
 function PropertyValue(parts, line, col){
 
     SyntaxUnit.call(this, parts.join(" "), line, col, Parser.PROPERTY_VALUE_TYPE);
-    
+
     /**
      * The parts that make up the selector.
      * @type Array
      * @property parts
      */
     this.parts = parts;
-    
+
 }
 
 PropertyValue.prototype = new SyntaxUnit();
@@ -4042,14 +4084,14 @@ PropertyValue.prototype.constructor = PropertyValue;
  */
 function PropertyValueIterator(value){
 
-    /** 
+    /**
      * Iterator value
      * @type int
      * @property _i
      * @private
      */
     this._i = 0;
-    
+
     /**
      * The parts that make up the value.
      * @type Array
@@ -4057,7 +4099,7 @@ function PropertyValueIterator(value){
      * @private
      */
     this._parts = value.parts;
-    
+
     /**
      * Keeps track of bookmarks along the way.
      * @type Array
@@ -4065,14 +4107,14 @@ function PropertyValueIterator(value){
      * @private
      */
     this._marks = [];
-    
+
     /**
      * Holds the original property value.
      * @type parserlib.css.PropertyValue
      * @property value
      */
     this.value = value;
-    
+
 }
 
 /**
@@ -4137,7 +4179,7 @@ PropertyValueIterator.prototype.next = function(){
 /**
  * Returns the previous part of the property value or null if there is no
  * previous part.
- * @return {parserlib.css.PropertyValuePart} The previous part of the 
+ * @return {parserlib.css.PropertyValuePart} The previous part of the
  * property value or null if there is no next part.
  * @method previous
  */
@@ -4172,7 +4214,7 @@ PropertyValueIterator.prototype.restore = function(){
 function PropertyValuePart(text, line, col){
 
     SyntaxUnit.call(this, text, line, col, Parser.PROPERTY_VALUE_PART_TYPE);
-    
+
     /**
      * Indicates the type of value unit.
      * @type String
@@ -4181,18 +4223,18 @@ function PropertyValuePart(text, line, col){
     this.type = "unknown";
 
     //figure out what type of data it is
-    
+
     var temp;
-    
+
     //it is a measurement?
     if (/^([+\-]?[\d\.]+)([a-z]+)$/i.test(text)){  //dimension
         this.type = "dimension";
         this.value = +RegExp.$1;
         this.units = RegExp.$2;
-        
+
         //try to narrow down
         switch(this.units.toLowerCase()){
-        
+
             case "em":
             case "rem":
             case "ex":
@@ -4203,34 +4245,37 @@ function PropertyValuePart(text, line, col){
             case "pt":
             case "pc":
             case "ch":
+            case "vh":
+            case "vw":
+            case "vm":
                 this.type = "length";
                 break;
-                
+
             case "deg":
             case "rad":
             case "grad":
                 this.type = "angle";
                 break;
-            
+
             case "ms":
             case "s":
                 this.type = "time";
                 break;
-            
+
             case "hz":
             case "khz":
                 this.type = "frequency";
                 break;
-            
+
             case "dpi":
             case "dpcm":
                 this.type = "resolution";
                 break;
-                
+
             //default
-                
+
         }
-        
+
     } else if (/^([+\-]?[\d\.]+)%$/i.test(text)){  //percentage
         this.type = "percentage";
         this.value = +RegExp.$1;
@@ -4243,18 +4288,18 @@ function PropertyValuePart(text, line, col){
     } else if (/^([+\-]?[\d\.]+)$/i.test(text)){  //number
         this.type = "number";
         this.value = +RegExp.$1;
-    
+
     } else if (/^#([a-f0-9]{3,6})/i.test(text)){  //hexcolor
         this.type = "color";
         temp = RegExp.$1;
         if (temp.length == 3){
             this.red    = parseInt(temp.charAt(0)+temp.charAt(0),16);
             this.green  = parseInt(temp.charAt(1)+temp.charAt(1),16);
-            this.blue   = parseInt(temp.charAt(2)+temp.charAt(2),16);            
+            this.blue   = parseInt(temp.charAt(2)+temp.charAt(2),16);
         } else {
             this.red    = parseInt(temp.substring(0,2),16);
             this.green  = parseInt(temp.substring(2,4),16);
-            this.blue   = parseInt(temp.substring(4,6),16);            
+            this.blue   = parseInt(temp.substring(4,6),16);
         }
     } else if (/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i.test(text)){ //rgb() color with absolute numbers
         this.type   = "color";
@@ -4277,18 +4322,18 @@ function PropertyValuePart(text, line, col){
         this.red    = +RegExp.$1 * 255 / 100;
         this.green  = +RegExp.$2 * 255 / 100;
         this.blue   = +RegExp.$3 * 255 / 100;
-        this.alpha  = +RegExp.$4;        
+        this.alpha  = +RegExp.$4;
     } else if (/^hsl\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)/i.test(text)){ //hsl()
         this.type   = "color";
         this.hue    = +RegExp.$1;
         this.saturation = +RegExp.$2 / 100;
-        this.lightness  = +RegExp.$3 / 100;        
+        this.lightness  = +RegExp.$3 / 100;
     } else if (/^hsla\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*,\s*([\d\.]+)\s*\)/i.test(text)){ //hsla() color with percentages
         this.type   = "color";
         this.hue    = +RegExp.$1;
         this.saturation = +RegExp.$2 / 100;
-        this.lightness  = +RegExp.$3 / 100;        
-        this.alpha  = +RegExp.$4;        
+        this.lightness  = +RegExp.$3 / 100;
+        this.alpha  = +RegExp.$4;
     } else if (/^url\(["']?([^\)"']+)["']?\)/i.test(text)){ //URI
         this.type   = "uri";
         this.uri    = RegExp.$1;
@@ -4304,7 +4349,7 @@ function PropertyValuePart(text, line, col){
         temp        = Colors[text.toLowerCase()].substring(1);
         this.red    = parseInt(temp.substring(0,2),16);
         this.green  = parseInt(temp.substring(2,4),16);
-        this.blue   = parseInt(temp.substring(4,6),16);         
+        this.blue   = parseInt(temp.substring(4,6),16);
     } else if (/^[\,\/]$/.test(text)){
         this.type   = "operator";
         this.value  = text;
@@ -4356,16 +4401,16 @@ Pseudos.isElement = function(pseudo){
  * @param {int} col The column of text on which the unit resides.
  */
 function Selector(parts, line, col){
-    
+
     SyntaxUnit.call(this, parts.join(" "), line, col, Parser.SELECTOR_TYPE);
-    
+
     /**
      * The parts that make up the selector.
      * @type Array
      * @property parts
      */
     this.parts = parts;
-    
+
     /**
      * The specificity of the selector.
      * @type parserlib.css.Specificity
@@ -4392,12 +4437,12 @@ Selector.prototype.constructor = Selector;
  *      if there is no element name.
  * @param {Array} modifiers Array of individual modifiers for the element.
  *      May be empty if there are none.
- * @param {String} text The text representation of the unit. 
+ * @param {String} text The text representation of the unit.
  * @param {int} line The line of text on which the unit resides.
  * @param {int} col The column of text on which the unit resides.
  */
 function SelectorPart(elementName, modifiers, text, line, col){
-    
+
     SyntaxUnit.call(this, text, line, col, Parser.SELECTOR_PART_TYPE);
 
     /**
@@ -4407,7 +4452,7 @@ function SelectorPart(elementName, modifiers, text, line, col){
      * @property elementName
      */
     this.elementName = elementName;
-    
+
     /**
      * The parts that come after the element name, such as class names, IDs,
      * pseudo classes/elements, etc.
@@ -4430,13 +4475,13 @@ SelectorPart.prototype.constructor = SelectorPart;
  * @class SelectorSubPart
  * @extends parserlib.util.SyntaxUnit
  * @constructor
- * @param {String} text The text representation of the unit. 
+ * @param {String} text The text representation of the unit.
  * @param {String} type The type of selector modifier.
  * @param {int} line The line of text on which the unit resides.
  * @param {int} col The column of text on which the unit resides.
  */
 function SelectorSubPart(text, type, line, col){
-    
+
     SyntaxUnit.call(this, text, line, col, Parser.SELECTOR_SUB_PART_TYPE);
 
     /**
@@ -4445,7 +4490,7 @@ function SelectorSubPart(text, type, line, col){
      * @property type
      */
     this.type = type;
-    
+
     /**
      * Some subparts have arguments, this represents them.
      * @type Array
@@ -4479,7 +4524,7 @@ function Specificity(a, b, c, d){
 
 Specificity.prototype = {
     constructor: Specificity,
-    
+
     /**
      * Compare this specificity to another.
      * @param {Specificity} other The other specificity to compare to.
@@ -4489,7 +4534,7 @@ Specificity.prototype = {
     compare: function(other){
         var comps = ["a", "b", "c", "d"],
             i, len;
-            
+
         for (i=0, len=comps.length; i < len; i++){
             if (this[comps[i]] < other[comps[i]]){
                 return -1;
@@ -4497,10 +4542,10 @@ Specificity.prototype = {
                 return 1;
             }
         }
-        
+
         return 0;
     },
-    
+
     /**
      * Creates a numeric value for the specificity.
      * @return {int} The numeric value for the specificity.
@@ -4509,7 +4554,7 @@ Specificity.prototype = {
     valueOf: function(){
         return (this.a * 1000) + (this.b * 100) + (this.c * 10) + this.d;
     },
-    
+
     /**
      * Returns a string representation for specificity.
      * @return {String} The string representation of specificity.
@@ -4533,17 +4578,17 @@ Specificity.calculate = function(selector){
     var i, len,
         part,
         b=0, c=0, d=0;
-        
+
     function updateValues(part){
-    
+
         var i, j, len, num,
             elementName = part.elementName ? part.elementName.text : "",
             modifier;
-    
+
         if (elementName && elementName.charAt(elementName.length-1) != "*") {
             d++;
-        }    
-    
+        }
+
         for (i=0, len=part.modifiers.length; i < len; i++){
             modifier = part.modifiers[i];
             switch(modifier.type){
@@ -4551,35 +4596,35 @@ Specificity.calculate = function(selector){
                 case "attribute":
                     c++;
                     break;
-                    
+
                 case "id":
                     b++;
                     break;
-                    
+
                 case "pseudo":
                     if (Pseudos.isElement(modifier.text)){
                         d++;
                     } else {
                         c++;
-                    }                    
+                    }
                     break;
-                    
+
                 case "not":
                     for (j=0, num=modifier.args.length; j < num; j++){
                         updateValues(modifier.args[j]);
                     }
-            }    
+            }
          }
     }
-    
+
     for (i=0, len=selector.parts.length; i < len; i++){
         part = selector.parts[i];
-        
+
         if (part instanceof SelectorPart){
-            updateValues(part);                
+            updateValues(part);
         }
     }
-    
+
     return new Specificity(0, b, c, d);
 };
 
@@ -4623,12 +4668,12 @@ function isIdentStart(c){
 }
 
 function mix(receiver, supplier){
-	for (var prop in supplier){
-		if (supplier.hasOwnProperty(prop)){
-			receiver[prop] = supplier[prop];
-		}
-	}
-	return receiver;
+    for (var prop in supplier){
+        if (supplier.hasOwnProperty(prop)){
+            receiver[prop] = supplier[prop];
+        }
+    }
+    return receiver;
 }
 
 //-----------------------------------------------------------------------------
@@ -4644,7 +4689,7 @@ function mix(receiver, supplier){
  * @namespace parserlib.css
  */
 function TokenStream(input){
-	TokenStreamBase.call(this, input, Tokens);
+    TokenStreamBase.call(this, input, Tokens);
 }
 
 TokenStream.prototype = mix(new TokenStreamBase(), {
@@ -4945,7 +4990,7 @@ TokenStream.prototype = mix(new TokenStreamBase(), {
         //if it's not valid, use the first character only and reset the reader
         if (tt == Tokens.CHAR || tt == Tokens.UNKNOWN){
             if (rule.length > 1){
-                tt = Tokens.UNKNOWN_SYM;                
+                tt = Tokens.UNKNOWN_SYM;
             } else {
                 tt = Tokens.CHAR;
                 rule = first;
@@ -5533,30 +5578,30 @@ TokenStream.prototype = mix(new TokenStreamBase(), {
 
         return ident;
     },
-    
+
     readEscape: function(first){
         var reader  = this._reader,
             cssEscape = first || "",
             i       = 0,
-            c       = reader.peek();    
-    
+            c       = reader.peek();
+
         if (isHexDigit(c)){
             do {
                 cssEscape += reader.read();
                 c = reader.peek();
             } while(c && isHexDigit(c) && ++i < 6);
         }
-        
+
         if (cssEscape.length == 3 && /\s/.test(c) ||
             cssEscape.length == 7 || cssEscape.length == 1){
                 reader.read();
         } else {
             c = "";
         }
-        
+
         return cssEscape + c;
     },
-    
+
     readComment: function(first){
         var reader  = this._reader,
             comment = first || "",
@@ -5589,7 +5634,7 @@ var Tokens  = [
     /*
      * The following token names are defined in CSS3 Grammar: http://www.w3.org/TR/css3-syntax/#lexical
      */
-     
+
     //HTML-style comments
     { name: "CDO"},
     { name: "CDC"},
@@ -5597,16 +5642,16 @@ var Tokens  = [
     //ignorables
     { name: "S", whitespace: true/*, channel: "ws"*/},
     { name: "COMMENT", comment: true, hide: true, channel: "comment" },
-        
+
     //attribute equality
     { name: "INCLUDES", text: "~="},
     { name: "DASHMATCH", text: "|="},
     { name: "PREFIXMATCH", text: "^="},
     { name: "SUFFIXMATCH", text: "$="},
     { name: "SUBSTRINGMATCH", text: "*="},
-        
+
     //identifier types
-    { name: "STRING"},     
+    { name: "STRING"},
     { name: "IDENT"},
     { name: "HASH"},
 
@@ -5617,9 +5662,10 @@ var Tokens  = [
     { name: "FONT_FACE_SYM", text: "@font-face"},
     { name: "CHARSET_SYM", text: "@charset"},
     { name: "NAMESPACE_SYM", text: "@namespace"},
+    { name: "VIEWPORT_SYM", text: "@viewport"},
     { name: "UNKNOWN_SYM" },
     //{ name: "ATKEYWORD"},
-    
+
     //CSS3 animations
     { name: "KEYFRAMES_SYM", text: [ "@keyframes", "@-webkit-keyframes", "@-moz-keyframes", "@-o-keyframes" ] },
 
@@ -5634,30 +5680,30 @@ var Tokens  = [
     { name: "DIMENSION"},
     { name: "PERCENTAGE"},
     { name: "NUMBER"},
-    
+
     //functions
     { name: "URI"},
     { name: "FUNCTION"},
-    
+
     //Unicode ranges
     { name: "UNICODE_RANGE"},
-    
+
     /*
      * The following token names are defined in CSS3 Selectors: http://www.w3.org/TR/css3-selectors/#selector-syntax
-     */    
-    
+     */
+
     //invalid string
     { name: "INVALID"},
-    
+
     //combinators
     { name: "PLUS", text: "+" },
     { name: "GREATER", text: ">"},
     { name: "COMMA", text: ","},
     { name: "TILDE", text: "~"},
-    
+
     //modifier
-    { name: "NOT"},        
-    
+    { name: "NOT"},
+
     /*
      * Defined in CSS3 Paged Media
      */
@@ -5689,13 +5735,13 @@ var Tokens  = [
     /*
      * The following token names are not defined in any CSS specification but are used by the lexer.
      */
-    
+
     //not a real token, but useful for stupid IE filters
     { name: "IE_FUNCTION" },
 
     //part of CSS3 grammar but not the Flex code
     { name: "CHAR" },
-    
+
     //TODO: Needed?
     //Not defined as tokens, but might as well be
     {
@@ -5718,19 +5764,19 @@ var Tokens  = [
     {
         name: "LBRACE",
         text: "{"
-    },   
+    },
     {
         name: "RBRACE",
         text: "}"
-    },      
+    },
     {
         name: "LBRACKET",
         text: "["
-    },   
+    },
     {
         name: "RBRACKET",
         text: "]"
-    },    
+    },
     {
         name: "EQUALS",
         text: "="
@@ -5738,20 +5784,20 @@ var Tokens  = [
     {
         name: "COLON",
         text: ":"
-    },    
+    },
     {
         name: "SEMICOLON",
         text: ";"
-    },    
- 
+    },
+
     {
         name: "LPAREN",
         text: "("
-    },   
+    },
     {
         name: "RPAREN",
         text: ")"
-    },     
+    },
     {
         name: "DOT",
         text: "."
@@ -5762,7 +5808,7 @@ var Tokens  = [
 
     var nameMap = [],
         typeMap = {};
-    
+
     Tokens.UNKNOWN = -1;
     Tokens.unshift({name:"EOF"});
     for (var i=0, len = Tokens.length; i < len; i++){
@@ -5778,11 +5824,11 @@ var Tokens  = [
             }
         }
     }
-    
+
     Tokens.name = function(tt){
         return nameMap[tt];
     };
-    
+
     Tokens.type = function(c){
         return typeMap[c] || -1;
     };
@@ -5797,27 +5843,27 @@ var Tokens  = [
 var Validation = {
 
     validate: function(property, value){
-    
+
         //normalize name
         var name        = property.toString().toLowerCase(),
             parts       = value.parts,
             expression  = new PropertyValueIterator(value),
             spec        = Properties[name],
             part,
-            valid,            
+            valid,
             j, count,
             msg,
             types,
             last,
             literals,
             max, multi, group;
-            
+
         if (!spec) {
             if (name.indexOf("-") !== 0){    //vendor prefixed are ok
                 throw new ValidationError("Unknown property '" + property + "'.", property.line, property.col);
             }
         } else if (typeof spec != "number"){
-        
+
             //initialization
             if (typeof spec == "string"){
                 if (spec.indexOf("||") > -1) {
@@ -5835,14 +5881,14 @@ var Validation = {
         }
 
     },
-    
+
     singleProperty: function(types, expression, max, partial) {
 
         var result      = false,
             value       = expression.value,
             count       = 0,
             part;
-         
+
         while (expression.hasNext() && count < max) {
             result = ValidationTypes.isAny(expression, types);
             if (!result) {
@@ -5850,21 +5896,21 @@ var Validation = {
             }
             count++;
         }
-        
+
         if (!result) {
             if (expression.hasNext() && !expression.isFirst()) {
                 part = expression.peek();
                 throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
             } else {
                  throw new ValidationError("Expected (" + types + ") but found '" + value + "'.", value.line, value.col);
-            }        
+            }
         } else if (expression.hasNext()) {
             part = expression.next();
             throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
-        }          
-                 
-    },    
-    
+        }
+
+    },
+
     multiProperty: function (types, expression, comma, max) {
 
         var result      = false,
@@ -5872,7 +5918,7 @@ var Validation = {
             count       = 0,
             sep         = false,
             part;
-            
+
         while(expression.hasNext() && !result && count < max) {
             if (ValidationTypes.isAny(expression, types)) {
                 count++;
@@ -5891,7 +5937,7 @@ var Validation = {
 
             }
         }
-        
+
         if (!result) {
             if (expression.hasNext() && !expression.isFirst()) {
                 part = expression.peek();
@@ -5899,19 +5945,19 @@ var Validation = {
             } else {
                 part = expression.previous();
                 if (comma && part == ",") {
-                    throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col); 
+                    throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
                 } else {
                     throw new ValidationError("Expected (" + types + ") but found '" + value + "'.", value.line, value.col);
                 }
             }
-        
+
         } else if (expression.hasNext()) {
             part = expression.next();
             throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
-        }  
+        }
 
     },
-    
+
     groupProperty: function (types, expression, comma) {
 
         var result      = false,
@@ -5921,11 +5967,11 @@ var Validation = {
             partial     = false,
             name,
             part;
-            
+
         while(expression.hasNext() && !result) {
             name = ValidationTypes.isAnyOfGroup(expression, types);
             if (name) {
-            
+
                 //no dupes
                 if (groups[name]) {
                     break;
@@ -5933,7 +5979,7 @@ var Validation = {
                     groups[name] = 1;
                     groups.count++;
                     partial = true;
-                    
+
                     if (groups.count == typeCount || !expression.hasNext()) {
                         result = true;
                     }
@@ -5942,8 +5988,8 @@ var Validation = {
                 break;
             }
         }
-        
-        if (!result) {        
+
+        if (!result) {
             if (partial && expression.hasNext()) {
                     part = expression.peek();
                     throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
@@ -5953,10 +5999,10 @@ var Validation = {
         } else if (expression.hasNext()) {
             part = expression.next();
             throw new ValidationError("Expected end of value but found '" + part + "'.", part.line, part.col);
-        }           
+        }
     }
 
-    
+
 
 };
 /**
@@ -6003,24 +6049,24 @@ var ValidationTypes = {
         var text = part.text.toString().toLowerCase(),
             args = literals.split(" | "),
             i, len, found = false;
-        
+
         for (i=0,len=args.length; i < len && !found; i++){
             if (text == args[i].toLowerCase()){
                 found = true;
             }
         }
-        
-        return found;    
+
+        return found;
     },
-    
+
     isSimple: function(type) {
         return !!this.simple[type];
     },
-    
+
     isComplex: function(type) {
         return !!this.complex[type];
     },
-    
+
     /**
      * Determines if the next part(s) of the given expression
      * are any of the given types.
@@ -6028,14 +6074,14 @@ var ValidationTypes = {
     isAny: function (expression, types) {
         var args = types.split(" | "),
             i, len, found = false;
-        
+
         for (i=0,len=args.length; i < len && !found && expression.hasNext(); i++){
             found = this.isType(expression, args[i]);
         }
-        
-        return found;    
+
+        return found;
     },
-    
+
     /**
      * Determines if the next part(s) of the given expression
      * are one of a group.
@@ -6043,14 +6089,14 @@ var ValidationTypes = {
     isAnyOfGroup: function(expression, types) {
         var args = types.split(" || "),
             i, len, found = false;
-        
+
         for (i=0,len=args.length; i < len && !found; i++){
             found = this.isType(expression, args[i]);
         }
-        
+
         return found ? args[i-1] : false;
     },
-    
+
     /**
      * Determines if the next part(s) of the given expression
      * are of a given type.
@@ -6058,7 +6104,7 @@ var ValidationTypes = {
     isType: function (expression, type) {
         var part = expression.peek(),
             result = false;
-            
+
         if (type.charAt(0) != "<") {
             result = this.isLiteral(part, type);
             if (result) {
@@ -6072,51 +6118,51 @@ var ValidationTypes = {
         } else {
             result = this.complex[type](expression);
         }
-        
+
         return result;
     },
-    
-    
-    
+
+
+
     simple: {
 
         "<absolute-size>": function(part){
             return ValidationTypes.isLiteral(part, "xx-small | x-small | small | medium | large | x-large | xx-large");
         },
-        
+
         "<attachment>": function(part){
             return ValidationTypes.isLiteral(part, "scroll | fixed | local");
         },
-        
+
         "<attr>": function(part){
             return part.type == "function" && part.name == "attr";
         },
-                
+
         "<bg-image>": function(part){
             return this["<image>"](part) || this["<gradient>"](part) ||  part == "none";
-        },        
-        
+        },
+
         "<gradient>": function(part) {
             return part.type == "function" && /^(?:\-(?:ms|moz|o|webkit)\-)?(?:repeating\-)?(?:radial\-|linear\-)?gradient/i.test(part);
         },
-        
+
         "<box>": function(part){
             return ValidationTypes.isLiteral(part, "padding-box | border-box | content-box");
         },
-        
+
         "<content>": function(part){
             return part.type == "function" && part.name == "content";
-        },        
-        
+        },
+
         "<relative-size>": function(part){
             return ValidationTypes.isLiteral(part, "smaller | larger");
         },
-        
+
         //any identifier
         "<ident>": function(part){
             return part.type == "identifier";
         },
-        
+
         "<length>": function(part){
             if (part.type == "function" && /^(?:\-(?:ms|moz|o|webkit)\-)?calc/i.test(part)){
                 return true;
@@ -6124,35 +6170,35 @@ var ValidationTypes = {
                 return part.type == "length" || part.type == "number" || part.type == "integer" || part == "0";
             }
         },
-        
+
         "<color>": function(part){
             return part.type == "color" || part == "transparent";
         },
-        
+
         "<number>": function(part){
             return part.type == "number" || this["<integer>"](part);
         },
-        
+
         "<integer>": function(part){
             return part.type == "integer";
         },
-        
+
         "<line>": function(part){
             return part.type == "integer";
         },
-        
+
         "<angle>": function(part){
             return part.type == "angle";
-        },        
-        
+        },
+
         "<uri>": function(part){
             return part.type == "uri";
         },
-        
+
         "<image>": function(part){
             return this["<uri>"](part);
         },
-        
+
         "<percentage>": function(part){
             return part.type == "percentage" || part == "0";
         },
@@ -6160,28 +6206,28 @@ var ValidationTypes = {
         "<border-width>": function(part){
             return this["<length>"](part) || ValidationTypes.isLiteral(part, "thin | medium | thick");
         },
-        
+
         "<border-style>": function(part){
             return ValidationTypes.isLiteral(part, "none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset");
         },
-        
+
         "<margin-width>": function(part){
             return this["<length>"](part) || this["<percentage>"](part) || ValidationTypes.isLiteral(part, "auto");
         },
-        
+
         "<padding-width>": function(part){
             return this["<length>"](part) || this["<percentage>"](part);
         },
-        
+
         "<shape>": function(part){
             return part.type == "function" && (part.name == "rect" || part.name == "inset-rect");
         },
-        
+
         "<time>": function(part) {
             return part.type == "time";
         }
     },
-    
+
     complex: {
 
         "<bg-position>": function(expression){
@@ -6198,7 +6244,7 @@ var ValidationTypes = {
             while (expression.peek(count) && expression.peek(count) != ",") {
                 count++;
             }
-            
+
 /*
 <position> = [
   [ left | center | right | top | bottom | <percentage> | <length> ]
@@ -6251,7 +6297,7 @@ var ValidationTypes = {
                     }
                 }
             }
-            
+
             return result;
         },
 
@@ -6261,29 +6307,29 @@ var ValidationTypes = {
                 result  = false,
                 numeric = "<percentage> | <length> | auto",
                 part,
-                i, len;      
-      
+                i, len;
+
             if (ValidationTypes.isAny(expression, "cover | contain")) {
                 result = true;
             } else if (ValidationTypes.isAny(expression, numeric)) {
-                result = true;                
+                result = true;
                 ValidationTypes.isAny(expression, numeric);
             }
-            
+
             return result;
         },
-        
+
         "<repeat-style>": function(expression){
             //repeat-x | repeat-y | [repeat | space | round | no-repeat]{1,2}
             var result  = false,
                 values  = "repeat | space | round | no-repeat",
                 part;
-            
+
             if (expression.hasNext()){
                 part = expression.next();
-                
+
                 if (ValidationTypes.isLiteral(part, "repeat-x | repeat-y")) {
-                    result = true;                    
+                    result = true;
                 } else if (ValidationTypes.isLiteral(part, values)) {
                     result = true;
 
@@ -6292,11 +6338,11 @@ var ValidationTypes = {
                     }
                 }
             }
-            
+
             return result;
-            
+
         },
-        
+
         "<shadow>": function(expression) {
             //inset? && [ <length>{2,4} && <color>? ]
             var result  = false,
@@ -6304,53 +6350,50 @@ var ValidationTypes = {
                 inset   = false,
                 color   = false,
                 part;
-                
-            if (expression.hasNext()) {            
-                
+
+            if (expression.hasNext()) {
+
                 if (ValidationTypes.isAny(expression, "inset")){
                     inset = true;
                 }
-                
+
                 if (ValidationTypes.isAny(expression, "<color>")) {
                     color = true;
-                }                
-                
+                }
+
                 while (ValidationTypes.isAny(expression, "<length>") && count < 4) {
                     count++;
                 }
-                
-                
+
+
                 if (expression.hasNext()) {
                     if (!color) {
                         ValidationTypes.isAny(expression, "<color>");
                     }
-                    
+
                     if (!inset) {
                         ValidationTypes.isAny(expression, "inset");
                     }
 
                 }
-                
+
                 result = (count >= 2 && count <= 4);
-            
+
             }
-            
+
             return result;
         },
-        
+
         "<x-one-radius>": function(expression) {
             //[ <length> | <percentage> ] [ <length> | <percentage> ]?
             var result  = false,
-                count   = 0,
-                numeric = "<length> | <percentage>",
-                part;
-                
-            if (ValidationTypes.isAny(expression, numeric)){
+                simple = "<length> | <percentage> | inherit";
+
+            if (ValidationTypes.isAny(expression, simple)){
                 result = true;
-                
-                ValidationTypes.isAny(expression, numeric);
-            }                
-            
+                ValidationTypes.isAny(expression, simple);
+            }
+
             return result;
         }
     }
@@ -6378,6 +6421,15 @@ ValidationError     :ValidationError
 })();
 
 
+
+
+(function(){
+for(var prop in parserlib){
+exports[prop] = parserlib[prop];
+}
+})();
+
+
 /**
  * Main CSSLint object.
  * @class CSSLint
@@ -6392,7 +6444,7 @@ var CSSLint = (function(){
         embeddedRuleset = /\/\*csslint([^\*]*)\*\//,
         api             = new parserlib.util.EventTarget();
 
-    api.version = "0.9.10";
+    api.version = "0.10.0";
 
     //-------------------------------------------------------------------------
     // Rule Management
@@ -6615,6 +6667,7 @@ var CSSLint = (function(){
     return api;
 
 })();
+
 /*global CSSLint*/
 /**
  * An instance of Report is used to report results of the
@@ -6648,7 +6701,7 @@ function Reporter(lines, ruleset){
      * @type String[]
      */
     this.lines = lines;
-    
+
     /**
      * Information about the rules. Used to determine whether an issue is an
      * error or warning.
@@ -6886,7 +6939,7 @@ CSSLint.addRule({
 /*global CSSLint*/
 
 /*
- * Rule: Don't use width or height when using padding or border. 
+ * Rule: Don't use width or height when using padding or border.
  */
 CSSLint.addRule({
 
@@ -6925,7 +6978,7 @@ CSSLint.addRule({
 
         function endRule(){
             var prop, value;
-            
+
             if (!boxSizing) {
                 if (properties.height){
                     for (prop in heightProperties){
@@ -6943,25 +6996,25 @@ CSSLint.addRule({
                     for (prop in widthProperties){
                         if (widthProperties.hasOwnProperty(prop) && properties[prop]){
                             value = properties[prop].value;
-                            
+
                             if (!(prop == "padding" && value.parts.length === 2 && value.parts[1].value === 0)){
                                 reporter.report("Using width with " + prop + " can sometimes make elements larger than you expect.", properties[prop].line, properties[prop].col, rule);
                             }
                         }
                     }
-                }   
-            }     
+                }
+            }
         }
 
         parser.addListener("startrule", startRule);
         parser.addListener("startfontface", startRule);
         parser.addListener("startpage", startRule);
         parser.addListener("startpagemargin", startRule);
-        parser.addListener("startkeyframerule", startRule); 
+        parser.addListener("startkeyframerule", startRule);
 
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase();
-            
+
             if (heightProperties[name] || widthProperties[name]){
                 if (!/^0\S*$/.test(event.value) && !(name == "border" && event.value == "none")){
                     properties[name] = { line: event.property.line, col: event.property.col, value: event.value };
@@ -6973,14 +7026,14 @@ CSSLint.addRule({
                     boxSizing = true;
                 }
             }
-            
+
         });
 
         parser.addListener("endrule", endRule);
         parser.addListener("endfontface", endRule);
         parser.addListener("endpage", endRule);
         parser.addListener("endpagemargin", endRule);
-        parser.addListener("endkeyframerule", endRule);         
+        parser.addListener("endkeyframerule", endRule);
     }
 
 });
@@ -7004,11 +7057,11 @@ CSSLint.addRule({
 
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase();
-   
+
             if (name == "box-sizing"){
                 reporter.report("The box-sizing property isn't supported in IE6 and IE7.", event.line, event.col, rule);
             }
-        });       
+        });
     }
 
 });
@@ -7082,7 +7135,7 @@ CSSLint.addRule({
  * Rule: Include all compatible vendor prefixes to reach a wider
  * range of users.
  */
-/*global CSSLint*/ 
+/*global CSSLint*/
 CSSLint.addRule({
 
     //rule information
@@ -7178,7 +7231,7 @@ CSSLint.addRule({
                 arrayPush.apply(applyTo, variations);
             }
         }
-                
+
         parser.addListener("startrule", function () {
             properties = [];
         });
@@ -7194,9 +7247,9 @@ CSSLint.addRule({
         parser.addListener("property", function (event) {
             var name = event.property;
             if (CSSLint.Util.indexOf(applyTo, name.text) > -1) {
-            
+
                 // e.g., -moz-transform is okay to be alone in @-moz-keyframes
-                if (!inKeyFrame || typeof inKeyFrame != "string" || 
+                if (!inKeyFrame || typeof inKeyFrame != "string" ||
                         name.text.indexOf("-" + inKeyFrame + "-") !== 0) {
                     properties.push(name);
                 }
@@ -7254,7 +7307,7 @@ CSSLint.addRule({
                             item = full[i];
                             if (CSSLint.Util.indexOf(actual, item) === -1) {
                                 propertiesSpecified = (actual.length === 1) ? actual[0] : (actual.length == 2) ? actual.join(" and ") : actual.join(", ");
-                                reporter.report("The property " + item + " is compatible with " + propertiesSpecified + " and should be included as well.", value.actualNodes[0].line, value.actualNodes[0].col, rule); 
+                                reporter.report("The property " + item + " is compatible with " + propertiesSpecified + " and should be included as well.", value.actualNodes[0].line, value.actualNodes[0].col, rule);
                             }
                         }
 
@@ -7265,7 +7318,7 @@ CSSLint.addRule({
     }
 });
 /*
- * Rule: Certain properties don't play well with certain display values. 
+ * Rule: Certain properties don't play well with certain display values.
  * - float should not be used with inline-block
  * - height, width, margin-top, margin-bottom, float should not be used with inline
  * - vertical-align should not be used with block
@@ -7310,7 +7363,7 @@ CSSLint.addRule({
                 }
             }
         }
-        
+
         function startRule(){
             properties = {};
         }
@@ -7327,7 +7380,7 @@ CSSLint.addRule({
                         reportProperty("width", display);
                         reportProperty("margin", display);
                         reportProperty("margin-top", display);
-                        reportProperty("margin-bottom", display);              
+                        reportProperty("margin-bottom", display);
                         reportProperty("float", display, "display:inline has no effect on floated elements (but may be used to fix the IE6 double-margin bug).");
                         break;
 
@@ -7355,7 +7408,7 @@ CSSLint.addRule({
                         //otherwise do nothing
                 }
             }
-          
+
         }
 
         parser.addListener("startrule", startRule);
@@ -7368,7 +7421,7 @@ CSSLint.addRule({
             var name = event.property.text.toLowerCase();
 
             if (propertiesToCheck[name]){
-                properties[name] = { value: event.value.text, line: event.property.line, col: event.property.col };                    
+                properties[name] = { value: event.value.text, line: event.property.line, col: event.property.col };
             }
         });
 
@@ -7435,32 +7488,32 @@ CSSLint.addRule({
     init: function(parser, reporter){
         var rule = this,
             properties,
-            lastProperty;            
-            
+            lastProperty;
+
         function startRule(event){
-            properties = {};        
+            properties = {};
         }
-        
+
         parser.addListener("startrule", startRule);
         parser.addListener("startfontface", startRule);
         parser.addListener("startpage", startRule);
         parser.addListener("startpagemargin", startRule);
-        parser.addListener("startkeyframerule", startRule);        
-        
+        parser.addListener("startkeyframerule", startRule);
+
         parser.addListener("property", function(event){
             var property = event.property,
                 name = property.text.toLowerCase();
-            
+
             if (properties[name] && (lastProperty != name || properties[name] == event.value.text)){
                 reporter.report("Duplicate property '" + event.property + "' found.", event.line, event.col, rule);
             }
-            
+
             properties[name] = event.value.text;
             lastProperty = name;
-                        
+
         });
-            
-        
+
+
     }
 
 });
@@ -7551,35 +7604,35 @@ CSSLint.addRule({
                 "background-color": 1
             },
             properties;
-        
+
         function startRule(event){
-            properties = {};    
-            lastProperty = null;    
+            properties = {};
+            lastProperty = null;
         }
-        
+
         parser.addListener("startrule", startRule);
         parser.addListener("startfontface", startRule);
         parser.addListener("startpage", startRule);
         parser.addListener("startpagemargin", startRule);
-        parser.addListener("startkeyframerule", startRule);        
-        
+        parser.addListener("startkeyframerule", startRule);
+
         parser.addListener("property", function(event){
             var property = event.property,
                 name = property.text.toLowerCase(),
                 parts = event.value.parts,
-                i = 0, 
+                i = 0,
                 colorType = "",
-                len = parts.length;                
-                        
+                len = parts.length;
+
             if(propertiesToCheck[name]){
                 while(i < len){
                     if (parts[i].type == "color"){
                         if ("alpha" in parts[i] || "hue" in parts[i]){
-                            
+
                             if (/([^\)]+)\(/.test(parts[i])){
                                 colorType = RegExp.$1.toUpperCase();
                             }
-                            
+
                             if (!lastProperty || (lastProperty.property.text.toLowerCase() != name || lastProperty.colorType != "compat")){
                                 reporter.report("Fallback " + name + " (hex or RGB) should precede " + colorType + " " + name + ".", event.line, event.col, rule);
                             }
@@ -7587,14 +7640,14 @@ CSSLint.addRule({
                             event.colorType = "compat";
                         }
                     }
-                    
+
                     i++;
                 }
             }
 
             lastProperty = event;
-        });        
-         
+        });
+
     }
 
 });
@@ -7745,7 +7798,7 @@ CSSLint.addRule({
             if (!gradients.webkit){
                 missing.push("Webkit (Safari 5+, Chrome)");
             }
-            
+
             if (!gradients.oldWebkit){
                 missing.push("Old Webkit (Safari 4+, Chrome)");
             }
@@ -7754,8 +7807,8 @@ CSSLint.addRule({
                 missing.push("Opera 11.1+");
             }
 
-            if (missing.length && missing.length < 4){            
-                reporter.report("Missing vendor-prefixed CSS gradients for " + missing.join(", ") + ".", event.selectors[0].line, event.selectors[0].col, rule); 
+            if (missing.length && missing.length < 4){
+                reporter.report("Missing vendor-prefixed CSS gradients for " + missing.join(", ") + ".", event.selectors[0].line, event.selectors[0].col, rule);
             }
 
         });
@@ -7763,6 +7816,7 @@ CSSLint.addRule({
     }
 
 });
+
 /*
  * Rule: Don't use IDs for selectors.
  */
@@ -7828,8 +7882,8 @@ CSSLint.addRule({
     //initialization
     init: function(parser, reporter){
         var rule = this;
-        
-        parser.addListener("import", function(event){        
+
+        parser.addListener("import", function(event){
             reporter.report("@import prevents parallel downloads, use <link> instead.", event.line, event.col, rule);
         });
 
@@ -7934,14 +7988,14 @@ CSSLint.addRule({
                 lastRule = null;
             }
         }
-        
+
         function endRule(event){
             if (lastRule){
                 if (lastRule.outline){
                     if (lastRule.selectors.toString().toLowerCase().indexOf(":focus") == -1){
                         reporter.report("Outlines should only be modified using :focus.", lastRule.line, lastRule.col, rule);
                     } else if (lastRule.propCount == 1) {
-                        reporter.report("Outlines shouldn't be hidden unless other visual changes are made.", lastRule.line, lastRule.col, rule);                        
+                        reporter.report("Outlines shouldn't be hidden unless other visual changes are made.", lastRule.line, lastRule.col, rule);
                     }
                 }
             }
@@ -7951,26 +8005,26 @@ CSSLint.addRule({
         parser.addListener("startfontface", startRule);
         parser.addListener("startpage", startRule);
         parser.addListener("startpagemargin", startRule);
-        parser.addListener("startkeyframerule", startRule); 
+        parser.addListener("startkeyframerule", startRule);
 
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase(),
-                value = event.value;                
-                
+                value = event.value;
+
             if (lastRule){
                 lastRule.propCount++;
                 if (name == "outline" && (value == "none" || value == "0")){
                     lastRule.outline = true;
-                }            
+                }
             }
-            
+
         });
-        
+
         parser.addListener("endrule", endRule);
         parser.addListener("endfontface", endRule);
         parser.addListener("endpage", endRule);
         parser.addListener("endpagemargin", endRule);
-        parser.addListener("endkeyframerule", endRule); 
+        parser.addListener("endkeyframerule", endRule);
 
     }
 
@@ -7991,7 +8045,7 @@ CSSLint.addRule({
     init: function(parser, reporter){
         var rule = this,
             classes = {};
-            
+
         parser.addListener("startrule", function(event){
             var selectors = event.selectors,
                 selector,
@@ -8010,7 +8064,7 @@ CSSLint.addRule({
                             if (part.elementName && modifier.type == "id"){
                                 reporter.report("Element (" + part + ") is overqualified, just use " + modifier + " without element name.", part.line, part.col, rule);
                             } else if (modifier.type == "class"){
-                                
+
                                 if (!classes[modifier]){
                                     classes[modifier] = [];
                                 }
@@ -8021,19 +8075,19 @@ CSSLint.addRule({
                 }
             }
         });
-        
+
         parser.addListener("endstylesheet", function(){
-        
+
             var prop;
             for (prop in classes){
                 if (classes.hasOwnProperty(prop)){
-                
+
                     //one use means that this is overqualified
                     if (classes[prop].length == 1 && classes[prop][0].part.elementName){
                         reporter.report("Element (" + classes[prop][0].part + ") is overqualified, just use " + classes[prop][0].modifier + " without element name.", classes[prop][0].part.line, classes[prop][0].part.col, rule);
                     }
                 }
-            }        
+            }
         });
     }
 
@@ -8149,7 +8203,7 @@ CSSLint.addRule({
 
 });
 /*
- * Rule: Warn people with approaching the IE 4095 limit 
+ * Rule: Warn people with approaching the IE 4095 limit
  */
 /*global CSSLint*/
 CSSLint.addRule({
@@ -8170,14 +8224,15 @@ CSSLint.addRule({
 
         parser.addListener("endstylesheet", function() {
             if (count >= 3800) {
-                reporter.report("You have " + count + " selectors. Internet Explorer supports a maximum of 4095 selectors per stylesheet. Consider refactoring.",0,0,rule); 
+                reporter.report("You have " + count + " selectors. Internet Explorer supports a maximum of 4095 selectors per stylesheet. Consider refactoring.",0,0,rule);
             }
         });
     }
 
 });
+
 /*
- * Rule: Warn people past the IE 4095 limit 
+ * Rule: Warn people past the IE 4095 limit
  */
 /*global CSSLint*/
 CSSLint.addRule({
@@ -8198,7 +8253,7 @@ CSSLint.addRule({
 
         parser.addListener("endstylesheet", function() {
             if (count > 4095) {
-                reporter.report("You have " + count + " selectors. Internet Explorer supports a maximum of 4095 selectors per stylesheet. Consider refactoring.",0,0,rule); 
+                reporter.report("You have " + count + " selectors. Internet Explorer supports a maximum of 4095 selectors per stylesheet. Consider refactoring.",0,0,rule);
             }
         });
     }
@@ -8206,7 +8261,7 @@ CSSLint.addRule({
 });
 /*
  * Rule: Use shorthand properties where possible.
- * 
+ *
  */
 /*global CSSLint*/
 CSSLint.addRule({
@@ -8216,7 +8271,7 @@ CSSLint.addRule({
     name: "Require shorthand properties",
     desc: "Use shorthand properties where possible.",
     browsers: "All",
-    
+
     //initialization
     init: function(parser, reporter){
         var rule = this,
@@ -8235,10 +8290,10 @@ CSSLint.addRule({
                     "padding-bottom",
                     "padding-left",
                     "padding-right"
-                ]              
+                ]
             };
-            
-        //initialize propertiesToCheck 
+
+        //initialize propertiesToCheck
         for (prop in mapping){
             if (mapping.hasOwnProperty(prop)){
                 for (i=0, len=mapping[prop].length; i < len; i++){
@@ -8246,35 +8301,35 @@ CSSLint.addRule({
                 }
             }
         }
-            
+
         function startRule(event){
             properties = {};
         }
-        
+
         //event handler for end of rules
         function endRule(event){
-            
+
             var prop, i, len, total;
-            
+
             //check which properties this rule has
             for (prop in mapping){
                 if (mapping.hasOwnProperty(prop)){
                     total=0;
-                    
+
                     for (i=0, len=mapping[prop].length; i < len; i++){
                         total += properties[mapping[prop][i]] ? 1 : 0;
                     }
-                    
+
                     if (total == mapping[prop].length){
                         reporter.report("The properties " + mapping[prop].join(", ") + " can be replaced by " + prop + ".", event.line, event.col, rule);
                     }
                 }
             }
-        }        
-        
+        }
+
         parser.addListener("startrule", startRule);
         parser.addListener("startfontface", startRule);
-    
+
         //check for use of "font-size"
         parser.addListener("property", function(event){
             var name = event.property.toString().toLowerCase(),
@@ -8286,7 +8341,7 @@ CSSLint.addRule({
         });
 
         parser.addListener("endrule", endRule);
-        parser.addListener("endfontface", endRule);     
+        parser.addListener("endfontface", endRule);
 
     }
 
@@ -8435,14 +8490,14 @@ CSSLint.addRule({
                 part = selector.parts[selector.parts.length-1];
 
                 if (part.elementName && /(h[1-6])/i.test(part.elementName.toString())){
-                    
+
                     for (j=0; j < part.modifiers.length; j++){
                         if (part.modifiers[j].type == "pseudo"){
                             pseudo = true;
                             break;
                         }
                     }
-                
+
                     if (!pseudo){
                         headings[RegExp.$1]++;
                         if (headings[RegExp.$1] > 1) {
@@ -8452,11 +8507,11 @@ CSSLint.addRule({
                 }
             }
         });
-        
+
         parser.addListener("endstylesheet", function(event){
             var prop,
                 messages = [];
-                
+
             for (prop in headings){
                 if (headings.hasOwnProperty(prop)){
                     if (headings[prop] > 1){
@@ -8464,11 +8519,11 @@ CSSLint.addRule({
                     }
                 }
             }
-            
+
             if (messages.length){
                 reporter.rollupWarn("You have " + messages.join(", ") + " defined in this stylesheet.", rule);
             }
-        });        
+        });
     }
 
 });
@@ -8497,7 +8552,7 @@ CSSLint.addRule({
 
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
-                
+
                 part = selector.parts[selector.parts.length-1];
                 if (part.elementName == "*"){
                     reporter.report(rule.desc, part.line, part.col, rule);
@@ -8524,7 +8579,7 @@ CSSLint.addRule({
         var rule = this;
 
         parser.addListener("startrule", function(event){
-            
+
             var selectors = event.selectors,
                 selector,
                 part,
@@ -8533,18 +8588,18 @@ CSSLint.addRule({
 
             for (i=0; i < selectors.length; i++){
                 selector = selectors[i];
-                
+
                 part = selector.parts[selector.parts.length-1];
                 if (part.type == parser.SELECTOR_PART_TYPE){
                     for (k=0; k < part.modifiers.length; k++){
                         modifier = part.modifiers[k];
                         if (modifier.type == "attribute" && (!part.elementName || part.elementName == "*")){
-                            reporter.report(rule.desc, part.line, part.col, rule);                               
+                            reporter.report(rule.desc, part.line, part.col, rule);
                         }
                     }
                 }
-                
-            }            
+
+            }
         });
     }
 
@@ -8573,70 +8628,70 @@ CSSLint.addRule({
                 "-webkit-border-top-right-radius": "border-top-right-radius",
                 "-webkit-border-bottom-left-radius": "border-bottom-left-radius",
                 "-webkit-border-bottom-right-radius": "border-bottom-right-radius",
-                
+
                 "-o-border-radius": "border-radius",
                 "-o-border-top-left-radius": "border-top-left-radius",
                 "-o-border-top-right-radius": "border-top-right-radius",
                 "-o-border-bottom-left-radius": "border-bottom-left-radius",
                 "-o-border-bottom-right-radius": "border-bottom-right-radius",
-                
+
                 "-moz-border-radius": "border-radius",
                 "-moz-border-radius-topleft": "border-top-left-radius",
                 "-moz-border-radius-topright": "border-top-right-radius",
                 "-moz-border-radius-bottomleft": "border-bottom-left-radius",
-                "-moz-border-radius-bottomright": "border-bottom-right-radius",                
-                
+                "-moz-border-radius-bottomright": "border-bottom-right-radius",
+
                 "-moz-column-count": "column-count",
                 "-webkit-column-count": "column-count",
-                
+
                 "-moz-column-gap": "column-gap",
                 "-webkit-column-gap": "column-gap",
-                
+
                 "-moz-column-rule": "column-rule",
                 "-webkit-column-rule": "column-rule",
-                
+
                 "-moz-column-rule-style": "column-rule-style",
                 "-webkit-column-rule-style": "column-rule-style",
-                
+
                 "-moz-column-rule-color": "column-rule-color",
                 "-webkit-column-rule-color": "column-rule-color",
-                
+
                 "-moz-column-rule-width": "column-rule-width",
                 "-webkit-column-rule-width": "column-rule-width",
-                
+
                 "-moz-column-width": "column-width",
                 "-webkit-column-width": "column-width",
-                
+
                 "-webkit-column-span": "column-span",
                 "-webkit-columns": "columns",
-                
+
                 "-moz-box-shadow": "box-shadow",
                 "-webkit-box-shadow": "box-shadow",
-                
+
                 "-moz-transform" : "transform",
                 "-webkit-transform" : "transform",
                 "-o-transform" : "transform",
                 "-ms-transform" : "transform",
-                
+
                 "-moz-transform-origin" : "transform-origin",
                 "-webkit-transform-origin" : "transform-origin",
                 "-o-transform-origin" : "transform-origin",
                 "-ms-transform-origin" : "transform-origin",
-                
+
                 "-moz-box-sizing" : "box-sizing",
                 "-webkit-box-sizing" : "box-sizing",
-                
+
                 "-moz-user-select" : "user-select",
                 "-khtml-user-select" : "user-select",
-                "-webkit-user-select" : "user-select"                
+                "-webkit-user-select" : "user-select"
             };
 
         //event handler for beginning of rules
         function startRule(){
             properties = {};
-            num=1;        
+            num=1;
         }
-        
+
         //event handler for end of rules
         function endRule(event){
             var prop,
@@ -8656,7 +8711,7 @@ CSSLint.addRule({
                 needed = needsStandard[i].needed;
                 actual = needsStandard[i].actual;
 
-                if (!properties[needed]){               
+                if (!properties[needed]){
                     reporter.report("Missing standard property '" + needed + "' to go along with '" + actual + "'.", properties[actual][0].name.line, properties[actual][0].name.col, rule);
                 } else {
                     //make sure standard property is last
@@ -8666,13 +8721,13 @@ CSSLint.addRule({
                 }
             }
 
-        }        
-        
+        }
+
         parser.addListener("startrule", startRule);
         parser.addListener("startfontface", startRule);
         parser.addListener("startpage", startRule);
         parser.addListener("startpagemargin", startRule);
-        parser.addListener("startkeyframerule", startRule);         
+        parser.addListener("startkeyframerule", startRule);
 
         parser.addListener("property", function(event){
             var name = event.property.text.toLowerCase();
@@ -8688,7 +8743,7 @@ CSSLint.addRule({
         parser.addListener("endfontface", endRule);
         parser.addListener("endpage", endRule);
         parser.addListener("endpagemargin", endRule);
-        parser.addListener("endkeyframerule", endRule);         
+        parser.addListener("endkeyframerule", endRule);
     }
 
 });
@@ -8711,7 +8766,7 @@ CSSLint.addRule({
         //count how many times "float" is used
         parser.addListener("property", function(event){
             var parts = event.value.parts,
-                i = 0, 
+                i = 0,
                 len = parts.length;
 
             while(i < len){
@@ -8745,7 +8800,7 @@ CSSLint.addRule({
         if (!str || str.constructor !== String) {
             return "";
         }
-        
+
         return str.replace(/[\"&><]/g, function(match) {
             switch (match) {
                 case "\"":
@@ -8755,7 +8810,7 @@ CSSLint.addRule({
                 case "<":
                     return "&lt;";
                 case ">":
-                    return "&gt;";            
+                    return "&gt;";
             }
         });
     };
@@ -8780,7 +8835,7 @@ CSSLint.addRule({
         endFormat: function(){
             return "</checkstyle>";
         },
-        
+
         /**
          * Returns message when there is a file read error.
          * @param {String} filename The name of the file that caused the error.
@@ -8886,11 +8941,11 @@ CSSLint.addFormatter({
             if (message.rollup) {
                 output += filename + ": " + capitalize(message.type) + " - " + message.message + "\n";
             } else {
-                output += filename + ": " + "line " + message.line + 
+                output += filename + ": " + "line " + message.line +
                     ", col " + message.col + ", " + capitalize(message.type) + " - " + message.message + "\n";
             }
         });
-    
+
         return output;
     }
 });
@@ -8935,7 +8990,7 @@ CSSLint.addFormatter({
          *  - &amp; is the escape sequence for &
          *  - &lt; is the escape sequence for <
          *  - &gt; is the escape sequence for >
-         * 
+         *
          * @param {String} message to escape
          * @return escaped message as {String}
          */
@@ -9108,7 +9163,7 @@ CSSLint.addFormatter({
          *  - &amp; is the escape sequence for &
          *  - &lt; is the escape sequence for <
          *  - &gt; is the escape sequence for >
-         * 
+         *
          * @param {String} message to escape
          * @return escaped message as {String}
          */
@@ -9120,7 +9175,7 @@ CSSLint.addFormatter({
         };
 
         if (messages.length > 0) {
-        
+
             output.push("<file name=\""+filename+"\">");
             CSSLint.Util.forEach(messages, function (message, i) {
                 if (message.rollup) {
@@ -9179,7 +9234,7 @@ CSSLint.addFormatter({
             shortFilename = filename;
 
         if (pos === -1){
-            pos = filename.lastIndexOf("\\");       
+            pos = filename.lastIndexOf("\\");
         }
         if (pos > -1){
             shortFilename = filename.substring(pos+1);
@@ -9196,10 +9251,9 @@ CSSLint.addFormatter({
                 output += "\n" + message.evidence;
             }
         });
-    
+
         return output;
     }
 });
-
 return CSSLint;
 })();
