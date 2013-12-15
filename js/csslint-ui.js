@@ -36,8 +36,6 @@ $(document).ready(function(){
         }
     }
 
-    //$('#in button').removeAttr('disabled');
-
     //if there's a hash, auto-fill checkboxes from it
     if (location.hash && location.hash != "results"){
 
@@ -196,14 +194,6 @@ $(document).ready(function(){
                 type = "<img title='warning' alt='warning' src='img/warn.png' />";
                 errorLines.push(messages[i].line);
             }
-            //errorView.fnAddData([
-            //    type,
-            //    messages[i].line,
-            //    messages[i].col,
-            //    messages[i].rule.name,
-            //    messages[i].message + "<pre>" + messages[i].evidence + "</pre>",
-            //    messages[i].rule.browsers
-            //]);
 
             tr = document.createElement("tr");
             tr.className = "L" + messages[i].line;
@@ -221,11 +211,6 @@ $(document).ready(function(){
             tr.cells[5].innerHTML = messages[i].rule.browsers;
 
             fragment.appendChild(tr);
-            //tbody.innerHTML += "<tr class='L" + messages[i].line + "'><td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td></tr>";
-            //tr = document.createElement("tr");
-            //tr.className = "L" + messages[i].line;
-            //tr.innerHTML = "<td>" + type + "</td><td>" + messages[i].line + "</td><td>" + messages[i].col + "</td><td>" + messages[i].rule.name + "</td><td>" + messages[i].message + "<pre>" + messages[i].evidence + "</pre></td><td>" + messages[i].rule.browsers + "</td>"
-            //$('#errors').append(tr);
         }
 
         tbody.appendChild(fragment);
@@ -240,7 +225,7 @@ $(document).ready(function(){
         } else {
             $("#fix-it").show();
         }
-        //$('#errors').html(tbody.innerHTML);
+
         errorTableEvents();
         highlightCSS();
     }
@@ -346,7 +331,7 @@ $(document).ready(function(){
             // create template
             lineErr = false;
             cssClass = "";
-            //tableBody = document.createElement('tbody');
+
             // insert into template
             tableBody = document.getElementById('tableBody');
 
@@ -374,12 +359,8 @@ $(document).ready(function(){
                 tableRow.insertCell(1);
                 tableRow.cells[1].innerHTML = lineCode;
                 fragment.appendChild(tableRow);
-                //lineAnchor = "id='L" + lineNum + "'";
-                //tableRow = "<tr" + cssClass + " " + lineAnchor + ">\n    <th>" + lineNum + "</th>\n    <td>" + lineCode + "</td>\n</tr>";
-                //tableBody.innerHTML += tableRow;
             }
             tableBody.appendChild(fragment);
-            //document.getElementById('tableBody').innerHTML = tableBody.innerHTML;
         };
     };
 });
