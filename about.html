@@ -33,7 +33,7 @@
                         <a class="bigButton" href="index.html">Go Lint!</a>
                     </div>
                 </div>
-            </div>      
+            </div>
         </div>
     </div>
     <div class="foot">
@@ -41,13 +41,13 @@
             <h2 id="docs">The CSS Lint Rules</h2>
 
             <h3>Parsing errors should be fixed</h3>
-						
+
             <p>By default, CSS Lint shows any parsing errors. Parsing errors usually mean you mistyped a character and may cause the browser to drop your rule or a property. Parsing errors are presented as errors by CSS Lint, the most important issues to fix.</p>
 
             <h3 class="mbn"><strong title="id">adjoining-classes</strong> Don't use adjoining classes</h3>
-						
+
             <p>Adjoining classes look like <code>.foo.bar</code>. While technically allowed in CSS, these aren't handled properly by Internet Explorer 6 and earlier.</p>
-            
+
 
             <h3><strong title="id">empty-rules</strong> Remove empty rules</h3>
 
@@ -60,7 +60,7 @@
 
 
             <p>A lot of times, empty rules appear as a result of refactoring without further cleanup. Eliminating empty rules results in smaller file sizes and less style information for the browser to deal with.</p>
-           
+
 
             <h3><strong title="id">display-property-grouping</strong>Use correct properties for a display</h3>
 
@@ -80,26 +80,26 @@
             <h3><strong title="id">floats</strong> Don't use too many floats</h3>
 
             <p>Using <code>float</code> for layout isn't a great idea, but sometimes you have to. CSS Lint simply checks to see if you've used <code>float</code> more than 10 times, and if so, displays a warning. Using this many floats usually means you need some sort of abstraction to achieve the layout.</p>
-            
+
 
             <h3><strong title="id">font-faces</strong> Don't use too many web fonts</h3>
 
             <p>Web fonts are growing in popularity and use of <code>@font-face</code> is on the rise. However, using web fonts comes with performance implications as font files can be quite large and some browsers block rendering while downloading them. For this reason, CSS Lint will warn you when there are more than five web fonts in a style sheet.</p>
-            
+
             <h3><strong title="id">shorthand</strong> Require shorthand properties</h3>
 
             <p>Sometimes when editing a rule you may end up defining multiple properties that can better be represented using shorthand. This rule checks to see if you're using <code>margin-left</code>, <code>margin-right</code>, <code>margin-top</code>, and <code>margin-bottom</code> together and suggests to use just <code>margin</code> instead. The same is done for the variants of <code>padding</code>.</p>
-            
+
 
             <h3><strong title="id">font-sizes</strong> Don't use too may font-size declarations</h3>
 
             <p>A site is typically made up of a finite number of font treatments, including font size. If you have 10 or more font sizes specified, you probably want to refactor into a standard set of font size classes that can be used in markup.</p>
-            
+
 
             <h3><strong title="id">ids</strong> Don't use IDs in selectors</h3>
 
             <p>IDs shouldn't be used in selectors because these rules are too tightly coupled with the HTML and have no possibility of reuse. It's much preferred to use classes in selectors and then apply a class to an element in the page.</p>
-            
+
 
             <h3><strong title="id">qualified-headings</strong> Don't qualify headings</h3>
 
@@ -114,12 +114,12 @@
 
 
             <p>Heading elements should have a consistent appearance across a site.</p>
-            
+
 
             <h3><strong title="id">unique-headings</strong> Heading styles should only be defined once</h3>
 
             <p>Heading elements (<code>h1</code>-<code>h6</code>) should have exactly one rule on a site. CSS Lint warns if it finds more than one.</p>
-            
+
 
             <!--<h3>Be careful using width: 100%</h3>
 
@@ -128,7 +128,7 @@
             <h3><strong title="id">zero-units</strong> Zero values don't need units</h3>
 
             <p>An easy way to save bytes in CSS is not include units when a value is 0. For instance, <code>0px</code> and <code>0</code> are the exact same measurement, so leave off the units and save!</p>
-            
+
 
             <h3><strong title="id">vendor-prefix</strong> Vendor prefixed properties should also have the standard</h3>
 
@@ -141,33 +141,33 @@
 <span class="p">}</span>
             </pre>
             </div>
-            
+
 
             <h3><strong title="id">gradients</strong> CSS gradients require all browser prefixes</h3>
 
             <p>Right now, there is no standard CSS gradient implementation, which means using CSS gradients in a cross-browser way requires using many different vendor-prefixed versions. CSS Lint warns when a rule with a CSS gradient doesn't have gradients for all supporting browsers. </p>
-            
+
 
             <h3><strong title="id">regex-selectors</strong> Avoid selectors that look like regular expressions</h3>
 
             <p>CSS3 adds complex attribute selectors such as <code>~=</code> that are slow. When using attribute selectors, don't use the complex equality operators to avoid performance penalties.</p>
-            
+
 
             <h3><strong title="id">box-model</strong> Beware of broken box models</h3>
 
             <p>Borders and padding add space outside of an element's content. Setting <code>width</code> or <code>height</code> along with borders and padding is usually a mistake because you won't get the visual result you're looking for. CSS Lint warns when a rule uses <code>width</code> or <code>height</code> in addition to padding and/or border.</p>
-            
+
 
             <h3><strong title="id">import</strong>Don't use @import</h3>
 
             <p>The <code>@import</code> directive prevents some browsers from downloading resources in parallel (see: <a href="http://www.stevesouders.com/blog/2009/04/09/dont-use-import/">Don't use @import</a>)</p>
-            
+
             <h3><strong title="id">important</strong> Don't use !important</h3>
             <p>Using <code>!important</code> overides any cascaded rule and may lead to specificity war. CSS Lint checks if you've used <code>!important</code>, and if so, displays a warning. If there's at least 10 <code>!important</code> declaration in your code CSSLint displays an error.</p>
-            
+
             <h3><strong title="id">compatible-vendor-prefixes</strong> Include all compatible vendor prefixes</h3>
             <p>Most CSS3 properties have vendor-prefixed equivalents for multiple vendors, including Firefox (-moz), Safari/Chrome (-webkit), Opera (-o), and Internet Explorer (-ms). Including all compatible vendor prefixes will give a consistent appearance for a wider range of users.</p>
-            
+
             <h3><strong title="id">duplicate-properties</strong> Avoid duplicate properties</h3>
             <p>When you include the same property twice, it may be intentional (to provide a fallback) or unintentional (copy-paste error). If duplicate properties are found one after the other with different values, this is okay. For example:</p>
 
@@ -175,7 +175,7 @@
     background: #fff;
     background: rgba(255, 255, 255, 0.5);
 }</code></pre>
-    
+
             <p>However, if the properties either have the same value or are located at different spots in the rule, this results in a warning. For example:</p>
 <pre><code>.foo {
     background: #fff;
@@ -199,22 +199,22 @@
             <p>For Rhino:</p>
             <pre><code>java -jar rhino.jar csslint-rhino.js test.css dir_of_css/ test2.css</code></pre>
             <p>You'll receive the same errors and warnings as you would with the web interface.</p>
-            <p>If you'd like to customize the rules that the command line uses, do set by setting the <code>rules=</code> option and passing a comma-separated list of rule IDs. 
+            <p>If you'd like to customize the rules that the command line uses, do set by setting the <code>rules=</code> option and passing a comma-separated list of rule IDs.
 For Node.js:</p>
             <pre><code>csslint --rules=ids,important,import test.css</code></pre>
             <p>For Rhino:</p>
-            <pre><code>java -jar rhino.jar csslint-rhino.js --rules=ids,important,import test.css</code></pre>      
+            <pre><code>java -jar rhino.jar csslint-rhino.js --rules=ids,important,import test.css</code></pre>
             <p>You can change the results output format by using the <code>--format</code> option. The available options are:</p>
             <ul>
                 <li><code>text</code> - the default</li>
                 <li><code>lint-xml</code> - a language-agnostic variant of "JSLint XML" format (basically uses <code>&lt;lint/&gt;</code> instead of <code>&lt;jslint/&gt;</code>)</li>
             </ul>
             <p>Change the output format at any time via (also works with Rhino):</p>
-            <pre><code>csslint --format=lint-xml test.css</code></pre>                  
+            <pre><code>csslint --format=lint-xml test.css</code></pre>
             <h2>Thanks</h2>
             <p>Many people encouraged me to build this tool. Deepest thank you to Chris Klaiber, Gonzalo Cordero, Douglas Crockford and JSLint, Rebecca Murphy, the guys at GitHub, and everyone at JSConf.</p>
     <!-- insert in this table -->
-    
+
     <div id="output"></div>
     <ul class="inlineList piped footList">
         <li><a href="http://www.nczonline.net/">Nicholas</a></li>
@@ -226,8 +226,8 @@ For Node.js:</p>
       <li><a href="http://groups.google.com/group/css-lint">Mailing List</a></li>
       <li><a href="http://www.stubbornella.org/">Nicole</a></li>
     </ul>
-    
-    
+
+
    </div>
     </div>
 <script type="text/javascript">
@@ -242,6 +242,6 @@ For Node.js:</p>
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script>    
+</script>
 </body>
 </html>
