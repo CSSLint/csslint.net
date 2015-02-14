@@ -383,3 +383,5 @@ font-family:Futura, "Gill Sans", Helvetica, sans-serif;	font-size: 48px;margin:0
 
 
 .btn h2, .btn .h2,.btn h3, .btn .h3{color: #414141;}
+.summary sup, .btnDrop h3 sup { font-size: 50%; }
+.summary sup a, .btnDrop h3 sup a { cursor: pointer; }
