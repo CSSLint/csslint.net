@@ -187,11 +187,11 @@ $(document).ready(function(){
         for (i=0, len=messages.length; i < len; i++){
             if(messages[i].type == 'error'){
                 errorCount ++;
-                type = "<img alt='error' src='img/error.png' />";
+                type = "<img alt='error' src='img/error.png' width='16px' height='16px'>";
                 errorLines.push(messages[i].line);
             } else if(messages[i].type == 'warning'){
                 warningCount ++;
-                type = "<img title='warning' alt='warning' src='img/warn.png' />";
+                type = "<img title='warning' alt='warning' src='img/warn.png' width='15px' height='15px'>";
                 errorLines.push(messages[i].line);
             }
 
