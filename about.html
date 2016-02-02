@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>About</title>
-    <link rel="stylesheet" href="style.css" >
+    <link rel="stylesheet" href="style.css">
     <style>
-        pre{background-color:#FFFFE2; padding:10px;}
+        pre {
+            background-color: #FFFFE2;
+            padding: 10px;
+        }
     </style>
 </head>
+
 <body>
     <div class="head">
         <div class="page">
@@ -54,7 +59,7 @@
             <p>Any rule that doesn't contain any properties, such as:</p>
 
             <div class="highlight">
-            <pre><span class="nc">.foo</span> <span class="p">{</span><span class="p">}</span>
+                <pre><span class="nc">.foo</span> <span class="p">{</span><span class="p">}</span>
             </pre>
             </div>
 
@@ -67,15 +72,16 @@
             <p>Even though you can define any group of properties together in a CSS rule, some of them will be ignored due to the <code>display</code> of the element. This leads to extra cruft in the CSS file. The list of properties that CSS Lint checks for are:</p>
 
             <ul>
-            <li>
-            <code>display: inline</code> should not use <code>width</code>, <code>height</code>, <code>margin</code> (and all variants), <code>padding</code> (and all variants), or <code>float</code>.</li>
-            <li>
-            <code>display: inline-block</code> should not use <code>float</code>.</li>
-            <li>
-            <code>display: block</code> should not use <code>vertical-align</code>.</li>
-            <li>
-            <code>display: table-*</code> should not use <code>margin</code> (and all variants) or <code>float</code>.</li>
-            </ul><p>Removed the ignored or problematic properties decreases file size and improves performance.</p>
+                <li>
+                    <code>display: inline</code> should not use <code>width</code>, <code>height</code>, <code>margin</code> (and all variants), <code>padding</code> (and all variants), or <code>float</code>.</li>
+                <li>
+                    <code>display: inline-block</code> should not use <code>float</code>.</li>
+                <li>
+                    <code>display: block</code> should not use <code>vertical-align</code>.</li>
+                <li>
+                    <code>display: table-*</code> should not use <code>margin</code> (and all variants) or <code>float</code>.</li>
+            </ul>
+            <p>Removed the ignored or problematic properties decreases file size and improves performance.</p>
 
             <h3><strong title="id">floats</strong> Don't use too many floats</h3>
 
@@ -106,7 +112,7 @@
             <p>Heading elements (<code>h1</code>-<code>h6</code>) should be defined as top-level styles and not scoped to particular areas of the page. For example, this is an example of an overqualified heading:</p>
 
             <div class="highlight">
-            <pre><span class="nc">.foo</span> <span class="nt">h1</span> <span class="p">{</span>
+                <pre><span class="nc">.foo</span> <span class="nt">h1</span> <span class="p">{</span>
     <span class="k">font-size</span><span class="o">:</span> <span class="m">110</span><span class="o">%</span><span class="p">;</span>
 <span class="p">}</span>
             </pre>
@@ -135,7 +141,7 @@
             <p>When using vendor-prefixed properties such as <code>-moz-border-radius</code>, make sure to also include the standard property. The standard property should preferably come after the vendor-prefixed one, such as:</p>
 
             <div class="highlight">
-            <pre><span class="nc">.foo</span> <span class="p">{</span>
+                <pre><span class="nc">.foo</span> <span class="p">{</span>
     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
     <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
 <span class="p">}</span>
@@ -171,13 +177,13 @@
             <h3><strong title="id">duplicate-properties</strong> Avoid duplicate properties</h3>
             <p>When you include the same property twice, it may be intentional (to provide a fallback) or unintentional (copy-paste error). If duplicate properties are found one after the other with different values, this is okay. For example:</p>
 
-<pre><code>.foo {
+            <pre><code>.foo {
     background: #fff;
     background: rgba(255, 255, 255, 0.5);
 }</code></pre>
 
             <p>However, if the properties either have the same value or are located at different spots in the rule, this results in a warning. For example:</p>
-<pre><code>.foo {
+            <pre><code>.foo {
     background: #fff;
     color: #000;
     background: rgba(255, 255, 255, 0.5);
@@ -213,35 +219,37 @@ For Node.js:</p>
             <pre><code>csslint --format=lint-xml test.css</code></pre>
             <h2>Thanks</h2>
             <p>Many people encouraged me to build this tool. Deepest thank you to Chris Klaiber, Gonzalo Cordero, Douglas Crockford and JSLint, Rebecca Murphy, the guys at GitHub, and everyone at JSConf.</p>
-    <!-- insert in this table -->
 
-    <div id="output"></div>
-    <ul class="inlineList piped footList">
-        <li><a href="http://www.nczonline.net/">Nicholas</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="about.html#contribute">Contribute</a></li>
-      <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
-      <li><a href="about.html#node">Node</a></li>
-      <li><a href="about.html#docs">Documentation</a></li>
-      <li><a href="http://groups.google.com/group/css-lint">Mailing List</a></li>
-      <li><a href="http://www.stubbornella.org/">Nicole</a></li>
-    </ul>
+            <!-- insert in this table -->
+
+            <div id="output"></div>
+            <ul class="inlineList piped footList">
+                <li><a href="http://www.nczonline.net/">Nicholas</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="about.html#contribute">Contribute</a></li>
+                <li><a href="https://github.com/stubbornella/csslint">Source</a></li>
+                <li><a href="about.html#node">Node</a></li>
+                <li><a href="about.html#docs">Documentation</a></li>
+                <li><a href="http://groups.google.com/group/css-lint">Mailing List</a></li>
+                <li><a href="http://www.stubbornella.org/">Nicole</a></li>
+            </ul>
 
 
-   </div>
+        </div>
     </div>
-<script>
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-25221469-1']);
+        _gaq.push(['_trackPageview']);
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-25221469-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = 'http://www.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript'; ga.async = true;
+            ga.src = 'http://www.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 </body>
+
 </html>
