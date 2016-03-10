@@ -1,4 +1,4 @@
-name: CSSLint.net
-markdown: redcarpet
-pygments: false
+markdown:   kramdown
+highlighter: false
+name:       CSSLint.net
 exclude: [ "CNAME", "README", "build.xml" ]
