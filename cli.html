@@ -1,0 +1,43 @@
+---
+layout: default
+title: CLI
+---
+
+<h2 id="node">CSS Lint Command Line</h2>
+<p>There are two options for using CSS Lint on the command line. First, if you have Node.js and <a href="http://npmjs.org">npm</a> installed, you can install CSS Lint easily using the following:</p>
+<pre>
+    <code>sudo npm install -g csslint</code>
+</pre>
+<p>If you prefer to use <a href="http://www.mozilla.org/rhino">Rhino instead</a>, grab <a href="http://github.com/stubbornella/csslint/tree/master/release/csslint-rhino.js">csslint-rhino.js</a>.</p>
+<p>Both the Node.js and Rhino command line interfaces work the same way. Run them and pass in any number of CSS files or directories containing CSS files. For Node.js:</p>
+<pre>
+    <code>csslint test.css dir_of_css/ test2.css</code>
+</pre>
+<p>For Rhino:</p>
+<pre>
+    <code>java -jar rhino.jar csslint-rhino.js test.css dir_of_css/ test2.css</code>
+</pre>
+<p>You'll receive the same errors and warnings as you would with the web interface.</p>
+<p>If you'd like to customize the rules that the command line uses, do set by setting the
+    <code>rules=</code>option and passing a comma-separated list of rule IDs. For Node.js:</p>
+<pre>
+    <code>csslint --rules=ids,important,import test.css</code>
+</pre>
+<p>For Rhino:</p>
+<pre>
+    <code>java -jar rhino.jar csslint-rhino.js --rules=ids,important,import test.css</code>
+</pre>
+<p>You can change the results output format by using the
+    <code>--format</code>option. The available options are:</p>
+<ul>
+    <li>
+        <code>text</code>- the default</li>
+    <li>
+        <code>lint-xml</code>- a language-agnostic variant of "JSLint XML" format (basically uses
+        <code>&lt;lint/&gt;</code>instead of
+        <code>&lt;jslint/&gt;</code>)</li>
+</ul>
+<p>Change the output format at any time via (also works with Rhino):</p>
+<pre>
+    <code>csslint --format=lint-xml test.css</code>
+</pre>
