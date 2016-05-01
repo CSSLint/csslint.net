@@ -20,6 +20,19 @@ $(document).ready(function(){
     }
 
 
+    $(".groupSelectAll").click(function(){
+        $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", true);
+    });
+    $(".groupSelectNone").click(function(){
+        $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", false);
+    });
+    $(".globalSelectAll").click(function(){
+        $(".btnDrop").find("input[type=checkbox]").prop("checked", true);
+    });
+    $(".globalSelectNone").click(function(){
+        $(".btnDrop").find("input[type=checkbox]").prop("checked", false);
+    });
+
     if (typeof Worker != "undefined"){
 
         //if being run locally, some browsers barf, so double-check
