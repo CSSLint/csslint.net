@@ -1,105 +1,108 @@
 // JavaScript Document
-$(document).ready(function(){
+/* global CSSLint:true, Sunlight:true */
+
+$(function() {
+    "use strict";
 
     var errorLines = [],
         errorView,
         options,
-        rulesArray,
         worker = null;
 
-    function htmlEscape(text){
+    function htmlEscape(text) {
         var htmlEscapes = {
             "<": "&lt;",
             ">": "&gt;",
             "&": "&amp;",
             "\"": "&quot;"
         };
-        return text.replace(/[<>"&]/g, function(c){
+
+        return text.replace(/[<>"&]/g, function(c) {
             return htmlEscapes[c];
         });
     }
 
 
-    $(".groupSelectAll").click(function(){
+    $(".groupSelectAll").click(function() {
         $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", true);
     });
-    $(".groupSelectNone").click(function(){
+    $(".groupSelectNone").click(function() {
         $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", false);
     });
-    $(".globalSelectAll").click(function(){
+    $(".globalSelectAll").click(function() {
         $(".btnDrop").find("input[type=checkbox]").prop("checked", true);
     });
-    $(".globalSelectNone").click(function(){
+    $(".globalSelectNone").click(function() {
         $(".btnDrop").find("input[type=checkbox]").prop("checked", false);
     });
 
-    if (typeof Worker != "undefined"){
+    if (typeof Worker !== "undefined") {
 
-        //if being run locally, some browsers barf, so double-check
+        // if being run locally, some browsers barf, so double-check
         try {
 
             worker = new Worker("js/csslint-worker.js");
 
-            worker.onmessage = function(event){
+            worker.onmessage = function(event) {
                 outputResults(JSON.parse(event.data));
             };
 
-        } catch (ex){
-            //sigh, just don't use the worker
+        } catch (ex) {
+            // sigh, just don't use the worker
         }
     }
 
-    //if there's a hash, auto-fill checkboxes from it
-    if (location.hash && location.hash != "results"){
+    // if there's a hash, auto-fill checkboxes from it
+    if (location.hash && location.hash !== "results") {
 
         $("input[type=checkbox]").prop("checked", false);
 
-        $.each(location.hash.substring("warnings=".length+1).split(","), function(i, value){
+        $.each(location.hash.substring("warnings=".length + 1).split(","), function(i, value) {
             $("input[name=" + value + "]").prop("checked", true);
         });
 
 
-        //always be open when a hash is present
-        $('#options').toggleClass("open");
+        // always be open when a hash is present
+        $("#options").toggleClass("open");
 
-    } else if (window.localStorage){ //otherwise, pull from localStorage
+    } else if (window.localStorage) {   // otherwise, pull from localStorage
 
-        if (localStorage.getItem("rules")){
+        if (localStorage.getItem("rules")) {
             options = $.parseJSON(localStorage.getItem("rules"));
-            $("input[type=checkbox]").each(function(index, checkbox){
-                checkbox.checked = options[checkbox.name] == 1;
+            $("input[type=checkbox]").each(function(index, checkbox) {
+                checkbox.checked = options[checkbox.name] === 1;
             });
         }
 
-        if (localStorage.getItem("open")){
-            $('#options').toggleClass("open");
+        if (localStorage.getItem("open")) {
+            $("#options").toggleClass("open");
         }
 
     }
 
-    //when a checkbox change, update the hash
+    // when a checkbox change, update the hash
     $("input[type=checkbox]").live("click", updateHash);
 
     /*
      * set up options menu
      */
 
-    $('#showOptions').click(function() {
-        $('#options').toggleClass("open");
+    $("#showOptions").click(function() {
+        $("#options").toggleClass("open");
 
-        if (window.localStorage){
-            localStorage.setItem("open", $('#options').hasClass("open") ? "1" : "");
+        if (window.localStorage) {
+            localStorage.setItem("open", $("#options").hasClass("open") ? "1" : "");
         }
 
         return false;
     });
 
 
-    function updateHash(){
+    function updateHash() {
         var ruleset = gatherRules(),
             rules = [];
 
-        $.each(ruleset, function(key, value){
+        $.each(ruleset, function(key) {
             rules.push(key);
         });
 
@@ -110,64 +113,63 @@ $(document).ready(function(){
      * Views
      */
     function toggleView(view) {
-        $('html').removeClass('resultsPage settingsPage loadingPage');
+        $("html").removeClass("resultsPage settingsPage loadingPage");
+
         switch (view) {
-
-
-            case 'results': $('html').addClass('resultsPage');
+            case "results":
+                $("html").addClass("resultsPage");
                 break;
-            case 'setting': $('html').addClass('settingsPage');
+            case "setting":
+                $("html").addClass("settingsPage");
                 break;
-            case 'loading': $('html').addClass('loadingPage');
+            case "loading":
+                $("html").addClass("loadingPage");
                 break;
-            default: $('html').addClass('');
+            default:
+                $("html").addClass("");
         }
     }
 
     /*
      * Form: Sumbit css to be linted and highlighted
      */
-    $('#lint').click(function() {
-        var css,
-                results,
-                myCssLength,
-                messages;
+    $("#lint").click(function() {
         lintCSS();
         return false;
     });
 
-    $("#restart-btn").click(function(){
-        //toggleView('');
+    $("#restart-btn").click(function() {
+        // toggleView('');
         history.back();
         return false;
     });
 
 
-
     /*
      * Lint: lints css
      */
-    function lintCSS(){
-        var css = $('#input').val(),
+    function lintCSS() {
+        var css = $("#input").val(),
             rules = gatherRules();
+
         errorLines = [];
         toggleView("loading");
-        if (worker){
+        if (worker) {
             worker.postMessage(JSON.stringify({ text: css, ruleset: rules }));
         } else {
             outputResults(CSSLint.verify(css, rules));
         }
     }
 
-    function gatherRules(){
+    function gatherRules() {
         var ruleset = {};
 
-        $("input:checked").each(function(index, checkbox){
+        $("input:checked").each(function(index, checkbox) {
             ruleset[checkbox.name] = 1;
         });
 
-        //store in localStorage for later usage
-        if (window.localStorage){
+        // store in localStorage for later usage
+        if (window.localStorage) {
             localStorage.setItem("rules", $.toJSON(ruleset));
         }
 
@@ -175,7 +177,7 @@ $(document).ready(function(){
     }
 
 
-    function outputResults(results){
+    function outputResults(results) {
         var i,
             messages,
             len,
@@ -183,27 +185,27 @@ $(document).ready(function(){
             warningCount = 0,
             tbody = document.getElementById("errors"),
             fragment = document.createDocumentFragment(),
-            tr, td,
+            tr,
             type;
 
-        //for back button support
+        // for back button support
         location.hash = "results";
 
-        if (errorView){
+        if (errorView) {
             errorView.fnClearTable();
         }
 
-        toggleView('results');
+        toggleView("results");
         messages = results.messages;
 
         // output results to table
-        for (i=0, len=messages.length; i < len; i++){
-            if(messages[i].type == 'error'){
-                errorCount ++;
+        for (i = 0, len = messages.length; i < len; i++) {
+            if (messages[i].type === "error") {
+                errorCount++;
                 type = "<img alt='error' src='img/error.png' width='16px' height='16px'>";
                 errorLines.push(messages[i].line);
-            } else if(messages[i].type == 'warning'){
-                warningCount ++;
+            } else if (messages[i].type === "warning") {
+                warningCount++;
                 type = "<img title='warning' alt='warning' src='img/warn.png' width='15px' height='15px'>";
                 errorLines.push(messages[i].line);
             }
@@ -213,9 +215,9 @@ $(document).ready(function(){
             tr.insertCell(0);
             tr.cells[0].innerHTML = type;
             tr.insertCell(1);
-            tr.cells[1].innerHTML = typeof messages[i].line == "number" ? messages[i].line : "(rollup)";
+            tr.cells[1].innerHTML = typeof messages[i].line === "number" ? messages[i].line : "(rollup)";
             tr.insertCell(2);
-            tr.cells[2].innerHTML = typeof messages[i].col == "number" ? messages[i].col : "(rollup)";
+            tr.cells[2].innerHTML = typeof messages[i].col === "number" ? messages[i].col : "(rollup)";
             tr.insertCell(3);
             tr.cells[3].innerHTML = htmlEscape(messages[i].rule.name);
             tr.insertCell(4);
@@ -230,10 +232,10 @@ $(document).ready(function(){
         errorTableInit();
 
         // set text summaries of warnings and errors
-        $('.errorCount').text(errorCount);
-        $('.warningCount').text(warningCount);
+        $(".errorCount").text(errorCount);
+        $(".warningCount").text(warningCount);
 
-        if(errorCount === 0 && warningCount === 0){
+        if (errorCount === 0 && warningCount === 0) {
             $("#fix-it").hide();
         } else {
             $("#fix-it").show();
@@ -245,10 +247,11 @@ $(document).ready(function(){
     /*
      * Making "in" play nice w arrays
      */
-    function eachOfArray(a){
+    function eachOfArray(a) {
         var o = {};
-        for(var i=0;i<a.length;i++) {
-            o[a[i]]='';
+
+        for (var i = 0; i < a.length; i++) {
+            o[a[i]] = "";
         }
         return o;
     }
@@ -256,8 +259,8 @@ $(document).ready(function(){
     /*
      * set up error table
      */
-    function errorTableInit(){
-        errorView = $('#errorView').dataTable({
+    function errorTableInit() {
+        errorView = $("#errorView").dataTable({
             "bDestroy": true,
             "bPaginate": false,
             "bLengthChange": false,
@@ -277,29 +280,30 @@ $(document).ready(function(){
 
     }
 
-    function errorTableEvents(){
-     // setup events on error table row click - goes to code view line number
-     $('.results tbody tr').each(function(index) {
-         $(this).click(function(event){
-            // collect the line number
-            var line = $(this).children('td')[1].innerHTML;
-            // link to the other table
-            location.href = "#L" + line;
-         });
-     });
+    function errorTableEvents() {
+        // setup events on error table row click - goes to code view line number
+        $(".results tbody tr").each(function() {
+            $(this).click(function() {
+                // collect the line number
+                var line = $(this).children("td")[1].innerHTML;
+
+                // link to the other table
+                location.href = "#L" + line;
+            });
+        });
     }
 
 
     /*
      * Setup query string based view changes -when query string updates - change to code view
      */
-    $(function(){
-
+    $(function() {
         // Hash changed
-        $(window).hashchange( function(){
+        $(window).hashchange(function() {
             var hash = location.hash.substring(1);
-            if (hash != "results") {
-                toggleView('');
+
+            if (hash !== "results") {
+                toggleView("");
             }
         });
     });
@@ -307,58 +311,57 @@ $(document).ready(function(){
     /*
      *    set up code view table
      */
-    function highlightCSS(){
+    function highlightCSS() {
         var css,
             dummyElement,
             rawHtml,
             cssByLine,
-            lineErr,
             lineCount,
             i,
             cssClass,
             lineNum,
             lineCode,
             tableRow,
-            tableRows,
             tableBody,
-            fragment,
-            lineAnchor;
-         //get css & instantiate highlighter
-         css = $('#input').val();
-        if (css.length < 15000) { // no code view if more than 15000 css
-            highlighter = new Sunlight.Highlighter();
-            context = highlighter.highlight(css, 'css');
-            nodes = context.getNodes();
+            fragment;
+
+        // get css & instantiate highlighter
+        css = $("#input").val();
+
+        if (css.length < 15000) {       // no code view if more than 15000 css
+            var highlighter = new Sunlight.Highlighter();
+            var context = highlighter.highlight(css, "css");
+            var nodes = context.getNodes();
 
             // convert nodes to an HTML string
-            dummyElement = document.createElement('pre');
+            dummyElement = document.createElement("pre");
             for (i = 0; i < nodes.length; i++) {
                 dummyElement.appendChild(nodes[i]);
             }
             rawHtml = dummyElement.innerHTML;
             // split based by row - on \n
-            cssByLine = rawHtml.split('\n');
+            cssByLine = rawHtml.split("\n");
             lineCount = cssByLine.length;
-            $('.lineCount').text(lineCount);
+            $(".lineCount").text(lineCount);
 
             // create template
-            lineErr = false;
             cssClass = "";
 
             // insert into template
-            tableBody = document.getElementById('tableBody');
+            tableBody = document.getElementById("tableBody");
 
-            //clear existing content
-            while(tableBody.rows.length){
+            // clear existing content
+            while (tableBody.rows.length) {
                 tableBody.deleteRow(0);
             }
 
             fragment = document.createDocumentFragment();
 
-            for (i=0; i < cssByLine.length; i++){
+            for (i = 0; i < cssByLine.length; i++) {
                 lineCode = cssByLine[i];
-                lineNum = i+1; // unnecessary
-                if (lineNum in eachOfArray(errorLines)){
+                lineNum = i + 1; // unnecessary
+
+                if (lineNum in eachOfArray(errorLines)) {
                     cssClass = " error L" + lineNum;
                 } else {
                     cssClass = "";
@@ -374,6 +377,6 @@ $(document).ready(function(){
                 fragment.appendChild(tableRow);
             }
             tableBody.appendChild(fragment);
-        };
-    };
+        }
+    }
 });
