@@ -68,7 +68,7 @@ $(function() {
     } else if (window.localStorage) {   // otherwise, pull from localStorage
 
         if (localStorage.getItem("rules")) {
-            options = $.parseJSON(localStorage.getItem("rules"));
+            options = JSON.parse(localStorage.getItem("rules"));
             $("input[type=checkbox]").each(function(index, checkbox) {
                 checkbox.checked = options[checkbox.name] === 1;
             });
@@ -170,7 +170,7 @@ $(function() {
 
         // store in localStorage for later usage
         if (window.localStorage) {
-            localStorage.setItem("rules", $.toJSON(ruleset));
+            localStorage.setItem("rules", JSON.stringify(ruleset));
         }
 
         return ruleset;
