@@ -24,10 +24,16 @@ $(function() {
 
 
     $(".groupSelectAll").click(function() {
-        $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", true);
+        $(this).parent().parent()
+            .siblings(".optionsList")
+            .find("input[type=checkbox]")
+            .prop("checked", true);
     });
     $(".groupSelectNone").click(function() {
-        $(this).parent().parent().siblings(".optionsList").find("input[type=checkbox]").prop("checked", false);
+        $(this).parent().parent()
+            .siblings(".optionsList")
+            .find("input[type=checkbox]")
+            .prop("checked", false);
     });
     $(".globalSelectAll").click(function() {
         $(".btnDrop").find("input[type=checkbox]").prop("checked", true);
@@ -40,24 +46,21 @@ $(function() {
 
         // if being run locally, some browsers barf, so double-check
         try {
-
             worker = new Worker("js/csslint-worker.js");
-
             worker.onmessage = function(event) {
                 outputResults(JSON.parse(event.data));
             };
-
         } catch (ex) {
             // sigh, just don't use the worker
         }
     }
 
     // if there's a hash, auto-fill checkboxes from it
-    if (location.hash && location.hash !== "results") {
+    if (window.location.hash && window.location.hash !== "results") {
 
         $("input[type=checkbox]").prop("checked", false);
 
-        $.each(location.hash.substring("warnings=".length + 1).split(","), function(i, value) {
+        $.each(window.location.hash.substring("warnings=".length + 1).split(","), function(i, value) {
             $("input[name=" + value + "]").prop("checked", true);
         });
 
@@ -81,7 +84,7 @@ $(function() {
     }
 
     // when a checkbox change, update the hash
-    $("input[type=checkbox]").live("click", updateHash);
+    $("input[type=checkbox]").on("click", updateHash);
 
     /*
      * set up options menu
@@ -91,10 +94,8 @@ $(function() {
         $("#options").toggleClass("open");
 
         if (window.localStorage) {
-            localStorage.setItem("open", $("#options").hasClass("open") ? "1" : "");
+            window.localStorage.setItem("open", $("#options").hasClass("open") ? "1" : "");
         }
-
-        return false;
     });
 
 
@@ -106,23 +107,24 @@ $(function() {
             rules.push(key);
         });
 
-        location.hash = "warnings=" + rules.join(",");
+        window.location.hash = "warnings=" + rules.join(",");
     }
 
     /*
      * Views
      */
     function toggleView(view) {
-        $("html").removeClass("resultsPage settingsPage loadingPage");
-
         switch (view) {
             case "results":
+                $("html").removeClass("settingsPage loadingPage");
                 $("html").addClass("resultsPage");
                 break;
             case "setting":
+                $("html").removeClass("resultsPage loadingPage");
                 $("html").addClass("settingsPage");
                 break;
             case "loading":
+                $("html").removeClass("resultsPage settingsPage");
                 $("html").addClass("loadingPage");
                 break;
             default:
@@ -133,15 +135,15 @@ $(function() {
     /*
      * Form: Sumbit css to be linted and highlighted
      */
-    $("#lint").click(function() {
+    $("#lint").click(function(e) {
+        e.preventDefault();
         lintCSS();
-        return false;
     });
 
-    $("#restart-btn").click(function() {
-        // toggleView('');
-        history.back();
-        return false;
+    $("#restart-btn").click(function(e) {
+        e.preventDefault();
+        $("html").removeClass();
+        window.history.back();
     });
 
 
@@ -154,6 +156,7 @@ $(function() {
 
         errorLines = [];
         toggleView("loading");
+
         if (worker) {
             worker.postMessage(JSON.stringify({ text: css, ruleset: rules }));
         } else {
@@ -189,7 +192,7 @@ $(function() {
             type;
 
         // for back button support
-        location.hash = "results";
+        window.location.hash = "results";
 
         if (errorView) {
             errorView.fnClearTable();
@@ -244,6 +247,7 @@ $(function() {
         errorTableEvents();
         highlightCSS();
     }
+
     /*
      * Making "in" play nice w arrays
      */
@@ -288,7 +292,7 @@ $(function() {
                 var line = $(this).children("td")[1].innerHTML;
 
                 // link to the other table
-                location.href = "#L" + line;
+                window.location.hash = "L" + line;
             });
         });
     }
@@ -300,10 +304,10 @@ $(function() {
     $(function() {
         // Hash changed
         $(window).hashchange(function() {
-            var hash = location.hash.substring(1);
+            var hash = window.location.hash.substring(1);
 
             if (hash !== "results") {
-                toggleView("");
+                toggleView();
             }
         });
     });
